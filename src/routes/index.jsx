@@ -5,6 +5,7 @@ import Layout from "../pages/Layout";
 
 const DashboardPage = lazy(() => import("@/pages/dashboard/DashboardPage"));
 const ClientsPage = lazy(() => import("@/pages/clients/ClientsPage"));
+const ClientDetailPage = lazy(() => import("@/pages/clients/ClientDetailPage"));
 const CompaniesPage = lazy(() => import("@/pages/companies/CompaniesPage"));
 const ServicesPage = lazy(() => import("@/pages/services/ServicesPage"));
 const DocumentsPage = lazy(() => import("@/pages/documents/DocumentsPage"));
@@ -33,6 +34,7 @@ export default function AppRoutes() {
                 >
                     <Route path="/" element={<DashboardPage />} />
                     <Route path="/clients" element={<ClientsPage />} />
+                    <Route path="/clients/:id" element={<ClientDetailPage />} />
                     <Route path="/companies" element={<CompaniesPage />} />
                     <Route path="/dashboard" element={<DashboardPage />} />
                     <Route path="/documents" element={<DocumentsPage />} />

@@ -1,4 +1,5 @@
 import { Eye, IdCard, Mail, MessageCircle, Phone } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -52,7 +53,7 @@ export function ClientCard({ client }) {
       </div>
 
       <Button
-        type="button"
+        render={<Link to={`/clients/${encodeURIComponent(client.clientId)}`} />}
         variant="outline"
         className="mt-4 h-9 w-full border-primary/50 bg-transparent text-primary hover:border-primary hover:bg-accent hover:text-accent-foreground dark:bg-transparent"
         aria-label={`View profile for ${client.name}`}
