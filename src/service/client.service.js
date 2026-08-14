@@ -12,11 +12,26 @@ const ClientService = {
 
     getClients: (params) => clientRequest.get("/api/v1/clients", { params }),
     getClient: (clientId) => clientRequest.get(`/api/v1/clients/${encodeURIComponent(clientId)}`),
+    updateClient: (clientId, formData) => clientRequest.patch(
+        `/api/v1/clients/${encodeURIComponent(clientId)}`,
+        formData,
+    ),
     createClient: (formData) => clientRequest.post("/api/v1/clients", formData),
     createClientWithService: (formData) => clientRequest.post("/api/v1/clients/with-service", formData),
     getClientCompanies: (clientId, params) => clientRequest.get(
         `/api/v1/companies/client/${encodeURIComponent(clientId)}`,
         { params },
+    ),
+    getClientServices: (clientId, params) => clientRequest.get(
+        `/api/v1/clients/${encodeURIComponent(clientId)}/services`,
+        { params },
+    ),
+    updateService: (clientId, serviceId, formData) => clientRequest.patch(
+        `/api/v1/clients/${encodeURIComponent(clientId)}/services/${encodeURIComponent(serviceId)}`,
+        formData,
+    ),
+    deleteService: (serviceId) => clientRequest.delete(
+        `/api/v1/services/${encodeURIComponent(serviceId)}`,
     ),
     createCompany: (formData) => clientRequest.post("/api/v1/companies", formData),
 };

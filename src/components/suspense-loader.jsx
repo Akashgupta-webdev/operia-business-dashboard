@@ -19,7 +19,7 @@ const SuspenseLoader = () => {
 
                     <div>
                         <h1 className="text-3xl font-bold text-white">
-                            Operia
+                            Operio
                         </h1>
                         <p className="text-sm text-slate-400">
                             Loading dashboard...

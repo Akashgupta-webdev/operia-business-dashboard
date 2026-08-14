@@ -176,7 +176,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           />
           <div className="group-data-[collapsible=icon]:hidden">
             <div className="text-[19px] font-semibold uppercase tracking-[0.32em] text-sidebar-primary">
-              OPERIA
+              OPERIO
             </div>
             <p className="mt-0.5 text-label-sm font-medium italic text-muted-foreground">
               Business

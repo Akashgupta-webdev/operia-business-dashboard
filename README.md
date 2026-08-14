@@ -962,4 +962,4 @@ Old documents remain available in history
 
 The most important principle is:
 
-> **One client profile should show every company, service, document, filing, employee, expiry date, reminder and history connected to that client.** ✅# operia-business-dashboard
+> **One client profile should show every company, service, document, filing, employee, expiry date, reminder and history connected to that client.** ✅# operio-business-dashboard

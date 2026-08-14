@@ -91,7 +91,7 @@ export default function Layout() {
 
             <div>
               <h1 className="text-body-md font-semibold text-foreground">
-                Operia Business
+                Operio Business
               </h1>
 
               <p className="hidden text-label-sm text-muted-foreground md:block">

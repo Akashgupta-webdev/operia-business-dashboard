@@ -12,10 +12,10 @@ import { ClientCompaniesTab } from "./components/ClientCompaniesTab";
 import { ClientDetailSkeleton } from "./components/ClientDetailSkeleton";
 import {
   ClientPersonalInfo,
-  ClientRecentActivity,
   ClientUnavailablePanel,
 } from "./components/ClientOverview";
 import { ClientProfileHeader } from "./components/ClientProfileHeader";
+import { ClientServicesTab } from "./components/ClientServicesTab";
 
 export default function ClientDetailPage() {
   const { id } = useParams();
@@ -82,10 +82,7 @@ export default function ClientDetailPage() {
           </div>
 
           <TabsContent value="personal" className="pt-5">
-            <div className="grid gap-5 lg:grid-cols-[minmax(0,2fr)_minmax(17rem,1fr)]">
-              <ClientPersonalInfo client={client} />
-              <ClientRecentActivity />
-            </div>
+            <ClientPersonalInfo client={client} />
           </TabsContent>
 
           <TabsContent value="companies" className="pt-5">
@@ -95,7 +92,11 @@ export default function ClientDetailPage() {
             />
           </TabsContent>
 
-          {CLIENT_DETAIL_TABS.slice(2).map((tab) => (
+          <TabsContent value="services" className="pt-5">
+            <ClientServicesTab clientDatabaseId={client._id} clientName={client.name} />
+          </TabsContent>
+
+          {CLIENT_DETAIL_TABS.slice(3).map((tab) => (
             <TabsContent key={tab.value} value={tab.value} className="pt-5">
               <ClientUnavailablePanel label={tab.label} />
             </TabsContent>

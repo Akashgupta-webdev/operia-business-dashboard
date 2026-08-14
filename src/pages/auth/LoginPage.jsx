@@ -66,7 +66,7 @@ export default function LoginPage() {
             <Landmark aria-hidden="true" className="size-7 text-white" strokeWidth={2.2} />
           </div>
           <CardTitle className="text-[23px] leading-7 font-semibold tracking-[-0.02em] text-white">
-            Operia Business
+            Operio Business
           </CardTitle>
           <CardDescription className="mt-1.5 text-xs font-medium text-slate-300">
             Corporate Services CRM
@@ -121,7 +121,7 @@ export default function LoginPage() {
 
         <CardFooter className="flex justify-between rounded-b-2xl border-t border-white/10 bg-transparent px-6 py-4 text-[11px] font-medium text-slate-400 sm:px-7">
           <a
-            href="mailto:support@operiabusiness.com"
+            href="mailto:support@operiobusiness.com"
             className="inline-flex items-center gap-1.5 rounded-sm transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6ca5dd]"
           >
             <Headphones aria-hidden="true" className="size-3.5" />
