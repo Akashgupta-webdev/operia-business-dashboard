@@ -10,7 +10,7 @@ The entire system should be **client-centric**:
 
 ## 1. Super Admin Login
 
-Only one secure admin panel will be available.
+Only one secure admin panel will be availables.
 
 ### Features
 
