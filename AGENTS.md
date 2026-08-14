@@ -21,7 +21,7 @@
 - Build responsive and accessible UI: use semantic HTML, labels, keyboard support, visible focus states, and shadcn accessibility behavior.
 - Treat customer and insurance data as sensitive. Do not expose secrets or personal data in source code, URLs, logs, fixtures, or client-visible error messages.
 - Handle loading, empty, error, and success states where relevant. Keep API access in services/hooks rather than embedding it throughout presentation components.
-- When providing or implementing API-related details, keep each concern in its designated location: place validation rules in `src/validator` and constant values in `src/constants/`, using a file whose base name matches the relevant page, and define API endpoints and request functions in `src/service/client.service.js`.
+- When providing or implementing API-related details, keep each concern in its designated location: place validation rules in `src/validator` and constant values in `src/constants/`, using a file whose base name matches the relevant page (don't include page in name), and define API endpoints and request functions in `src/service/client.service.js`.
 - Use TanStack Query's `useQuery` to fetch data through the API request functions defined in `src/service/client.service.js`.
 - Use TanStack Query's `useMutation` to create, update, or delete data through the API request functions defined in `src/service/client.service.js`.
 - Use Joi for validation.

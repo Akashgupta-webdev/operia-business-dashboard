@@ -13,6 +13,7 @@ const ClientService = {
     getClients: (params) => clientRequest.get("/api/v1/clients", { params }),
     getClient: (clientId) => clientRequest.get(`/api/v1/clients/${encodeURIComponent(clientId)}`),
     createClient: (formData) => clientRequest.post("/api/v1/clients", formData),
+    createClientWithService: (formData) => clientRequest.post("/api/v1/clients/with-service", formData),
     getClientCompanies: (clientId, params) => clientRequest.get(
         `/api/v1/companies/client/${encodeURIComponent(clientId)}`,
         { params },

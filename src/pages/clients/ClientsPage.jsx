@@ -5,11 +5,13 @@ import { DashboardPagination } from "@/pages/dashboard/components/DashboardPagin
 import { ClientsHeader } from "./components/ClientsHeader";
 import { ClientsGrid } from "./components/ClientsGrid";
 import { QuickAddClientDialog } from "./components/QuickAddClientDialog";
+import { QuickAddServiceDialog } from "./components/QuickAddServiceDialog";
 
 export default function ClientsPage() {
   const [page, setPage] = useState(1);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
+  const [isAddClientOpen, setIsAddClientOpen] = useState(false);
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
   const { data, error, isFetching, isPending, refetch } = useClients({
     page,
@@ -37,6 +39,7 @@ export default function ClientsPage() {
         <ClientsHeader
           search={searchInput}
           onSearchChange={setSearchInput}
+          onAddClient={() => setIsAddClientOpen(true)}
           onQuickAdd={() => setIsQuickAddOpen(true)}
         />
 
@@ -64,7 +67,8 @@ export default function ClientsPage() {
           </footer>
         )}
 
-        <QuickAddClientDialog open={isQuickAddOpen} onOpenChange={setIsQuickAddOpen} />
+        <QuickAddClientDialog open={isAddClientOpen} onOpenChange={setIsAddClientOpen} />
+        <QuickAddServiceDialog open={isQuickAddOpen} onOpenChange={setIsQuickAddOpen} />
       </div>
     </div>
   );
