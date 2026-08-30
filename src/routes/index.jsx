@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from "react";
+import { lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import Layout from "../pages/Layout";
@@ -6,8 +6,9 @@ import Layout from "../pages/Layout";
 const DashboardPage = lazy(() => import("@/pages/dashboard/DashboardPage"));
 const ClientsPage = lazy(() => import("@/pages/clients/ClientsPage"));
 const ClientDetailPage = lazy(() => import("@/pages/clients/ClientDetailPage"));
+const AddNewClientPage = lazy(() => import("@/pages/clients/AddNewClientPage"));
 const CompaniesPage = lazy(() => import("@/pages/companies/CompaniesPage"));
-const ServicesPage = lazy(() => import("@/pages/services/ServicesPage"));
+const FinancePage = lazy(() => import("@/pages/finance/FinancePage"));
 const DocumentsPage = lazy(() => import("@/pages/documents/DocumentsPage"));
 const TaxCompliancePage = lazy(() => import("@/pages/tax-and-compliance/TaxCompliancePage"));
 const VisaEmployeesPage = lazy(() => import("@/pages/visa-and-employees/VisaEmployeesPage"));
@@ -34,15 +35,16 @@ export default function AppRoutes() {
                 >
                     <Route path="/" element={<DashboardPage />} />
                     <Route path="/clients" element={<ClientsPage />} />
+                    <Route path="/clients/new" element={<AddNewClientPage />} />
                     <Route path="/clients/:id" element={<ClientDetailPage />} />
                     <Route path="/companies" element={<CompaniesPage />} />
+                    <Route path="/finance" element={<FinancePage />} />
                     <Route path="/dashboard" element={<DashboardPage />} />
                     <Route path="/documents" element={<DocumentsPage />} />
                     <Route path="/reminders" element={<RemindersPage />} />
                     <Route path="/renewals" element={<RenewalsPage />} />
                     <Route path="/calendars" element={<CalendarPage />} />
                     <Route path="/reports" element={<ReportsPage />} />
-                    <Route path="/services" element={<ServicesPage />} />
                     <Route path="/settings" element={<SettingsPage />} />
                     <Route path="/tax-and-compliance" element={<TaxCompliancePage />} />
                     <Route path="/visa-and-employees" element={<VisaEmployeesPage />} />

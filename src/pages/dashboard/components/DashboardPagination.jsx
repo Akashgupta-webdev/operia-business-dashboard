@@ -1,58 +1,17 @@
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "./Pagination";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-function getVisiblePages(currentPage, pageCount) {
-  if (pageCount <= 5) return Array.from({ length: pageCount }, (_, index) => index + 1);
-  if (currentPage <= 3) return [1, 2, 3, 4, "ellipsis-end", pageCount];
-  if (currentPage >= pageCount - 2) {
-    return [1, "ellipsis-start", pageCount - 3, pageCount - 2, pageCount - 1, pageCount];
-  }
-  return [1, "ellipsis-start", currentPage - 1, currentPage, currentPage + 1, "ellipsis-end", pageCount];
-}
+import { Button } from "@/components/ui/button";
 
 export function DashboardPagination({ page, pageCount, onPageChange }) {
-  const pages = getVisiblePages(page, pageCount);
+  if (pageCount <= 1) return null;
+  const start = Math.min(Math.max(1, page - 2), Math.max(1, pageCount - 4));
+  const pages = Array.from({ length: Math.min(5, pageCount) }, (_, index) => start + index);
 
   return (
-    <Pagination className="mx-0 w-auto">
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious
-            disabled={page === 1}
-            onClick={() => onPageChange(page - 1)}
-          />
-        </PaginationItem>
-
-        {pages.map((item) => (
-          <PaginationItem key={item}>
-            {typeof item === "number" ? (
-              <PaginationLink
-                isActive={item === page}
-                aria-label={`Go to page ${item}`}
-                onClick={() => onPageChange(item)}
-              >
-                {item}
-              </PaginationLink>
-            ) : (
-              <PaginationEllipsis />
-            )}
-          </PaginationItem>
-        ))}
-
-        <PaginationItem>
-          <PaginationNext
-            disabled={page === pageCount}
-            onClick={() => onPageChange(page + 1)}
-          />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
+    <nav aria-label="Pagination" className="flex items-center gap-2">
+      <Button type="button" variant="outline" size="icon-sm" disabled={page <= 1} onClick={() => onPageChange(page - 1)} aria-label="Previous page"><ChevronLeft aria-hidden="true" className="size-3.5" /></Button>
+      {pages.map((pageNumber) => <Button key={pageNumber} type="button" variant={pageNumber === page ? "default" : "outline"} size="icon-sm" onClick={() => onPageChange(pageNumber)} aria-current={pageNumber === page ? "page" : undefined}>{pageNumber}</Button>)}
+      <Button type="button" variant="outline" size="icon-sm" disabled={page >= pageCount} onClick={() => onPageChange(page + 1)} aria-label="Next page"><ChevronRight aria-hidden="true" className="size-3.5" /></Button>
+    </nav>
   );
 }

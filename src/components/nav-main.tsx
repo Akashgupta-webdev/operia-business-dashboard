@@ -1,142 +1,76 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { ChevronRight, type LucideIcon } from "lucide-react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+
+import type { SidebarNavSection } from "@/components/app-sidebar";
 import {
   SidebarGroup,
+  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 
-type NavItem = {
-  title: string;
-  url: string;
-  icon?: LucideIcon;
-  isActive?: boolean;
-  target?: string;
-  items?: {
-    title: string;
-    url: string;
-  }[];
+const isRouteActive = (pathname: string, url: string) => {
+  if (url === "/dashboard") {
+    return pathname === "/" || pathname === "/dashboard";
+  }
+
+  return pathname === url || pathname.startsWith(`${url}/`);
 };
 
 const linkClass = (isActive: boolean) =>
   cn(
-    "relative flex h-10 w-full min-w-0 items-center gap-2 rounded-lg border px-3 text-left text-body-sm font-medium leading-none whitespace-nowrap transition-colors",
-    "text-sidebar-foreground/75 hover:border-sidebar-border hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-    "focus-visible:ring-2 focus-visible:ring-sidebar-ring",
-    "group-data-[collapsible=icon]:h-8 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-2",
-    isActive
-      ? "border-sidebar-border bg-sidebar-accent text-sidebar-accent-foreground "
-      : "border-transparent"
+    "flex h-9 w-full items-center gap-2.5 rounded-lg px-3 text-body-sm font-medium transition-colors",
+    "text-text-secondary hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+    "focus-visible:ring-2 focus-visible:ring-sidebar-ring focus-visible:ring-offset-2 focus-visible:ring-offset-sidebar",
+    "group-data-[collapsible=icon]:size-9 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0",
+    "[&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:text-neutral-400",
+    isActive &&
+      "bg-sidebar-accent font-semibold text-sidebar-accent-foreground [&_svg]:text-sidebar-primary",
   );
 
-const subLinkClass = (isActive: boolean) =>
-  cn(
-    "flex h-8 w-full min-w-0 items-center gap-2 rounded-md px-3 text-left text-label-sm font-medium whitespace-nowrap transition-colors",
-    "text-sidebar-foreground/75 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-    isActive && "bg-sidebar-accent text-sidebar-accent-foreground"
-  );
-
-export function NavMain({ items }: { items: NavItem[] }) {
-  const location = useLocation();
+export function NavMain({ sections }: { sections: SidebarNavSection[] }) {
+  const { pathname } = useLocation();
 
   return (
-    <SidebarGroup className="px-0">
-      <SidebarMenu className="mt-1 gap-1">
-        {items.map((item) => {
-          const hasChildren = Boolean(item.items?.length);
-          const isParentActive =
-            location.pathname === item.url ||
-            (item.url !== "/dashboard" && location.pathname.startsWith(item.url));
+    <nav aria-label="Primary navigation">
+      {sections.map((section) => (
+        <SidebarGroup
+          key={section.label}
+          className="px-0 py-2 first:pt-1 last:pb-1 group-data-[collapsible=icon]:py-1"
+        >
+          <SidebarGroupLabel className="mb-1 h-8 px-3 text-body-md font-semibold tracking-wide text-primary-600 uppercase group-data-[collapsible=icon]:hidden">
+            {section.label}
+          </SidebarGroupLabel>
+          <SidebarMenu className="gap-1">
+            {section.items.map((item) => {
+              const isActive = isRouteActive(pathname, item.url);
 
-          if (hasChildren) {
-            return (
-              <Collapsible
-                key={item.title}
-                asChild
-                defaultOpen={item.isActive || isParentActive}
-                className="group/collapsible"
-              >
-                <SidebarMenuItem>
-                  <CollapsibleTrigger asChild>
-                    <SidebarMenuButton
-                      tooltip={item.title}
-                      className={linkClass(isParentActive)}
-                    >
-                      {item.icon && <item.icon className="h-4 w-4 shrink-0" />}
-                      <span className="truncate group-data-[collapsible=icon]:hidden">
-                        {item.title}
-                      </span>
-                      <ChevronRight className="ml-auto h-3.5 w-3.5 transition-transform duration-200 group-data-[collapsible=icon]:hidden group-data-[state=open]/collapsible:rotate-90" />
-                    </SidebarMenuButton>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub className="ml-5 mt-1 border-l border-sidebar-border pl-2">
-                      {item.items?.map((subItem) => (
-                        <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild>
-                            <NavLink
-                              to={subItem.url}
-                              className={({ isActive }) => subLinkClass(isActive)}
-                            >
-                              <span className="truncate">{subItem.title}</span>
-                            </NavLink>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </SidebarMenuItem>
-              </Collapsible>
-            );
-          }
-
-          if (item.target === "_blank") {
-            return (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton
-                  asChild
-                  tooltip={item.title}
-                  className={linkClass(false)}
-                >
-                  <a href={item.url} target="_blank" rel="noopener noreferrer">
-                    {item.icon && <item.icon className="h-4 w-4 shrink-0" />}
+              return (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    render={
+                      <NavLink
+                        to={item.url}
+                        aria-current={isActive ? "page" : undefined}
+                        className={linkClass(isActive)}
+                      />
+                    }
+                    isActive={isActive}
+                    tooltip={item.title}
+                    className="h-auto py-1 text-[12px] hover:bg-transparent data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground"
+                  >
+                    <item.icon aria-hidden="true" />
                     <span className="truncate group-data-[collapsible=icon]:hidden">
                       {item.title}
                     </span>
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            );
-          }
-
-          return (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild tooltip={item.title}>
-                <NavLink
-                  to={item.url}
-                  end={item.url === "/dashboard"}
-                  className={({ isActive }) => linkClass(isActive)}
-                >
-                  {item.icon && <item.icon className="h-4 w-4 shrink-0" />}
-                  <span className="truncate group-data-[collapsible=icon]:hidden">
-                    {item.title}
-                  </span>
-                </NavLink>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          );
-        })}
-      </SidebarMenu>
-    </SidebarGroup>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              );
+            })}
+          </SidebarMenu>
+        </SidebarGroup>
+      ))}
+    </nav>
   );
 }

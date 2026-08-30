@@ -10,18 +10,80 @@ const ClientService = {
 
     me: () => clientRequest.get("/api/v1/user/me"),
 
-    getClients: (params) => clientRequest.get("/api/v1/clients", { params }),
-    getClient: (clientId) => clientRequest.get(`/api/v1/clients/${encodeURIComponent(clientId)}`),
+    getClients: (params) => clientRequest.get("/api/v1/client", { params }),
+    getClientDashboardKPI: (params) => clientRequest.get("/api/v1/client/dashboard/kpi", { params }),
+    getProfitLoss: (params) => clientRequest.get("/api/v1/profit-loss", { params }),
+    createExpense: (formData) => clientRequest.post("/api/v1/profit-loss/expense", formData),
+    getClient: (clientId) => clientRequest.get(`/api/v1/client/${encodeURIComponent(clientId)}`),
     updateClient: (clientId, formData) => clientRequest.patch(
-        `/api/v1/clients/${encodeURIComponent(clientId)}`,
+        `/api/v1/client/${encodeURIComponent(clientId)}`,
         formData,
     ),
-    createClient: (formData) => clientRequest.post("/api/v1/clients", formData),
-    createClientWithService: (formData) => clientRequest.post("/api/v1/clients/with-service", formData),
-    getClientCompanies: (clientId, params) => clientRequest.get(
-        `/api/v1/companies/client/${encodeURIComponent(clientId)}`,
-        { params },
+    updateClientCompany: (clientId, formData) => clientRequest.patch(
+        `/api/v1/client/${encodeURIComponent(clientId)}/company`,
+        formData,
     ),
+    updateClientMember: (memberId, formData) => clientRequest.patch(
+        `/api/v1/client/member/${encodeURIComponent(memberId)}`,
+        formData,
+    ),
+    updateClientVehicle: (vehicleId, formData) => clientRequest.patch(
+        `/api/v1/client/vehicle/${encodeURIComponent(vehicleId)}`,
+        formData,
+    ),
+    updateClientDriver: (driverId, formData) => clientRequest.patch(
+        `/api/v1/client/driver/${encodeURIComponent(driverId)}`,
+        formData,
+    ),
+    updateClientService: (serviceId, formData) => clientRequest.patch(
+        `/api/v1/client/service/${encodeURIComponent(serviceId)}`,
+        formData,
+    ),
+    deleteClientService: (serviceId) => clientRequest.delete(
+        `/api/v1/client/service/${encodeURIComponent(serviceId)}`,
+    ),
+    createClientMember: (clientId, formData) => clientRequest.post(
+        `/api/v1/client/${encodeURIComponent(clientId)}/member`,
+        formData,
+    ),
+    createClientVehicle: (clientId, formData) => clientRequest.post(
+        `/api/v1/client/${encodeURIComponent(clientId)}/vehicle`,
+        formData,
+    ),
+    createClientDriver: (clientId, formData) => clientRequest.post(
+        `/api/v1/client/${encodeURIComponent(clientId)}/driver`,
+        formData,
+    ),
+    createClientService: (clientId, formData) => clientRequest.post(
+        `/api/v1/client/${encodeURIComponent(clientId)}/service`,
+        formData,
+    ),
+    addClientDocument: (clientId, formData) => clientRequest.post(
+        `/api/v1/client/${encodeURIComponent(clientId)}/document`,
+        formData,
+    ),
+    deleteClientDocument: (documentId) => clientRequest.delete(
+        `/api/v1/client/document/${encodeURIComponent(documentId)}`,
+    ),
+    deleteClientRelatedRecord: (recordId, actionOn) => clientRequest.delete(
+        "/api/v1/client/related",
+        { params: { _id: recordId, actionOn } },
+    ),
+    createClient: ({ payload, files = [] }) => {
+        if (!files.length) return clientRequest.post("/api/v1/client", payload);
+
+        const formData = new FormData();
+        formData.append("payload", JSON.stringify(payload));
+        files.forEach((file) => formData.append("documents", file));
+
+        return clientRequest.post("/api/v1/client", formData, {
+            headers: { "Content-Type": undefined },
+        });
+    },
+    createClientWithService: (formData) => clientRequest.post("/api/v1/clients/with-service", formData),
+    getServices: (params) => clientRequest.get("/api/v1/service", { params }),
+    createService: (formData) => clientRequest.post("/api/v1/service", formData),
+    getClientCompanies: (params) => clientRequest.get("/api/v1/client/companies", { params }),
     getClientServices: (clientId, params) => clientRequest.get(
         `/api/v1/clients/${encodeURIComponent(clientId)}/services`,
         { params },

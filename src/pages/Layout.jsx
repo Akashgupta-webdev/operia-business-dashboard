@@ -1,11 +1,20 @@
-import { useEffect } from "react";
-import { NavLink, Outlet } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+  Bell,
+  LoaderCircle,
+  LogOut,
+  Moon,
+  Search,
+  Settings,
+  Sun,
+  UserRound,
+} from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+
+import { AppSidebar } from "@/components/app-sidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,18 +23,34 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { AppSidebar } from "@/components/app-sidebar";
-import { Separator } from "@/components/ui/separator";
-import { UserRound, Settings, LogOut, Moon, Sun } from "lucide-react";
 import {
-  setDarkTheme,
-  setLightTheme,
-} from "@/store/slice/themeSlice";
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 import useCurrentClient from "@/hooks/useCurrentClient";
+import { cn } from "@/lib/utils";
+import ClientService from "@/service/client.service";
+import { setDarkTheme, setLightTheme } from "@/store/slice/themeSlice";
+
+const portalRoutes = [
+  { label: "Dashboard", url: "/dashboard" },
+  { label: "Clients", url: "/clients" },
+  { label: "Companies", url: "/companies" },
+  { label: "Finance - P&L", url: "/finance" },
+  { label: "Reminders", url: "/reminders" },
+  { label: "Documents", url: "/documents" },
+  { label: "Renewals", url: "/renewals" },
+  { label: "Tax & Compliance", url: "/tax-and-compliance" },
+  { label: "Calendar", url: "/calendars" },
+  { label: "Reports", url: "/reports" },
+  { label: "Settings", url: "/settings" },
+];
 
 const getInitials = (name = "") => {
   const parts = name.trim().split(/\s+/).filter(Boolean);
   if (!parts.length) return "AD";
+
   return parts
     .slice(0, 2)
     .map((part) => part[0])
@@ -35,170 +60,217 @@ const getInitials = (name = "") => {
 
 export default function Layout() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const theme = useSelector((state) => state.theme);
   const { data: client } = useCurrentClient();
+  const [isOnline, setIsOnline] = useState(() => navigator.onLine);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
-    if (!["light", "dark"].includes(theme)) return;
-
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-
+    document.documentElement.classList.toggle("dark", theme === "dark");
     localStorage.setItem("theme", theme);
   }, [theme]);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
-
-    if (savedTheme === "dark") {
-      dispatch(setDarkTheme());
-    } else {
-      dispatch(setLightTheme());
-    }
+    dispatch(savedTheme === "dark" ? setDarkTheme() : setLightTheme());
   }, [dispatch]);
 
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
+
   const handleToggleTheme = () => {
-    if (theme === "dark") {
-      dispatch(setLightTheme());
-      localStorage.setItem("theme", "light");
-    } else {
-      dispatch(setDarkTheme());
-      localStorage.setItem("theme", "dark");
+    dispatch(theme === "dark" ? setLightTheme() : setDarkTheme());
+  };
+
+  const handlePortalSearch = (event) => {
+    event.preventDefault();
+    const searchValue = new FormData(event.currentTarget)
+      .get("portalSearch")
+      ?.toString()
+      .trim()
+      .toLowerCase();
+
+    if (!searchValue) return;
+
+    const match = portalRoutes.find((route) =>
+      route.label.toLowerCase().includes(searchValue),
+    );
+
+    if (match) {
+      navigate(match.url);
+      event.currentTarget.reset();
+      return;
+    }
+
+    toast.info("No matching portal found.");
+  };
+
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+
+    setIsLoggingOut(true);
+
+    try {
+      const response = await ClientService.logout();
+      queryClient.clear();
+      toast.success(response.data?.message || "Logout successful");
+      navigate("/login", { replace: true });
+    } catch {
+      toast.error("Unable to logout. Please try again.");
+      setIsLoggingOut(false);
     }
   };
 
-  const clientName = client?.name || "Client";
-  const clientRole = client?.accessRole || "Client";
+  const clientName = client?.name || "Admin";
+  const clientRole = client?.accessRole || "Admin";
   const clientEmail = client?.email || "";
-  const avatarUrl = "https://placehold.net/avatar.svg";
 
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header
-          className="sticky top-0 z-40 flex h-(--header-height) items-center justify-between border-b border-border bg-card/95 px-4 text-card-foreground shadow-card backdrop-blur md:px-6">
-          <div className="flex items-center gap-2">
-            <SidebarTrigger className="h-8 w-8 text-muted-foreground hover:bg-accent hover:text-accent-foreground" />
+        <header className="sticky top-0 z-10 flex h-(--header-height) items-center justify-between border-b border-border-default bg-surface-primary px-3 text-text-primary md:px-5">
+          <div className="flex min-w-0 items-center gap-3">
+            <SidebarTrigger className="size-8 shrink-0 text-primary-400 hover:bg-accent hover:text-primary [&_svg]:size-3.5" />
 
-            <Separator
-              orientation="vertical"
-              className="h-4"
-            />
-
-            <div>
-              <h1 className="text-body-md font-semibold text-foreground">
-                Operio Business
-              </h1>
-
-              <p className="hidden text-label-sm text-muted-foreground md:block">
-                Insurance CRM
-              </p>
+            <div className="hidden h-7 items-center gap-2 rounded-lg border border-primary-100 bg-accent px-3 text-body-sm font-semibold text-accent-foreground sm:flex dark:border-primary-800">
+              <UserRound aria-hidden="true" className="size-3.5 text-primary" />
+              <span className="max-w-44 truncate">{clientRole} (Management)</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <div className="adminProfile cursor-pointer">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
             <DropdownMenu>
-              <DropdownMenuTrigger className="rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                <div
-                  className="flex items-center gap-2 rounded-xl border border-border bg-surface-container-lowest px-2 py-1.5 text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-                >
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary" >
-                    {avatarUrl ? (
-                      <img
-                        src={avatarUrl}
-                        alt={clientName}
-                        className="h-full w-full rounded-lg object-cover"
-                      />
-                    ) : (
-                      <span className="text-xs font-semibold">{getInitials(clientName)}</span>
-                    )}
-                  </div>
-
-                  <div className="hidden md:block text-left">
-                    <p className="text-sm font-medium text-foreground">
-                      {clientName}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {clientRole}
-                    </p>
-                  </div>
-                </div>
+              <DropdownMenuTrigger
+                aria-label="Open notifications"
+                className="flex size-8 items-center justify-center rounded-lg text-primary-400 transition-colors hover:bg-accent hover:text-primary focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <Bell aria-hidden="true" className="size-4" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 border-border bg-popover text-popover-foreground shadow-overlay">
+              <DropdownMenuContent align="end" className="w-72 shadow-overlay">
+                <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <div className="px-3 py-4 text-center text-body-sm text-text-muted">
+                  You’re all caught up.
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <div
+              className={cn(
+                "hidden h-7 items-center gap-2 rounded-lg border px-3 text-body-sm font-medium md:flex",
+                isOnline
+                  ? "border-success-100 bg-success-container text-success-container-foreground dark:border-success-700"
+                  : "border-border-default bg-surface-secondary text-text-secondary",
+              )}
+              role="status"
+            >
+              <span
+                aria-hidden="true"
+                className={isOnline ? "size-2 rounded-full bg-success-500" : "size-2 rounded-full bg-neutral-400"}
+              />
+              {isOnline ? "Online" : "Offline"}
+            </div>
+
+            <form
+              role="search"
+              onSubmit={handlePortalSearch}
+              className="relative hidden lg:block"
+            >
+              <label htmlFor="portal-search" className="sr-only">
+                Search portals
+              </label>
+              <Search
+                aria-hidden="true"
+                className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-primary-400"
+              />
+              <input
+                id="portal-search"
+                name="portalSearch"
+                type="search"
+                list="portal-options"
+                placeholder="Portals / Search..."
+                className="h-8 w-64 rounded-lg border border-border-default bg-app-background pr-3 pl-9 text-body-sm text-text-primary outline-none transition-colors placeholder:text-text-muted hover:border-outline focus:border-primary focus:ring-2 focus:ring-primary/20"
+              />
+              <datalist id="portal-options">
+                {portalRoutes.map((route) => (
+                  <option key={route.url} value={route.label} />
+                ))}
+              </datalist>
+            </form>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                aria-label="Open account menu"
+                className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-caption font-bold text-primary-foreground shadow-sm transition-colors hover:bg-primary-700 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              >
+                {getInitials(clientName)}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="w-60 border-border-default bg-popover text-popover-foreground shadow-overlay"
+              >
                 <DropdownMenuLabel>
                   <div className="space-y-1">
-                    <p className="font-medium">
-                      {clientName}
-                    </p>
-
-                    <p className="text-xs text-muted-foreground">
+                    <p className="font-medium text-text-primary">{clientName}</p>
+                    <p className="truncate text-caption font-normal text-text-muted">
                       {clientEmail || clientRole}
                     </p>
                   </div>
                 </DropdownMenuLabel>
-
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <NavLink to={"settings?tab=my-profile"} className="w-full">
-                    <span className="flex items-center justify-start gap-2">
-                      <UserRound className="size-4 " />
-                      <span className="">Profile</span>
-                    </span>
-                  </NavLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <NavLink to="settings?tab=account-settings" className="w-full">
-                    <span className="flex items-center justify-start gap-2">
-                      <Settings className="size-4 " />
-                      <span className="">Account</span>
-                    </span>
-                  </NavLink>
-                </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={handleToggleTheme}
-                  className="cursor-pointer"
+                  render={<NavLink to="/settings?tab=my-profile" />}
                 >
-                  <span className="flex items-center justify-start gap-2">
-                    {theme === "dark" ? (
-                      <>
-                        <Sun className="size-4" />
-                        <span>Light Mode</span>
-                      </>
-                    ) : (
-                      <>
-                        <Moon className="size-4" />
-                        <span>Dark Mode</span>
-                      </>
-                    )}
-                  </span>
+                  <UserRound aria-hidden="true" className="size-4" />
+                  Profile
                 </DropdownMenuItem>
                 <DropdownMenuItem
+                  render={<NavLink to="/settings?tab=account-settings" />}
+                >
+                  <Settings aria-hidden="true" className="size-4" />
+                  Account
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleToggleTheme}>
+                  {theme === "dark" ? (
+                    <Sun aria-hidden="true" className="size-4" />
+                  ) : (
+                    <Moon aria-hidden="true" className="size-4" />
+                  )}
+                  {theme === "dark" ? "Light mode" : "Dark mode"}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  disabled={isLoggingOut}
+                  onClick={handleLogout}
                   className="text-destructive focus:text-destructive"
                 >
-                  <NavLink to="/dashboard/logout" className="w-full">
-                    <span className="flex items-center justify-start gap-2 ">
-                      <LogOut className="size-4" />
-                      <span className="">Logout</span>
-                    </span>
-                  </NavLink>
+                  {isLoggingOut ? (
+                    <LoaderCircle aria-hidden="true" className="size-4 animate-spin" />
+                  ) : (
+                    <LogOut aria-hidden="true" className="size-4" />
+                  )}
+                  {isLoggingOut ? "Signing out..." : "Logout"}
                 </DropdownMenuItem>
-
               </DropdownMenuContent>
             </DropdownMenu>
-            </div>
           </div>
         </header>
-        <main
-          className="flex-1 bg-background text-foreground"
-        >
-          <div
-            className="mx-auto w-full max-w-(--container-max-width)"
-          >
+
+        <main className="flex-1 bg-background text-foreground">
+          <div className="mx-auto w-full max-w-(--container-max-width)">
             <Outlet />
           </div>
         </main>

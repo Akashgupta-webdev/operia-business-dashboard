@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { CLIENTS_QUERY_KEY } from "@/constants/ClientsPage";
-import { CLIENT_QUERY_KEY } from "@/hooks/useClient";
+import { CLIENTS_QUERY_KEY } from "@/constants/client";
+import { CLIENT_DETAIL_QUERY_KEY } from "@/hooks/useClient";
 import ClientService from "@/service/client.service";
 
 const useUpdateClient = (clientId) => {
@@ -12,13 +12,10 @@ const useUpdateClient = (clientId) => {
       const response = await ClientService.updateClient(clientId, payload);
       return response.data.data;
     },
-    onSuccess: (updatedClient) => {
-      queryClient.setQueryData([...CLIENT_QUERY_KEY, clientId], (currentClient) => ({
-        ...currentClient,
-        ...updatedClient,
-      }));
-      queryClient.invalidateQueries({ queryKey: CLIENTS_QUERY_KEY });
-    },
+    onSuccess: () => Promise.all([
+      queryClient.invalidateQueries({ queryKey: CLIENTS_QUERY_KEY }),
+      queryClient.invalidateQueries({ queryKey: [...CLIENT_DETAIL_QUERY_KEY, clientId] }),
+    ]),
   });
 };
 
