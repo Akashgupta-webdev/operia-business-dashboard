@@ -14,16 +14,20 @@ export function DashboardMetricCard({ icon: Icon, label, value, helper, href, to
     danger: "bg-danger-50 text-danger-600 dark:bg-danger-700/20 dark:text-danger-500",
   };
 
-  return (
-    <Card size="sm" className="flex-row items-center gap-3 border border-border-default bg-surface-primary p-3 shadow-card ring-0">
+  const card = (
+    <Card size="sm" className={cn("h-full flex-row items-center gap-3 border border-border-default bg-surface-primary p-3 shadow-card ring-0 transition-colors", href && "group-hover:border-primary-300")}>
       <span className={cn("flex size-8 shrink-0 items-center justify-center rounded-lg", tones[tone])}><Icon aria-hidden="true" className="size-4" /></span>
       <div className="min-w-0 flex-1">
         <p className="truncate text-[10px] leading-4 font-semibold text-text-muted">{label}</p>
-        {href ? <Link to={href} className={cn("mt-0.5 inline-flex items-center gap-1 truncate text-[9px] leading-4 font-semibold hover:underline", tone === "danger" ? "text-danger-600" : tone === "success" ? "text-success-700" : tone === "warning" ? "text-warning-700" : "text-primary-700")}>{helper}<ArrowRight aria-hidden="true" className="size-2.5" /></Link> : <p className="mt-0.5 truncate text-[9px] leading-4 text-text-muted">{helper}</p>}
+        {href ? <p className={cn("mt-0.5 flex items-center gap-1 truncate text-[9px] leading-4 font-semibold group-hover:underline", tone === "danger" ? "text-danger-600" : tone === "success" ? "text-success-700" : tone === "warning" ? "text-warning-700" : "text-primary-700")}>{helper}<ArrowRight aria-hidden="true" className="size-2.5" /></p> : <p className="mt-0.5 truncate text-[9px] leading-4 text-text-muted">{helper}</p>}
       </div>
       <p className={cn("ml-auto text-body-sm font-bold", tone === "danger" ? "text-danger-600" : "text-text-primary")} data-numeric>{value ?? 0}</p>
     </Card>
   );
+
+  if (!href) return card;
+
+  return <Link to={href} aria-label={`${label}: ${value ?? 0}. ${helper}`} className="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2">{card}</Link>;
 }
 
 export function CategoryBreakdown({ items }) {

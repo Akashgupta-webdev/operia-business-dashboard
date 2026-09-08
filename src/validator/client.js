@@ -209,16 +209,22 @@ export const clientUpdateSchema = Joi.object({
 }).unknown(false);
 
 export const clientCompanyUpdateSchema = Joi.object({
-  companyName: Joi.string().trim().min(2).max(200).required().messages({
+  companyName: Joi.string().trim().min(2).max(200).messages({
     "any.required": "Company name is required.",
     "string.empty": "Company name is required.",
     "string.min": "Company name must contain at least 2 characters.",
   }),
-  tradeLicenceNumber: optionalText(100),
-  licenceExpiryDate: optionalDate,
-  vatTaxRegistrationNumber: optionalText(100),
-  corporateTaxNumber: optionalText(100),
-}).unknown(false);
+  tradeLicence: Joi.object({
+    tradeLicenceNo: optionalText(100).allow(null).default(null),
+    tradeLicenceExpiry: optionalDate.allow(null).default(null),
+  }).min(1).allow(null).unknown(false),
+  establishment: Joi.object({
+    establishmentCard: optionalText(100).allow(null).default(null),
+    establishmentCardExpiry: optionalDate.allow(null).default(null),
+  }).min(1).allow(null).unknown(false),
+  vatTaxRegistrationNumber: optionalText(100).allow(null),
+  corporateTaxNumber: optionalText(100).allow(null),
+}).min(1).required().unknown(false);
 
 export const clientMemberUpdateSchema = Joi.object({
   memberType: Joi.string().valid(...MEMBER_TYPE_OPTIONS).empty("").optional().messages({

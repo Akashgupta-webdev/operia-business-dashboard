@@ -13,6 +13,7 @@ const ClientService = {
     getClients: (params) => clientRequest.get("/api/v1/client", { params }),
     getClientDashboardKPI: (params) => clientRequest.get("/api/v1/client/dashboard/kpi", { params }),
     getProfitLoss: (params) => clientRequest.get("/api/v1/profit-loss", { params }),
+    getRevenueInflows: (params) => clientRequest.get("/api/v1/profit-loss/revenue-inflow", { params }),
     createExpense: (formData) => clientRequest.post("/api/v1/profit-loss/expense", formData),
     getClient: (clientId) => clientRequest.get(`/api/v1/client/${encodeURIComponent(clientId)}`),
     updateClient: (clientId, formData) => clientRequest.patch(
@@ -83,6 +84,7 @@ const ClientService = {
     createClientWithService: (formData) => clientRequest.post("/api/v1/clients/with-service", formData),
     getServices: (params) => clientRequest.get("/api/v1/service", { params }),
     createService: (formData) => clientRequest.post("/api/v1/service", formData),
+    getClientRenewals: ({ page, limit }) => clientRequest.get("/api/v1/client/renewals", { params: { page, limit } }),
     getClientCompanies: (params) => clientRequest.get("/api/v1/client/companies", { params }),
     getClientServices: (clientId, params) => clientRequest.get(
         `/api/v1/clients/${encodeURIComponent(clientId)}/services`,

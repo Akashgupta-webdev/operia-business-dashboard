@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Activity,
   ArrowRight,
@@ -15,9 +14,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import EditClientDialog from "./EditClientDialog";
 
 function parseDate(value) {
   if (!value) return null;
@@ -55,15 +52,6 @@ function StatCard({ icon: Icon, label, value, tone = "primary" }) {
       <p className="min-w-0 text-[10px] leading-4 font-semibold text-text-muted">{label}</p>
       <p className={cn("ml-auto text-body-sm font-bold", tone === "danger" ? "text-danger-600" : "text-text-primary")} data-numeric>{value}</p>
     </Card>
-  );
-}
-
-function IdentityField({ className, label, value }) {
-  return (
-    <div className={className}>
-      <dt className="text-[10px] leading-4 text-text-muted">{label}</dt>
-      <dd className="mt-1 text-caption font-semibold text-text-primary">{value || "Not registered"}</dd>
-    </div>
   );
 }
 
@@ -135,8 +123,7 @@ function RecentActivity({ data }) {
   );
 }
 
-export default function OverviewTab({ data }) {
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+export default function OverviewTab({ data, onEditClient }) {
   const { client, companies = [], services = [], reminders = [], documents = [] } = data;
   const activeServices = services.filter((service) => !["Completed", "Cancelled"].includes(service.status)).length;
   const expiryDates = [client.passport?.passportExpiryDate, client.emirates?.emiratesExpiryDate, client.visa?.visaExpiryDate, client.healthInsurance?.healthInsuranceExpiryDate, ...documents.map((document) => document.expiryDate)];
@@ -156,16 +143,9 @@ export default function OverviewTab({ data }) {
           <CardHeader className="flex flex-row items-center border-b border-border-default px-5 py-4">
             <CreditCard aria-hidden="true" className="size-4 text-primary-600" />
             <CardTitle className="text-body-sm font-semibold">Client Information &amp; Identity</CardTitle>
-            <Button type="button" variant="ghost" size="sm" disabled={!client.id} onClick={() => setIsEditDialogOpen(true)} className="ml-auto gap-1.5 text-primary-600"><Pencil aria-hidden="true" className="size-3.5" />Edit Details</Button>
+            <Button type="button" variant="ghost" size="sm" disabled={!client.id || !onEditClient} onClick={onEditClient} className="ml-auto gap-1.5 text-primary-600"><Pencil aria-hidden="true" className="size-3.5" />Edit Details</Button>
           </CardHeader>
           <CardContent className="p-5">
-            <dl className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
-              <IdentityField label="Name" value={client.name} />
-              <IdentityField className="sm:border-l sm:border-border-default sm:pl-3" label="Client type" value={client.clientType === "COMPANY" ? "Company" : "Individual"} />
-              <IdentityField className="xl:border-l xl:border-border-default sm:pl-3" label="Nationality" value={client.nationality} />
-              <IdentityField className="sm:border-l sm:border-border-default sm:pl-3" label="Preferred communication" value={client.preferredCommunicationMethod} />
-            </dl>
-            <Separator className="my-5" />
             <h3 className="mb-4 text-[10px] leading-4 font-semibold uppercase tracking-wide text-primary-700">Identity Documents &amp; Compliance</h3>
             <div className="grid gap-4 md:grid-cols-2">
               <DocumentCard icon={CreditCard} iconClassName="text-info-600" title="Emirates ID (EID)" number={client.emirates?.emiratesId} issueDate={client.emirates?.emiratesIssueDate} expiryDate={client.emirates?.emiratesExpiryDate} />
@@ -177,7 +157,6 @@ export default function OverviewTab({ data }) {
         </Card>
         <RecentActivity data={data} />
       </div>
-      <EditClientDialog client={client} open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} />
     </div>
   );
 }

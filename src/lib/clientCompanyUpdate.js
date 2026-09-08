@@ -26,19 +26,43 @@ function optionalValue(value) {
 export function createClientCompanyUpdateDefaultValues(company) {
   return {
     companyName: company?.companyName ?? "",
-    tradeLicenceNumber: company?.tradeLicenceNumber ?? "",
-    licenceExpiryDate: toDateInputValue(company?.licenceExpiryDate),
+    tradeLicence: {
+      tradeLicenceNo: company?.tradeLicence === undefined ? company?.tradeLicenceNumber ?? "" : company.tradeLicence?.tradeLicenceNo ?? "",
+      tradeLicenceExpiry: toDateInputValue(company?.tradeLicence === undefined ? company?.licenceExpiryDate : company.tradeLicence?.tradeLicenceExpiry),
+    },
+    establishment: {
+      establishmentCard: company?.establishment?.establishmentCard ?? "",
+      establishmentCardExpiry: toDateInputValue(company?.establishment?.establishmentCardExpiry),
+    },
     vatTaxRegistrationNumber: company?.vatTaxRegistrationNumber ?? "",
     corporateTaxNumber: company?.corporateTaxNumber ?? "",
   };
 }
 
-export function buildClientCompanyUpdatePayload(values) {
-  return {
-    companyName: values.companyName.trim(),
-    tradeLicenceNumber: optionalValue(values.tradeLicenceNumber),
-    licenceExpiryDate: toApiDate(values.licenceExpiryDate),
+export function buildClientCompanyUpdatePayload(values, dirtyFields) {
+  const payload = {
+    companyName: values.companyName?.trim(),
+    tradeLicence: {
+      tradeLicenceNo: optionalValue(values.tradeLicence?.tradeLicenceNo),
+      tradeLicenceExpiry: toApiDate(values.tradeLicence?.tradeLicenceExpiry),
+    },
+    establishment: {
+      establishmentCard: optionalValue(values.establishment?.establishmentCard),
+      establishmentCardExpiry: toApiDate(values.establishment?.establishmentCardExpiry),
+    },
     vatTaxRegistrationNumber: optionalValue(values.vatTaxRegistrationNumber),
     corporateTaxNumber: optionalValue(values.corporateTaxNumber),
   };
+
+  if (!dirtyFields) return payload;
+
+  return Object.fromEntries(Object.entries(payload).flatMap(([key, value]) => {
+    if (!dirtyFields[key]) return [];
+    if (value && typeof value === "object") {
+      const changedFields = Object.fromEntries(Object.entries(value)
+        .filter(([field]) => dirtyFields[key] === true || dirtyFields[key][field]));
+      return Object.keys(changedFields).length ? [[key, changedFields]] : [];
+    }
+    return [[key, value]];
+  }));
 }

@@ -10,6 +10,7 @@ import {
   FileText,
   IdCard,
   Landmark,
+  ListTodo,
   LoaderCircle,
   ShieldCheck,
   SlidersHorizontal,
@@ -82,8 +83,8 @@ export default function DashboardPage() {
   const inventoryMetrics = data ? [
     { icon: Users, label: "Total Clients", value: data.totalClients, helper: "View clients", href: "/clients", tone: "info" },
     { icon: Building2, label: "Active Companies", value: data.activeCompanies, helper: "View companies", href: "/companies", tone: "info" },
-    { icon: IdCard, label: "Identity Records", value: data.visaEidPassport, helper: "Visa, EID & passports", href: "/clients", tone: "primary" },
-    { icon: Car, label: "Insurance & Fleet", value: data.insuranceAndFleet, helper: "Vehicles & drivers", href: "/clients", tone: "warning" },
+    { icon: Landmark, label: "Finance and P&L", value: data.financeAndPL, helper: "View finance", href: "/finance", tone: "primary" },
+    { icon: ListTodo, label: "Pending Actions & Tasks", value: data.pendingActionsAndTasks, helper: "View reminders", href: "/reminders", tone: "warning" },
   ] : [];
   const categories = data ? [
     { icon: FileCheck2, label: "VAT Due", value: data.vatDue, badge: data.vatDue ? "Due" : "Clear", tone: data.vatDue ? "warning" : "success" },

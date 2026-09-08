@@ -24,7 +24,7 @@ import { clientCompanyUpdateSchema } from "@/validator/client";
 
 function CompanyField({ name, label, required = false, date = false }) {
   const { register, formState: { errors } } = useFormContext();
-  const error = errors[name];
+  const error = name.split(".").reduce((value, key) => value?.[key], errors);
   const errorId = `${name}-error`;
   const FieldComponent = date ? DateInput : Input;
 
@@ -66,8 +66,11 @@ export default function EditCompanyDialog({ clientId, company, open, onOpenChang
   };
 
   const submit = methods.handleSubmit(async (values) => {
+    const payload = buildClientCompanyUpdatePayload(values, methods.formState.dirtyFields);
+    if (!Object.keys(payload).length) return;
+
     try {
-      await mutation.mutateAsync(buildClientCompanyUpdatePayload(values));
+      await mutation.mutateAsync(payload);
       toast.success("Company information updated successfully.");
       onOpenChange(false);
     } catch (error) {
@@ -102,14 +105,18 @@ export default function EditCompanyDialog({ clientId, company, open, onOpenChang
           <form onSubmit={submit} noValidate className="flex min-h-0 flex-1 flex-col">
             <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-5 py-5 sm:px-6">
               <CompanyField name="companyName" label="Company Name" required />
-              <CompanyField name="tradeLicenceNumber" label="Trade Licence Number" />
-              <CompanyField name="licenceExpiryDate" label="Licence Expiry" date />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <CompanyField name="tradeLicence.tradeLicenceNo" label="Trade Licence Number" />
+                <CompanyField name="tradeLicence.tradeLicenceExpiry" label="Trade Licence Expiry" date />
+                <CompanyField name="establishment.establishmentCard" label="Establishment Card Number" />
+                <CompanyField name="establishment.establishmentCardExpiry" label="Establishment Card Expiry" date />
+              </div>
               <CompanyField name="vatTaxRegistrationNumber" label="VAT Registration Number" />
               <CompanyField name="corporateTaxNumber" label="Corporate Tax Registration Number" />
             </div>
             <DialogFooter className="shrink-0 border-t border-border-default bg-surface-primary px-5 py-4 sm:px-6">
               <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={mutation.isPending} className="px-5">Cancel</Button>
-              <Button type="submit" disabled={mutation.isPending || !clientId} className="gap-2 px-5 font-semibold">
+              <Button type="submit" disabled={mutation.isPending || !clientId || !methods.formState.isDirty} className="gap-2 px-5 font-semibold">
                 <Save aria-hidden="true" className="size-3.5" />
                 {mutation.isPending ? "Saving..." : "Save Changes"}
               </Button>

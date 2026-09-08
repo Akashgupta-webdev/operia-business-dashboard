@@ -1,4 +1,5 @@
 export const PROFIT_LOSS_QUERY_KEY = ["profit-loss"];
+export const REVENUE_INFLOW_QUERY_KEY = ["profit-loss", "revenue-inflow"];
 
 export const FINANCE_MONTHS = [
   "January", "February", "March", "April", "May", "June",

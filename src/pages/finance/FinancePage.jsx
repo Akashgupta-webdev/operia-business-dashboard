@@ -9,6 +9,7 @@ import useProfitLoss from "@/hooks/useProfitLoss";
 import { cn } from "@/lib/utils";
 import { FinanceSummaryCard, ProfitLossSkeleton, ProfitLossStatement } from "./components/ProfitLossStatement";
 import RecordExpenseDialog from "./components/RecordExpenseDialog";
+import RevenueInflows from "./components/RevenueInflows";
 
 function money(value) {
   const amount = Number(value ?? 0);
@@ -53,6 +54,7 @@ export default function FinancePage() {
   const today = new Date();
   const [period, setPeriod] = useState({ month: today.getMonth() + 1, year: 2026 });
   const [expenseDialogOpen, setExpenseDialogOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("profit-loss");
   const query = useProfitLoss(period);
   const report = query.data;
   const netProfit = Number(report?.kpi?.netOperatingProfit ?? 0);
@@ -61,8 +63,8 @@ export default function FinancePage() {
   return (
     <div className="min-h-[calc(100svh-var(--header-height))] bg-app-background px-4 py-5 sm:px-6 lg:px-8">
       <header className="flex flex-col gap-4 xl:flex-row xl:items-start">
-        <div className="min-w-0"><h1 className="text-section-heading font-bold text-text-primary">Finance — Profit &amp; Loss (P&amp;L)</h1><p className="mt-1 text-body-md text-text-secondary">Track client fee revenues, operating disbursements and net profit margins.</p></div>
-        <div className="flex flex-wrap items-center gap-2 xl:ml-auto">
+        <div className="min-w-0"><h1 className="text-section-heading font-bold text-text-primary">{activeTab === "revenue-inflows" ? "Revenue Inflows" : "Finance — Profit & Loss (P&L)"}</h1><p className="mt-1 text-body-md text-text-secondary">{activeTab === "revenue-inflows" ? "Track client service package inflows and payment status." : "Track client fee revenues, operating disbursements and net profit margins."}</p></div>
+        {activeTab === "profit-loss" && <div className="flex flex-wrap items-center gap-2 xl:ml-auto">
           <div className="flex items-center gap-2" aria-label="Profit and loss period filters">
             <label htmlFor="finance-month" className="sr-only">Reporting month</label>
             <Select value={String(period.month)} onValueChange={(value) => setPeriod((current) => ({ ...current, month: Number(value) }))}>
@@ -82,7 +84,7 @@ export default function FinancePage() {
           <Button type="button" size="sm" variant="outline" disabled={!report} onClick={() => window.print()} className="h-8 gap-1.5 px-3 text-[10px]"><Printer aria-hidden="true" className="size-3.5" />Print P&amp;L</Button>
           <Button type="button" size="sm" variant="outline" disabled={!report} onClick={() => exportReport(report)} className="h-8 gap-1.5 px-3 text-[10px]"><Download aria-hidden="true" className="size-3.5" />Export CSV</Button>
           <Button type="button" size="sm" onClick={() => setExpenseDialogOpen(true)} className="h-8 gap-1.5 px-3 text-[10px]"><Plus aria-hidden="true" className="size-3.5" />Record Expense</Button>
-        </div>
+        </div>}
       </header>
 
       {report && <section aria-label="Finance summary" className={cn("mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4 transition-opacity", query.isFetching && "opacity-60")}>
@@ -94,18 +96,19 @@ export default function FinancePage() {
 
       <Card className="mt-5 border border-border-default bg-surface-primary p-3 py-3 shadow-card ring-0 sm:p-4 sm:py-4">
         <div className="flex gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <Button type="button" size="sm" className="h-8 shrink-0 gap-2 px-3 text-[10px]"><FileText aria-hidden="true" className="size-3.5" />P&amp;L Statement</Button>
-          <Button type="button" variant="ghost" size="sm" disabled className="h-8 shrink-0 gap-2 px-3 text-[10px] opacity-100"><Link2 aria-hidden="true" className="size-3.5" />Revenue Inflows</Button>
+          <Button type="button" size="sm" variant={activeTab === "profit-loss" ? "default" : "ghost"} onClick={() => setActiveTab("profit-loss")} className="h-8 shrink-0 gap-2 px-3 text-[10px]"><FileText aria-hidden="true" className="size-3.5" />P&amp;L Statement</Button>
+          <Button type="button" variant={activeTab === "revenue-inflows" ? "default" : "ghost"} size="sm" onClick={() => setActiveTab("revenue-inflows")} className="h-8 shrink-0 gap-2 px-3 text-[10px]"><Link2 aria-hidden="true" className="size-3.5" />Revenue Inflows</Button>
           <Button type="button" variant="ghost" size="sm" disabled className="h-8 shrink-0 gap-2 px-3 text-[10px] opacity-100"><ReceiptText aria-hidden="true" className="size-3.5" />Operating Expenses</Button>
           <Button type="button" variant="ghost" size="sm" disabled className="h-8 shrink-0 gap-2 px-3 text-[10px] opacity-100"><CalendarDays aria-hidden="true" className="size-3.5" />Monthly Financial Trajectory</Button>
         </div>
       </Card>
 
       <main className="mt-5">
-        {query.isPending && <ProfitLossSkeleton />}
-        {query.isError && !report && <Card role="alert" className="items-center gap-3 border border-danger-200 bg-danger-50 px-6 py-12 text-center ring-0"><AlertCircle aria-hidden="true" className="size-8 text-danger-600" /><h2 className="text-body-lg font-semibold text-danger-700">Unable to load the P&amp;L report</h2><p className="text-caption text-text-secondary">{query.error?.response?.data?.error?.message ?? "The financial report request could not be completed."}</p><Button type="button" variant="outline" onClick={() => query.refetch()}>Try again</Button></Card>}
-        {query.isError && report && <div role="alert" className="mb-4 flex items-center gap-2 rounded-lg border border-warning-200 bg-warning-50 px-3 py-2 text-caption text-warning-700"><AlertCircle aria-hidden="true" className="size-4" />Unable to refresh the report. Showing the last available period.</div>}
-        {report && <div className={cn("transition-opacity", query.isFetching && "opacity-60")}><ProfitLossStatement report={report} /></div>}
+        {activeTab === "profit-loss" && <>{query.isPending && <ProfitLossSkeleton />}
+          {query.isError && !report && <Card role="alert" className="items-center gap-3 border border-danger-200 bg-danger-50 px-6 py-12 text-center ring-0"><AlertCircle aria-hidden="true" className="size-8 text-danger-600" /><h2 className="text-body-lg font-semibold text-danger-700">Unable to load the P&amp;L report</h2><p className="text-caption text-text-secondary">{query.error?.response?.data?.error?.message ?? "The financial report request could not be completed."}</p><Button type="button" variant="outline" onClick={() => query.refetch()}>Try again</Button></Card>}
+          {query.isError && report && <div role="alert" className="mb-4 flex items-center gap-2 rounded-lg border border-warning-200 bg-warning-50 px-3 py-2 text-caption text-warning-700"><AlertCircle aria-hidden="true" className="size-4" />Unable to refresh the report. Showing the last available period.</div>}
+          {report && <div className={cn("transition-opacity", query.isFetching && "opacity-60")}><ProfitLossStatement report={report} /></div>}</>}
+        {activeTab === "revenue-inflows" && <RevenueInflows />}
       </main>
 
       <RecordExpenseDialog open={expenseDialogOpen} onOpenChange={setExpenseDialogOpen} />

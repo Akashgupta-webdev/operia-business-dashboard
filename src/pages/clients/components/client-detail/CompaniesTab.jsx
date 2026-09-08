@@ -185,7 +185,7 @@ function DriverCard({ driver, onDelete, onEdit }) {
 
 function CompanyOverviewField({ label, value, date = false }) {
   return (
-    <div className="min-w-0 rounded-lg bg-surface-secondary/60 p-4">
+    <div className="min-w-0">
       <dt className="text-[10px] leading-4 font-semibold uppercase tracking-wide text-text-muted">{label}</dt>
       <dd className="mt-2 flex min-w-0 items-center gap-2 text-body-sm font-semibold text-text-primary">
         <span className="truncate">{value || "Not registered"}</span>
@@ -234,12 +234,20 @@ function CompanyOverviewCard({ company, clientSince, canEdit, onEdit }) {
         </div>
       </CardHeader>
       <CardContent className="p-5 lg:p-6">
-        <dl className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-          <CompanyOverviewField label="Trade licence no." value={company.tradeLicenceNumber} />
-          <CompanyOverviewField label="Licence expiry" value={formatOverviewDate(company.licenceExpiryDate)} date />
-          <CompanyOverviewField label="VAT TRN" value={company.vatTaxRegistrationNumber} />
-          <CompanyOverviewField label="Corporate tax reg" value={company.corporateTaxNumber} />
-        </dl>
+        <div className="mt-3 grid gap-3 lg:grid-cols-3">
+          <dl className="grid min-w-0 gap-4 rounded-lg bg-surface-secondary/60 p-4">
+            <CompanyOverviewField label="Trade licence no." value={company.tradeLicence === undefined ? company.tradeLicenceNumber : company.tradeLicence?.tradeLicenceNo} />
+            <CompanyOverviewField label="Licence expiry" value={formatOverviewDate(company.tradeLicence === undefined ? company.licenceExpiryDate : company.tradeLicence?.tradeLicenceExpiry)} date />
+          </dl>
+          <dl className="grid min-w-0 gap-4 rounded-lg bg-surface-secondary/60 p-4">
+            <CompanyOverviewField label="Establishment card" value={company.establishment?.establishmentCard} />
+            <CompanyOverviewField label="Establishment card expiry date" value={formatOverviewDate(company.establishment?.establishmentCardExpiry)} date />
+          </dl>
+          <dl className="grid min-w-0 gap-4 rounded-lg bg-surface-secondary/60 p-4">
+            <CompanyOverviewField label="VAT TRN" value={company.vatTaxRegistrationNumber} />
+            <CompanyOverviewField label="Corporate no." value={company.corporateTaxNumber} />
+          </dl>
+        </div>
       </CardContent>
     </Card>
   );

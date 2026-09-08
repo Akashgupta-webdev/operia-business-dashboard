@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { AlertCircle } from "lucide-react";
 
@@ -18,6 +19,7 @@ import { getClientRenewalItems } from "@/lib/clientRenewals";
 import ClientProfileCard from "./components/client-detail/ClientProfileCard";
 import CompaniesTab from "./components/client-detail/CompaniesTab";
 import DocumentsTab from "./components/client-detail/DocumentsTab";
+import EditClientDialog from "./components/client-detail/EditClientDialog";
 import OverviewTab from "./components/client-detail/OverviewTab";
 import RenewalsTab from "./components/client-detail/RenewalsTab";
 import ServicesTab from "./components/client-detail/ServicesTab";
@@ -26,10 +28,12 @@ import TaskActionsTab from "./components/client-detail/TaskActionsTab";
 const tabs = [
   ["overview", "Overview"],
   ["companies", "Companies", "companies"],
-  // ["tasks", "Task & Actions", "reminders"],
   ["services", "Services", "services"],
   ["documents", "Documents", "documents"],
   ["renewals", "Renewals", "renewals"],
+  ["account", "Account"],
+  ["invoice", "Invoice"],
+  ["filing-vat", "Filing VAT"],
   ["portal-access", "Portal Access"],
   ["activity", "Activity"],
 ];
@@ -45,6 +49,7 @@ function DetailPageSkeleton() {
 
 export default function ClientDetailPage() {
   const { id } = useParams();
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [searchParams] = useSearchParams();
   const query = useClient(id);
   const data = query.data;
@@ -72,14 +77,14 @@ export default function ClientDetailPage() {
 
       {data?.client && (
         <div className="grid items-start gap-5 lg:grid-cols-[17.5rem_minmax(0,1fr)]">
-          <ClientProfileCard client={data.client} />
+          <ClientProfileCard client={data.client} onEditClient={() => setIsEditDialogOpen(true)} />
           <Tabs defaultValue={initialTab} className="min-w-0 gap-4">
             <div className="overflow-x-auto rounded-xl border border-border-default bg-surface-primary p-1 shadow-card [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               <TabsList className="w-max min-w-full border-b-0">
                 {tabs.map(([value, label, countKey]) => {
                   const count = countKey === "renewals" ? getClientRenewalItems(data).length : countKey ? (data[countKey]?.length ?? 0) : 0;
                   return (
-                    <TabsTrigger key={value} value={value} disabled={!['overview', 'companies', 'tasks', 'services', 'documents', 'renewals'].includes(value)} className="group h-8 gap-1.5 px-3 text-[11px] transition-opacity hover:text-inherit hover:opacity-80 data-active:rounded-lg data-active:bg-primary-700 data-active:text-neutral-0 data-active:hover:text-neutral-0 data-active:after:hidden">
+                    <TabsTrigger key={value} value={value} disabled={!['overview', 'companies', 'tasks', 'services', 'documents', 'renewals', 'account', 'invoice', 'filing-vat'].includes(value)} className="group h-8 gap-1.5 px-3 text-[11px] transition-opacity hover:text-inherit hover:opacity-80 data-active:rounded-lg data-active:bg-primary-700 data-active:text-neutral-0 data-active:hover:text-neutral-0 data-active:after:hidden">
                       {label}
                       {countKey && <span className="rounded-md bg-primary-50 px-1.5 py-0.5 text-[9px] font-semibold text-primary-700 group-data-active:bg-neutral-0/20 group-data-active:text-neutral-0">{count}</span>}
                     </TabsTrigger>
@@ -87,13 +92,32 @@ export default function ClientDetailPage() {
                 })}
               </TabsList>
             </div>
-            <TabsContent value="overview"><OverviewTab data={data} /></TabsContent>
+            <TabsContent value="overview"><OverviewTab data={data} onEditClient={() => setIsEditDialogOpen(true)} /></TabsContent>
             <TabsContent value="companies"><CompaniesTab data={data} /></TabsContent>
             <TabsContent value="tasks"><TaskActionsTab reminders={data.reminders} /></TabsContent>
             <TabsContent value="services"><ServicesTab clientId={data.client.id ?? data.client._id} services={data.services} /></TabsContent>
             <TabsContent value="documents"><DocumentsTab clientId={data.client.id ?? data.client._id} documents={data.documents} /></TabsContent>
             <TabsContent value="renewals"><RenewalsTab data={data} /></TabsContent>
+            <TabsContent value="account">
+              <Card className="gap-2 border border-border-default bg-surface-primary px-6 py-12 text-center shadow-card ring-0">
+                <h2 className="text-subsection font-semibold text-text-primary">Account</h2>
+                <p className="text-body-sm text-text-muted">Client account details are coming soon.</p>
+              </Card>
+            </TabsContent>
+            <TabsContent value="invoice">
+              <Card className="gap-2 border border-border-default bg-surface-primary px-6 py-12 text-center shadow-card ring-0">
+                <h2 className="text-subsection font-semibold text-text-primary">Invoice</h2>
+                <p className="text-body-sm text-text-muted">Client invoices are coming soon.</p>
+              </Card>
+            </TabsContent>
+            <TabsContent value="filing-vat">
+              <Card className="gap-2 border border-border-default bg-surface-primary px-6 py-12 text-center shadow-card ring-0">
+                <h2 className="text-subsection font-semibold text-text-primary">Filing VAT</h2>
+                <p className="text-body-sm text-text-muted">Client VAT filing details are coming soon.</p>
+              </Card>
+            </TabsContent>
           </Tabs>
+          <EditClientDialog client={data.client} open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} />
         </div>
       )}
     </div>

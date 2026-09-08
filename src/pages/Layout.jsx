@@ -4,6 +4,7 @@ import {
   Bell,
   LoaderCircle,
   LogOut,
+  Menu,
   Moon,
   Search,
   Settings,
@@ -15,9 +16,11 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import { AppSidebar } from "@/components/app-sidebar";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -26,7 +29,7 @@ import {
 import {
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import useCurrentClient from "@/hooks/useCurrentClient";
 import { cn } from "@/lib/utils";
@@ -57,6 +60,26 @@ const getInitials = (name = "") => {
     .join("")
     .toUpperCase();
 };
+
+function CustomSidebarTrigger() {
+  const { isMobile, openMobile, state, toggleSidebar } = useSidebar();
+  const isExpanded = isMobile ? openMobile : state === "expanded";
+
+  return (
+    <Button
+      type="button"
+      variant="normal"
+      size="icon"
+      onClick={toggleSidebar}
+      aria-label={isExpanded ? "Collapse sidebar" : "Expand sidebar"}
+      aria-expanded={isExpanded}
+      title="Toggle sidebar"
+      className="size-8 shrink-0 text-primary-400 hover:bg-accent hover:text-primary focus-visible:ring-primary/30"
+    >
+      <Menu aria-hidden="true" className="size-5" strokeWidth={2} />
+    </Button>
+  );
+}
 
 export default function Layout() {
   const dispatch = useDispatch();
@@ -143,7 +166,7 @@ export default function Layout() {
       <SidebarInset>
         <header className="sticky top-0 z-10 flex h-(--header-height) items-center justify-between border-b border-border-default bg-surface-primary px-3 text-text-primary md:px-5">
           <div className="flex min-w-0 items-center gap-3">
-            <SidebarTrigger className="size-8 shrink-0 text-primary-400 hover:bg-accent hover:text-primary [&_svg]:size-3.5" />
+            <CustomSidebarTrigger />
 
             <div className="hidden h-7 items-center gap-2 rounded-lg border border-primary-100 bg-accent px-3 text-body-sm font-semibold text-accent-foreground sm:flex dark:border-primary-800">
               <UserRound aria-hidden="true" className="size-3.5 text-primary" />
@@ -160,7 +183,9 @@ export default function Layout() {
                 <Bell aria-hidden="true" className="size-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-72 shadow-overlay">
-                <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+                </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <div className="px-3 py-4 text-center text-body-sm text-text-muted">
                   You’re all caught up.
@@ -168,9 +193,9 @@ export default function Layout() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <div
+            {/* <div
               className={cn(
-                "hidden h-7 items-center gap-2 rounded-lg border px-3 text-body-sm font-medium md:flex",
+                "hidden h-7 items-center gap-2 rounded-lg border px-3 text-[10px] font-medium md:flex",
                 isOnline
                   ? "border-success-100 bg-success-container text-success-container-foreground dark:border-success-700"
                   : "border-border-default bg-surface-secondary text-text-secondary",
@@ -182,7 +207,7 @@ export default function Layout() {
                 className={isOnline ? "size-2 rounded-full bg-success-500" : "size-2 rounded-full bg-neutral-400"}
               />
               {isOnline ? "Online" : "Offline"}
-            </div>
+            </div> */}
 
             <form
               role="search"
@@ -222,14 +247,16 @@ export default function Layout() {
                 align="end"
                 className="w-60 border-border-default bg-popover text-popover-foreground shadow-overlay"
               >
-                <DropdownMenuLabel>
-                  <div className="space-y-1">
-                    <p className="font-medium text-text-primary">{clientName}</p>
-                    <p className="truncate text-caption font-normal text-text-muted">
-                      {clientEmail || clientRole}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>
+                    <div className="space-y-1">
+                      <p className="font-medium text-text-primary">{clientName}</p>
+                      <p className="truncate text-caption font-normal text-text-muted">
+                        {clientEmail || clientRole}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   render={<NavLink to="/settings?tab=my-profile" />}

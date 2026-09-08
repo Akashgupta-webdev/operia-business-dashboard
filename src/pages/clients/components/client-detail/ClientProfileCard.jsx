@@ -47,7 +47,7 @@ function ProfileField({ icon: Icon, label, value, copyable = false }) {
   );
 }
 
-export default function ClientProfileCard({ client }) {
+export default function ClientProfileCard({ client, onEditClient }) {
   return (
     <Card className="gap-0 border border-border-default bg-surface-primary py-0 shadow-card ring-0 lg:sticky lg:top-5">
       <CardContent className="p-5">
@@ -72,9 +72,9 @@ export default function ClientProfileCard({ client }) {
 
         <Separator className="my-5" />
         <div className="space-y-2">
-          <Button type="button" variant="outline" className="w-full justify-center gap-2"><Pencil aria-hidden="true" className="size-3.5" />Edit Profile</Button>
-          <Button type="button" variant="outline" disabled title="Archive API is not configured" className="w-full justify-center gap-2 border-warning-200 bg-warning-50 text-warning-700 opacity-100"><Archive aria-hidden="true" className="size-3.5" />Archive Client</Button>
-          <Button type="button" variant="outline" disabled title="Delete API is not configured" className="w-full justify-center gap-2 border-danger-200 bg-danger-50 text-danger-700 opacity-100"><Trash2 aria-hidden="true" className="size-3.5" />Delete Client &amp; Data</Button>
+          <Button type="button" variant="outline" disabled={!client.id || !onEditClient} onClick={onEditClient} className="w-full justify-center gap-2 text-caption"><Pencil aria-hidden="true" className="size-3.5" />Edit Profile</Button>
+          <Button type="button" variant="outline" disabled title="Archive API is not configured" className="w-full justify-center gap-2 text-caption border-warning-200 bg-warning-50 text-warning-700 opacity-100"><Archive aria-hidden="true" className="size-3.5" />Archive Client</Button>
+          <Button type="button" variant="outline" disabled title="Delete API is not configured" className="w-full justify-center gap-2 text-caption border-danger-200 bg-danger-50 text-danger-700 opacity-100"><Trash2 aria-hidden="true" className="size-3.5" />Delete Client &amp; Data</Button>
         </div>
       </CardContent>
     </Card>
