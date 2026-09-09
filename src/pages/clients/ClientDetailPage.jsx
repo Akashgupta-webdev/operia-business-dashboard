@@ -79,7 +79,7 @@ export default function ClientDetailPage() {
         <div className="grid items-start gap-5 lg:grid-cols-[17.5rem_minmax(0,1fr)]">
           <ClientProfileCard client={data.client} onEditClient={() => setIsEditDialogOpen(true)} />
           <Tabs defaultValue={initialTab} className="min-w-0 gap-4">
-            <div className="overflow-x-auto rounded-xl border border-border-default bg-surface-primary p-1 shadow-card [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="overflow-x-auto rounded-xl border border-border-default bg-surface-primary p-1 shadow-card scrollbar-none [&::-webkit-scrollbar]:hidden">
               <TabsList className="w-max min-w-full border-b-0">
                 {tabs.map(([value, label, countKey]) => {
                   const count = countKey === "renewals" ? getClientRenewalItems(data).length : countKey ? (data[countKey]?.length ?? 0) : 0;
