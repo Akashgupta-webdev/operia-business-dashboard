@@ -52,2567 +52,535 @@ The interface should avoid feeling:
 
 ---
 
-# 2. Product Design Direction
-
-## 2.1 Visual Style
-
-Use a modern enterprise SaaS visual language.
-
-Recommended characteristics:
-
-* Neutral application background
-* White or near-white surfaces in light mode
-* Dark neutral surfaces in dark mode
-* One primary brand color
-* Limited semantic colors
-* Medium-density layouts
-* Subtle borders
-* Minimal shadows
-* Small-to-medium border radius
-* Clear hierarchy
-* Strong typography
-* Consistent spacing
-
-The CRM should visually communicate:
-
-> "Professional business software that can be trusted with important insurance data."
-
----
-
-# 3. Design Tokens
-
-All visual properties must be represented as reusable design tokens.
-
-Do not hardcode arbitrary values throughout components.
-
-Tokens should be implemented using CSS variables/Tailwind theme tokens.
-
----
-
-# 4. Color System
-
-## 4.1 Color Philosophy
-
-The color system consists of:
-
-* Brand colors
-* Neutral colors
-* Semantic colors
-* Interactive colors
-* Data visualization colors
-
-Colors must communicate meaning.
-
-Do not use color only for decoration.
-
----
-
-## 4.2 Primary Brand Color
-
-Recommended primary direction:
-
-**Indigo / Blue**
-
-Reason:
-
-* Professional
-* Trust-oriented
-* Works well for enterprise applications
-* Good compatibility with insurance/finance products
-* Works well in both light and dark themes
-
-Example palette:
-
-```text
-Primary 50:  #EEF2FF
-Primary 100: #E0E7FF
-Primary 200: #C7D2FE
-Primary 300: #A5B4FC
-Primary 400: #818CF8
-Primary 500: #6366F1
-Primary 600: #4F46E5
-Primary 700: #4338CA
-Primary 800: #3730A3
-Primary 900: #312E81
-```
-
-Primary 600 should generally be the default action color.
-
-Use primary colors for:
-
-* Primary buttons
-* Active navigation
-* Selected tabs
-* Links
-* Focus indicators
-* Important interactive elements
-* Selected filters
-
-Do not use primary color for large decorative backgrounds.
-
----
-
-# 5. Neutral Color System
-
-The majority of the CRM UI should use neutral colors.
-
-Suggested neutral scale:
-
-```text
-Neutral 0:    #FFFFFF
-Neutral 50:   #F8FAFC
-Neutral 100:  #F1F5F9
-Neutral 200:  #E2E8F0
-Neutral 300:  #CBD5E1
-Neutral 400:  #94A3B8
-Neutral 500:  #64748B
-Neutral 600:  #475569
-Neutral 700:  #334155
-Neutral 800:  #1E293B
-Neutral 900:  #0F172A
-Neutral 950:  #020617
-```
-
-Neutral colors should be used for:
-
-* Backgrounds
-* Borders
-* Text
-* Icons
-* Secondary surfaces
-* Disabled states
-* Dividers
-
----
-
-# 6. Semantic Colors
-
-Semantic colors communicate system state.
-
-## Success
-
-```text
-Success 50:  #F0FDF4
-Success 100: #DCFCE7
-Success 500: #22C55E
-Success 600: #16A34A
-Success 700: #15803D
-```
-
-Use for:
-
-* Active policies
-* Completed tasks
-* Successful payments
-* Completed actions
-* Positive confirmations
-
----
-
-## Warning
-
-```text
-Warning 50:  #FFFBEB
-Warning 100: #FEF3C7
-Warning 500: #F59E0B
-Warning 600: #D97706
-Warning 700: #B45309
-```
-
-Use for:
-
-* Expiring policies
-* Pending actions
-* Approaching renewals
-* Incomplete information
-
----
-
-## Danger
-
-```text
-Danger 50:  #FEF2F2
-Danger 100: #FEE2E2
-Danger 500: #EF4444
-Danger 600: #DC2626
-Danger 700: #B91C1C
-```
-
-Use for:
-
-* Errors
-* Failed operations
-* Expired policies
-* Destructive actions
-* Validation failures
-
----
-
-## Information
-
-```text
-Info 50:  #EFF6FF
-Info 100: #DBEAFE
-Info 500: #3B82F6
-Info 600: #2563EB
-Info 700: #1D4ED8
-```
-
-Use for:
-
-* Informational messages
-* Helpful hints
-* System notifications
-* Non-critical status information
-
----
-
-## Data Visualization Palette
-
-Charts need their own restrained, ordered palette — separate from semantic colors, since a chart series is not a system state.
-
-```text
-Series 1: #4F46E5  (primary-600 — default/first series)
-Series 2: #0EA5E9  (sky)
-Series 3: #14B8A6  (teal)
-Series 4: #F59E0B  (amber — only when not implying "warning")
-Series 5: #8B5CF6  (violet)
-Series 6: #EC4899  (pink — last resort, use sparingly)
-```
-
-Rules:
-
-* Never reuse a semantic color (success/warning/danger) in a chart unless the chart is explicitly status-based (e.g. a policy status breakdown), in which case use the matching semantic color intentionally.
-* Categorical charts: cycle through Series 1–6 in order, never randomly.
-* Sequential/heatmap data (e.g. renewal density by week): use a single-hue ramp from Primary 100 → Primary 700, not a rainbow scale.
-* Diverging data (e.g. profit/loss): Danger 500 → Neutral 200 → Success 500.
-* Maximum 6 series on one chart. Beyond that, group into "Other."
-
----
-
-# 7. Color Usage Rules
-
-Never introduce a new random color inside an individual component.
-
-Bad:
-
-```text
-Button A → #4567EF
-Button B → #4872FF
-Button C → #536AFF
-```
-
-Good:
-
-```text
-Primary Button → primary-600
-Secondary Button → neutral
-Danger Button → danger-600
-```
-
-Every color must have a defined semantic purpose.
-
----
-
-# 8. Light Theme
-
-## Application
-
-```text
-App Background:       neutral-50
-Primary Surface:      white
-Secondary Surface:    neutral-100
-Border:               neutral-200
-Primary Text:         neutral-900
-Secondary Text:       neutral-600
-Muted Text:           neutral-500
-```
-
-The main application should not be pure white everywhere.
-
-Recommended hierarchy:
-
-```text
-Page Background
-    ↓
-Card / Surface
-    ↓
-Nested Surface
-    ↓
-Interactive Element
-```
-
-This creates depth without relying heavily on shadows.
-
----
-
-# 9. Dark Theme
-
-Dark mode must not simply invert colors.
-
-Recommended direction:
-
-```text
-App Background:       neutral-950
-Primary Surface:      neutral-900
-Secondary Surface:    neutral-800
-Border:               neutral-700
-Primary Text:         neutral-100
-Secondary Text:       neutral-400
-Muted Text:           neutral-500
-```
-
-Avoid pure black backgrounds such as:
-
-```text
-#000000
-```
-
-for the entire application.
-
-Use dark neutral surfaces instead.
-
----
-
-# 10. Theme Rules
-
-Components must use semantic tokens instead of direct light/dark colors.
-
-Example:
-
-```text
-background: var(--surface-primary)
-color: var(--text-primary)
-border: var(--border-default)
-```
-
-Do not create:
-
-```text
-background: white
-```
-
-inside reusable components.
-
-The same component must work in both themes.
-
----
-
-# 11. Typography
-
-## 11.1 Font
-
-Recommended primary font:
-
-**Inter**
-
-Fallback:
-
-```text
-Inter, ui-sans-serif, system-ui, sans-serif
-```
-
-Reason:
-
-* Excellent readability
-* Strong numerical rendering
-* Good UI typography
-* Works well for dense business applications
-* Excellent support across modern browsers
-
----
-
-# 12. Typography Scale
-
-```text
-Display:
-48px / 56px / 700
-
-Page Heading:
-30px / 38px / 700
-
-Section Heading:
-24px / 32px / 600
-
-Subsection:
-20px / 28px / 600
-
-Large Body:
-18px / 28px / 400
-
-Body:
-14px / 20px / 400
-
-Small:
-13px / 18px / 400
-
-Caption:
-12px / 16px / 400
-```
-
-For a CRM, 14px should be the primary UI text size.
-
-Do not make the entire dashboard 16px by default.
-
----
-
-# 13. Font Weight
-
-```text
-400 → Regular
-500 → Medium
-600 → Semibold
-700 → Bold
-```
-
-Recommended usage:
-
-```text
-Body              → 400
-Labels            → 500
-Navigation        → 500
-Table headers     → 500/600
-Section headings  → 600
-Page headings     → 700
-Important values  → 600
-```
-
-Avoid excessive use of 700 weight.
-
----
-
-# 14. Numbers and Data
-
-Insurance CRM contains many numbers:
-
-* Premium
-* Policy amount
-* Vehicle registration
-* Phone numbers
-* Dates
-* Renewal periods
-* Counts
-* Financial values
-
-Numbers must be visually scannable.
-
-Use:
-
-```text
-font-variant-numeric: tabular-nums;
-```
-
-where aligned numerical comparison is required.
-
-Examples:
-
-* Dashboard statistics
-* Tables
-* Financial values
-* Policy numbers
-* Dates
-
----
-
-# 15. Spacing System
-
-Use a consistent 4px base spacing system.
-
-```text
-4px
-8px
-12px
-16px
-20px
-24px
-32px
-40px
-48px
-64px
-80px
-```
-
-Preferred spacing:
-
-```text
-Icon → text:          8px
-Input internal gap:   12px
-Form field gap:       16px
-Card padding:         20-24px
-Section gap:          24-32px
-Page section gap:     32-40px
-```
-
-Avoid arbitrary spacing such as:
-
-```text
-13px
-17px
-23px
-29px
-37px
-```
-
-unless there is a strong reason.
-
----
-
-# 16. Layout
-
-## Desktop
-
-Primary application layout:
-
-```text
-┌─────────────────────────────────────────────┐
-│ Top Bar                                     │
-├──────────────┬──────────────────────────────┤
-│              │                              │
-│ Sidebar      │ Main Content                 │
-│              │                              │
-│              │                              │
-└──────────────┴──────────────────────────────┘
-```
-
-Recommended:
-
-```text
-Sidebar:
-240px expanded
-72px collapsed
-
-Main content:
-Flexible
-
-Page max-width:
-None for data-heavy pages
-Optional max-width for focused forms
-```
-
-Do not unnecessarily constrain large tables to a narrow max-width.
-
----
-
-# 17. Responsive Breakpoints
-
-Use:
-
-```text
-xs:  480px
-sm:  640px
-md:  768px
-lg:  1024px
-xl:  1280px
-2xl: 1536px
-```
-
-Primary design targets:
-
-### Mobile
-
-```text
-< 640px
-```
-
-### Tablet
-
-```text
-640px - 1023px
-```
-
-### Desktop
-
-```text
-1024px+
-```
-
-### Large Desktop
-
-```text
-1280px+
-```
-
----
-
-# 18. Responsive Philosophy
-
-Do not simply shrink desktop layouts.
-
-Adapt the information architecture.
-
-Desktop:
-
-```text
-Sidebar
-+
-Multiple columns
-+
-Large tables
-```
-
-Mobile:
-
-```text
-Bottom navigation / compact navigation
-+
-Single column
-+
-Stacked content
-+
-Card-based data
-+
-Horizontal scrolling where necessary
-```
-
----
-
-# 19. Mobile CRM Rules
-
-Mobile should prioritize:
-
-1. Client information
-2. Follow-ups
-3. Policies
-4. Renewals
-5. Tasks
-6. Important actions
-
-Secondary information can move into:
-
-* Tabs
-* Drawers
-* Expandable sections
-* Detail pages
-
-Do not attempt to display every desktop field on mobile.
-
----
-
-# 20. Border Radius
-
-Use moderate rounding.
-
-Recommended:
-
-```text
-xs: 4px
-sm: 6px
-md: 8px
-lg: 10px
-xl: 12px
-2xl: 16px
-```
-
-Default:
-
-```text
-8px
-```
-
-Use:
-
-```text
-8px → inputs, buttons, cards
-10-12px → larger containers
-16px → prominent dashboard cards
-```
-
-Avoid excessive `rounded-full`.
-
-Use full-radius only for:
-
-* Avatars
-* Status indicators
-* Pills
-* Circular icon buttons
-
----
-
-# 21. Borders
-
-Default border:
-
-```text
-1px solid neutral-200
-```
-
-Dark:
-
-```text
-1px solid neutral-700
-```
-
-Borders should be subtle.
-
-Use borders primarily for:
-
-* Input boundaries
-* Cards
-* Tables
-* Dividers
-* Navigation sections
-
-Avoid putting borders around every small element.
-
----
-
-# 22. Shadows
-
-Use shadows sparingly.
-
-Recommended:
-
-```text
-sm → dropdowns
-md → dialogs
-lg → important overlays
-```
-
-Cards should generally rely on:
-
-```text
-background + border
-```
-
-rather than:
-
-```text
-large shadow + gradient + border
-```
-
-This keeps the CRM professional and reduces visual noise.
-
----
-
-# 23. Elevation
-
-Use four levels:
-
-```text
-Level 0 → Flat surface
-Level 1 → Card
-Level 2 → Dropdown / popover
-Level 3 → Modal / dialog
-```
-
-Every component should have a predictable elevation level.
-
----
-
-# 24. Buttons
-
-## Primary
-
-Used for the most important action.
-
-Examples:
-
-```text
-Add Client
-Create Policy
-Save Changes
-Generate Quotation
-```
-
-Style:
-
-```text
-Primary background
-White text
-Medium weight
-8px radius
-```
-
----
-
-## Secondary
-
-Used for supporting actions.
-
-Examples:
-
-```text
-Cancel
-Export
-Filter
-View Details
-```
-
-Style:
-
-```text
-Transparent / neutral surface
-Neutral border
-Neutral text
-```
-
----
-
-## Destructive
-
-Examples:
-
-```text
-Delete Client
-Delete Policy
-Remove Document
-```
-
-Never make destructive actions look identical to primary actions.
-
----
-
-# 25. Button States
-
-Every interactive button must support:
-
-```text
-Default
-Hover
-Active
-Focus
-Disabled
-Loading
-```
-
-Example:
-
-```text
-Default → primary-600
-Hover → primary-700
-Active → primary-800
-Disabled → reduced contrast
-Loading → spinner + disabled interaction
-```
-
-Never allow a button to visually appear clickable while disabled.
-
----
-
-# 26. Forms
-
-Forms are one of the most important components in this CRM.
-
-Form hierarchy:
-
-```text
-Section
-    ↓
-Field Group
-    ↓
-Label
-    ↓
-Input
-    ↓
-Helper / Error Text
-```
-
-Default field spacing:
-
-```text
-16px
-```
-
----
-
-# 27. Input Design
-
-Default:
-
-```text
-Height: 40px
-Radius: 8px
-Border: 1px
-Padding: 12px
-Font: 14px
-```
-
-Large inputs:
-
-```text
-Height: 44px
-```
-
-Do not use extremely tall inputs in data-heavy forms.
-
----
-
-# 28. Input States
-
-Every input must support:
-
-```text
-Default
-Hover
-Focus
-Filled
-Disabled
-Read-only
-Error
-Success
-```
-
-Focus must be clearly visible.
-
-Recommended:
-
-```text
-border + focus ring
-```
-
-Do not rely only on changing the border color.
-
----
-
-# 29. Labels
-
-Labels should always clearly identify the field.
-
-Example:
-
-```text
-Policy Number *
-[________________________]
-
-Policy expires on
-[________________________]
-```
-
-Do not rely solely on placeholder text as the label.
-
----
-
-# 30. Tables
-
-Tables are critical to the CRM.
-
-Primary goals:
-
-* Fast scanning
-* Sorting
-* Filtering
-* Consistent alignment
-* High information density
-
-Recommended row height:
-
-```text
-44px - 52px
-```
-
-Header:
-
-```text
-40px - 44px
-```
-
----
-
-# 31. Table Alignment
-
-Text:
-
-```text
-Left
-```
-
-Numbers:
-
-```text
-Right
-```
-
-Status:
-
-```text
-Center / Left depending on context
-```
-
-Actions:
-
-```text
-Right
-```
-
-Dates:
-
-```text
-Left or center depending on column density
-```
-
----
-
-# 32. Table Interaction
-
-Support:
-
-* Row hover
-* Sorting
-* Filtering
-* Pagination
-* Column visibility
-* Search
-* Bulk selection where required
-* Empty state
-* Loading state
-
-Row hover should be subtle.
-
-Do not dramatically change the row background.
-
----
-
-# 33. Status Badges
-
-Status should be immediately scannable.
-
-Examples:
-
-```text
-Active
-Pending
-Expired
-Cancelled
-Renewal Due
-Draft
-Completed
-Failed
-```
-
-Recommended style:
-
-```text
-small text
-medium weight
-subtle background
-semantic text color
-6px radius
-```
-
-Avoid excessive pill shapes for every piece of information.
-
----
-
-# 34. Insurance-Specific Status Colors
-
-### Policy
-
-```text
-Active        → Success
-Pending       → Warning
-Expired       → Danger
-Cancelled     → Neutral
-Draft         → Neutral
-```
-
-### Renewal
-
-```text
-> 30 days     → Neutral/Info
-7-30 days     → Warning
-< 7 days      → Danger
-Expired       → Danger
-Renewed       → Success
-```
-
-### Lead
-
-```text
-New           → Info
-Contacted     → Neutral
-Interested    → Primary
-Quotation     → Warning
-Won           → Success
-Lost          → Danger
-```
-
-Status semantics must remain consistent throughout the application.
-
----
-
-# 35. Cards
-
-Cards should group related information.
-
-Good:
-
-```text
-Client Information
-------------------
-Name
-Phone
-Email
-Address
-```
-
-Bad:
-
-```text
-Card
-inside card
-inside card
-inside card
-```
-
-Avoid excessive nesting.
-
----
-
-# 36. Dashboard Cards
-
-Dashboard KPI cards should communicate:
-
-```text
-Metric
-Current value
-Optional comparison
-Optional trend
-```
-
-Example:
-
-```text
-Active Policies
-
-1,284
-
-+8.4% from last month
-```
-
-Do not add a chart to every KPI card.
-
-A visual should only exist when it communicates useful information.
-
----
-
-# 37. Navigation
-
-Sidebar should prioritize task frequency.
-
-Recommended structure:
-
-```text
-Dashboard
-
-CRM
-  Clients
-  Leads
-  Companies
-
-Insurance
-  Policies
-  Quotations
-  Renewals
-  Claims
-
-Operations
-  Tasks
-  Follow-ups
-  Documents
-
-Reports
-
-Administration
-  Users
-  Roles
-  Settings
-```
-
-Do not put every page at the same navigation level.
-
----
-
-# 38. Active Navigation
-
-Active navigation should use:
-
-* Primary color
-* Subtle background
-* Strong text
-* Optional icon emphasis
-
-Example:
-
-```text
-Inactive:
-neutral text
-
-Active:
-primary text
-primary subtle background
-```
-
-Avoid excessive glowing or animated navigation.
-
----
-
-# 39. Icons
-
-Recommended icon library:
-
-**Lucide**
-
-Rules:
-
-* Consistent stroke width
-* Consistent size
-* Never mix unrelated icon styles
-* Icons must support meaning
-* Do not use icons purely for decoration everywhere
-
-Standard sizes:
-
-```text
-12px → compact metadata
-14px → small UI
-16px → default
-18px → prominent UI
-20px → navigation
-24px → major actions
-```
-
----
-
-# 40. Icon + Text
-
-For actions:
-
-```text
-[Icon] Export
-[Icon] Add Client
-[Icon] Delete
-```
-
-Do not use an icon alone when the action may be ambiguous.
-
-Icon-only buttons require:
-
-* Tooltip
-* Accessible label
-* Clear visual affordance
-
----
-
-# 41. Modals
-
-Use modals for:
-
-* Confirmation
-* Short forms
-* Important focused actions
-
-Do not use modals for large workflows.
-
-Large workflows should use:
-
-* Full page
-* Drawer
-* Dedicated detail page
-
-Recommended modal widths:
-
-```text
-Small: 400px
-Medium: 520px
-Large: 720px
-Extra Large: 960px
-```
-
----
-
-# 42. Drawers
-
-Use drawers for contextual editing.
-
-Examples:
-
-```text
-Client quick view
-Policy details
-Activity history
-Document preview
-```
-
-Drawer should preserve context behind it.
-
----
-
-# 43. Client Detail Page
-
-Client detail should be one of the strongest UX patterns in the CRM.
-
-Recommended structure:
-
-```text
-Client Header
-│
-├── Overview
-├── Personal Information
-├── Insurance
-├── Vehicles
-├── Drivers
-├── Documents
-├── Companies
-├── Activities
-└── Notes
-```
-
-The user should be able to understand the client's current state quickly.
-
----
-
-# 44. Information Hierarchy
-
-Every page should have:
-
-```text
-Page title
-    ↓
-Page description / context
-    ↓
-Primary action
-    ↓
-Filters / controls
-    ↓
-Main content
-```
-
-Do not make users visually search for the primary action.
-
----
-
-# 45. Search
-
-Global search should eventually support:
-
-```text
-Client
-Policy
-Vehicle
-Company
-Phone
-Email
-Policy number
-Registration number
-```
-
-Search should provide:
-
-* Keyboard interaction
-* Recent searches
-* Categorized results
-* Loading state
-* No-result state
-
----
-
-# 46. Filters
-
-Filters should be visually separated from the data.
-
-Common filters:
-
-```text
-Status
-Agent
-Company
-Policy type
-Renewal date
-Created date
-```
-
-Use:
-
-```text
-Filter button
-+
-Filter drawer/popover
-```
-
-when the number of filters becomes large.
-
-Avoid showing 10+ filter controls permanently above a table.
-
----
-
-# 47. Empty States
-
-Every data-driven page must have a deliberate empty state.
-
-Example:
-
-```text
-No clients found
-
-There are no clients matching your current filters.
-
-[Clear Filters]
-```
-
-For genuinely empty modules:
-
-```text
-No policies yet
-
-Create your first policy to start tracking coverage.
-
-[Create Policy]
-```
-
-Empty states should explain:
-
-1. What happened?
-2. Why?
-3. What can the user do next?
-
----
-
-# 48. Loading States
-
-Use skeletons for larger page content.
-
-Examples:
-
-```text
-Table skeleton
-Card skeleton
-Profile skeleton
-Dashboard skeleton
-```
-
-Avoid displaying spinners for every small interaction.
-
-Use spinners primarily for:
-
-* Button actions
-* Short operations
-* Small isolated content
-
-Skeleton shimmer motion:
-
-```text
-Duration: 1400-1600ms
-Easing: linear, looping
-Direction: left → right
-```
-
-Skeleton surfaces should use `neutral-100` / `neutral-800` base with a lighter sweep — never the brand color, so skeletons don't compete with real content once loaded.
-
----
-
-# 49. Error States
-
-Errors must be actionable.
-
-Bad:
-
-```text
-Something went wrong.
-```
-
-Better:
-
-```text
-Unable to load policies.
-
-Please try again. If the problem continues, contact your administrator.
-
-[Retry]
-```
-
-Never expose raw backend errors to normal users.
-
----
-
-# 50. Notifications
-
-Use toast notifications for short-lived feedback.
-
-Examples:
-
-```text
-Client created successfully.
-Policy updated successfully.
-Document uploaded successfully.
-```
-
-Do not use toasts for critical information that users must retain.
-
-Critical information belongs in the page UI.
-
-Toast behavior:
-
-```text
-Position:      top-right (desktop), top-center (mobile)
-Duration:      Success/Info → 4s · Warning → 6s · Danger/Error → does not auto-dismiss
-Stacking:      max 3 visible, newest on top, older collapse into a "+N more"
-Dismiss:       manual close (x) always available
-Motion:        slide-in + fade, 200ms, respects prefers-reduced-motion
-```
-
----
-
-# 51. Confirmation Dialogs
-
-Use confirmation dialogs for destructive actions.
-
-Example:
-
-```text
-Delete client?
-
-This action cannot be undone.
-
-[Cancel] [Delete Client]
-```
-
-For high-risk operations, clearly explain consequences.
-
----
-
-# 52. Hover Behavior
-
-Hover should communicate:
-
-> "This element is interactive."
-
-Use subtle changes:
-
-```text
-background
-border
-text color
-shadow
-```
-
-Avoid:
-
-* Large transformations
-* Scale effects
-* Bright flashes
-* Excessive animations
-
-CRM applications should feel stable.
-
----
-
-# 53. Animation
-
-Animation should be functional, not decorative.
-
-Recommended duration:
-
-```text
-Fast:    100ms
-Default: 150ms
-Medium: 200ms
-Slow:    300ms
-```
-
-Use animation for:
-
-* Dropdown opening
-* Modal opening
-* Drawer opening
-* Tooltip
-* Navigation transitions
-* Loading transitions
-
-Avoid animation on:
-
-* Every table row
-* Every button
-* Every card
-* Large dashboard elements
-
-Respect:
-
-```text
-prefers-reduced-motion
-```
-
----
-
-# 54. Accessibility
-
-Minimum requirements:
-
-* WCAG 2.1 AA contrast — 4.5:1 for body text, 3:1 for large text (18px+/14px bold) and meaningful UI components/icons
-* Keyboard navigation for every interactive element, in logical tab order
-* Visible focus state (2px ring, primary-600, 2px offset) — never `outline: none` without a replacement
-* Proper labels — every input has a programmatically associated `<label>`
-* Accessible form errors — announced via `aria-live="polite"`, linked to the field with `aria-describedby`
-* Accessible icon buttons — `aria-label` required when no visible text
-* Semantic HTML — landmarks (`nav`, `main`, `header`), heading order not skipped
-* Screen-reader-friendly status messages — toasts and inline status use `aria-live` regions
-* Minimum touch target around 44px where practical
-
-Never communicate meaning using color alone.
-
-Example:
-
-Bad:
-
-```text
-Red = expired
-```
-
-Better:
-
-```text
-[Expired]
-```
-
-with red as supporting visual information.
-
-Known contrast risks in this palette — verify before shipping:
-
-```text
-Warning-500 (#F59E0B) on white  → fails 4.5:1 for body text; use for icons/badges
-                                    with dark text (neutral-900), not as text color itself
-Info-500 (#3B82F6) on white     → borderline for small text; prefer info-600/700 for text
-```
-
----
-
-# 55. Touch Targets
-
-Mobile interactive elements should generally have:
-
-```text
-minimum ~44px touch target
-```
-
-Even when the visual icon is only 20px.
-
----
-
-# 56. Data Density
-
-Insurance CRM is a productivity application.
-
-Default density:
-
-```text
-Medium
-```
-
-Provide optional:
-
-```text
-Compact
-Comfortable
-```
-
-where useful, especially for tables.
-
-Compact mode can reduce:
-
-```text
-row height
-vertical padding
-section spacing
-```
-
-Do not reduce font size excessively.
-
----
-
-# 57. Forms With Many Fields
-
-Insurance records can contain many fields.
-
-Do not present a massive form as one continuous page.
-
-Group fields logically.
-
-Example:
-
-```text
-Client
-├── Personal Information
-├── Contact Information
-├── Address
-├── Identification
-│
-Insurance
-├── Policy Information
-├── Coverage
-├── Premium
-│
-Vehicle
-├── Vehicle Information
-├── Registration
-├── Driver Information
-│
-Documents
-├── Identity Documents
-├── Policy Documents
-└── Supporting Documents
-```
-
-Use sections, tabs, or accordions when appropriate.
-
----
-
-# 58. Progressive Disclosure
-
-Do not show every field immediately.
-
-Show:
-
-```text
-Important information first
-```
-
-Then allow:
-
-```text
-View more
-Advanced details
-Additional information
-```
-
-This is especially important for client and policy records.
-
----
-
-# 59. Date and Time
-
-Use consistent formatting across the entire application.
-
-Recommended display:
-
-```text
-24 Aug 2026
-```
-
-For timestamps:
-
-```text
-24 Aug 2026, 10:30 AM
-```
-
-Do not mix:
-
-```text
-08/24/26
-24-08-2026
-Aug 24, 2026
-```
-
-within the same application.
-
----
-
-# 60. Currency
-
-Currency values must use consistent formatting.
-
-Example:
-
-```text
-₹1,25,000
-```
-
-or the application's configured currency.
-
-Always maintain consistent:
-
-* Symbol
-* Decimal precision
-* Thousand separators
-* Negative-value formatting
-
-Use the Indian numbering system (lakh/crore grouping — `1,25,000` not `125,000`) throughout tables, dashboards, and exported documents, since this is the convention agents and clients will expect.
-
----
-
-# 61. Responsive Tables
-
-Do not force extremely wide tables into the viewport.
-
-Options:
-
-1. Horizontal scrolling
-2. Hide low-priority columns
-3. Column visibility controls
-4. Mobile card representation
-5. Dedicated mobile detail page
-
-Do not shrink table text until it becomes unreadable.
-
----
-
-# 62. Desktop Page Structure
-
-Recommended page padding:
-
-```text
-1024px+:
-24px - 32px
-
-1280px+:
-32px
-
-1536px+:
-32px - 40px
-```
-
----
-
-# 63. Mobile Page Structure
-
-Recommended:
-
-```text
-Horizontal padding:
-16px
-
-Section spacing:
-24px
-
-Card padding:
-16px
-```
-
-Avoid excessive whitespace on mobile.
-
----
-
-# 64. Z-Index System
-
-Do not randomly assign z-index values.
-
-Use a defined scale:
-
-```text
-Base:       0
-Sticky:     10
-Dropdown:   20
-Popover:    30
-Overlay:    40
-Modal:      50
-Toast:      60
-Tooltip:    70
-```
-
-All overlays must follow this hierarchy.
-
----
-
-# 65. Scroll Behavior
-
-Main application should preferably have:
-
-```text
-Fixed sidebar
-Fixed/sticky header where useful
-Scrollable main content
-```
-
-Avoid multiple nested scroll containers unless necessary.
-
-Nested scrolling should be introduced carefully because it can create poor usability.
-
----
-
-# 66. Page Header Pattern
-
-Standard page header:
-
-```text
-┌─────────────────────────────────────────┐
-│ Page Title                    [Primary] │
-│ Short contextual description            │
-└─────────────────────────────────────────┘
-```
-
-For example:
-
-```text
-Clients                         [+ Add Client]
-
-Manage your insurance clients and their records.
-```
-
----
-
-# 67. Action Hierarchy
-
-Every page should have one obvious primary action.
-
-Example:
-
-Clients:
-
-```text
-Primary   → Add Client
-Secondary → Export
-Secondary → Import
-```
-
-Policies:
-
-```text
-Primary   → Create Policy
-Secondary → Export
-```
-
-Do not give five buttons equal visual importance.
-
----
-
-# 68. Destructive Actions
-
-Destructive actions must:
-
-* Use danger semantic color
-* Require confirmation when appropriate
-* Clearly describe consequences
-* Never be placed immediately beside another destructive action without separation
-
-Examples:
-
-```text
-Delete
-Archive
-Remove
-Revoke
-Cancel
-```
-
----
-
-# 69. Role-Based UI
-
-The interface should adapt based on permissions.
-
-Example:
-
-Agent:
-
-```text
-Clients
-Policies
-Renewals
-Tasks
-Documents
-```
-
-Administrator:
-
-```text
-Users
-Roles
-Reports
-Settings
-Audit Logs
-```
-
-Do not simply hide unauthorized buttons while allowing the underlying operation.
-
-Backend authorization remains mandatory.
-
----
-
-# 70. Design for States
-
-Every major component must define:
-
-```text
-Default
-Hover
-Focus
-Active
-Disabled
-Loading
-Empty
-Error
-Success
-```
-
-This requirement applies especially to:
-
-* Buttons
-* Inputs
-* Tables
-* Dropdowns
-* Cards
-* Navigation
-* Tabs
-* Modals
-* Uploaders
-
----
-
-# 71. File Upload UI
-
-Documents are important in insurance workflows.
-
-Upload components should clearly show:
-
-```text
-Upload area
-File type
-Maximum size
-Upload progress
-Success
-Failure
-Remove
-Retry
-```
-
-Example:
-
-```text
-Drag & drop documents here
-
-PDF, JPG, PNG
-Maximum 10 MB
-
-[Browse Files]
-```
-
-Never make the upload experience ambiguous.
-
----
-
-# 72. Document Preview
-
-Documents should support:
-
-```text
-File name
-File type
-Size
-Uploaded by
-Uploaded date
-Preview
-Download
-Delete
-```
-
-Sensitive documents should not be unnecessarily exposed in previews or public URLs.
-
----
-
-# 73. Dashboard Design
-
-Dashboard should answer:
-
-1. What needs my attention?
-2. What is happening today?
-3. What is overdue?
-4. What is approaching?
-5. What is performing well?
-
-Recommended sections:
-
-```text
-KPI Summary
-    ↓
-Urgent Renewals
-    ↓
-Today's Follow-ups
-    ↓
-Lead / Policy Pipeline
-    ↓
-Recent Activity
-```
-
-Do not fill the dashboard with charts merely because charts look impressive.
-
----
-
-# 74. Dashboard KPI Priority
-
-Useful KPIs may include:
-
-```text
-Active Policies
-Policies Expiring Soon
-Renewals Due
-Open Leads
-Pending Follow-ups
-Total Clients
-Premium / Revenue
-Claims
-```
-
-The exact KPI set should reflect actual business decisions.
-
----
-
-# 75. Charts
-
-Charts should answer a business question.
-
-Good:
-
-```text
-Policy growth over time
-Renewal conversion
-Lead conversion
-Premium distribution
-```
-
-Bad:
-
-```text
-Random pie chart
-Random decorative graph
-Chart with no actionable interpretation
-```
-
-Use the restrained data visualization palette defined in §6 (Data Visualization Palette). Prefer bar and line charts for business trends; reserve pie/donut charts for simple part-to-whole breakdowns with 5 or fewer segments.
-
----
-
-# 76. Design Consistency Rules
-
-The same concept must always look the same.
-
-For example:
-
-```text
-Active → Success
-Expired → Danger
-Pending → Warning
-```
-
-This must remain consistent across:
-
-* Dashboard
-* Client page
-* Policy page
-* Renewal page
-* Reports
-* Tables
-* Notifications
-
----
-
-# 77. Component Naming
-
-Components should be reusable and semantic.
-
-Recommended:
-
-```text
-Button
-Input
-Select
-DatePicker
-Badge
-Card
-Table
-DataTable
-Modal
-Drawer
-Tabs
-Tooltip
-Dropdown
-Pagination
-EmptyState
-ErrorState
-LoadingState
-FileUploader
-```
-
-Domain components:
-
-```text
-ClientCard
-PolicyCard
-RenewalBadge
-PolicyStatus
-ClientHeader
-DocumentList
-ActivityTimeline
-```
-
----
-
-# 78. Avoid Over-Abstraction
-
-Do not create components for every tiny HTML wrapper.
-
-Good:
-
-```text
-ClientStatusBadge
-```
-
-Bad:
-
-```text
-ClientPageSmallGrayContainer
-```
-
-Components should represent reusable behavior or meaningful UI concepts.
-
----
-
-# 79. Design Token Architecture
-
-Recommended structure:
-
-```text
-tokens/
-├── colors
-├── typography
-├── spacing
-├── radius
-├── shadows
-├── breakpoints
-├── z-index
-└── motion
-```
-
-Then expose them through the application's theme system.
-
-Example:
-
-```text
---color-primary
---color-surface
---color-text-primary
---color-border
---radius-md
---spacing-md
---shadow-sm
-```
-
----
-
-# 80. Tailwind Implementation
-
-If Tailwind CSS is used, design tokens should be mapped into Tailwind rather than repeatedly writing arbitrary values.
-
-Prefer:
-
-```text
-bg-primary
-text-text-primary
-border-border
-rounded-md
-```
-
-over:
-
-```text
-bg-[#4F46E5]
-text-[#0F172A]
-border-[#E2E8F0]
-rounded-[8px]
-```
-
-Arbitrary values should be exceptions, not the design system.
-
-Minimum token mapping to define in `tailwind.config` / `globals.css`:
-
-```css
-:root {
-  --surface-primary: #FFFFFF;
-  --surface-secondary: #F1F5F9;
-  --app-background: #F8FAFC;
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #64748B;
-  --border-default: #E2E8F0;
-
-  --primary-600: #4F46E5;
-  --success-600: #16A34A;
-  --warning-600: #D97706;
-  --danger-600: #DC2626;
-  --info-600: #2563EB;
-}
-
-.dark {
-  --surface-primary: #1E293B;
-  --surface-secondary: #334155;
-  --app-background: #0F172A;
-  --text-primary: #F1F5F9;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
-  --border-default: #334155;
-}
-```
-
-Every component reads from these CSS variables — never a raw hex or a raw Tailwind neutral shade — so a single toggle changes the whole app.
-
----
-
-# 81. Dark Mode Implementation
-
-Components must never assume:
-
-```text
-white background
-black text
-```
-
-Instead use semantic tokens:
-
-```text
-surface-primary
-surface-secondary
-text-primary
-text-secondary
-border-default
-```
-
-The theme controls the actual values.
-
----
-
-# 82. Design Review Checklist
-
-Before considering a UI component complete, verify:
-
-* [ ] Works in light mode
-* [ ] Works in dark mode
-* [ ] Responsive behavior defined
-* [ ] Hover state defined
-* [ ] Focus state defined
-* [ ] Disabled state defined
-* [ ] Loading state defined
-* [ ] Error state defined
-* [ ] Empty state defined where applicable
-* [ ] Keyboard accessible
-* [ ] Touch-friendly
-* [ ] Color contrast acceptable
-* [ ] No arbitrary colors
-* [ ] No arbitrary spacing
-* [ ] Typography follows system
-* [ ] Border radius follows system
-* [ ] Icons follow system
-* [ ] Animation is purposeful
-
----
-
-# 83. Design Anti-Patterns
-
-The following should generally be avoided.
-
-### Excessive gradients
-
-Avoid gradients unless they have a specific product purpose.
-
-### Excessive glassmorphism
-
-Do not make the CRM look like a visual experiment.
-
-### Excessive rounded corners
-
-Avoid making every component `rounded-full`.
-
-### Excessive shadows
-
-Prefer borders and surface hierarchy.
-
-### Too many colors
-
-A CRM should have a restrained visual language.
-
-### Tiny text
-
-Do not sacrifice readability for information density.
-
-### Excessive animations
-
-Animations must improve understanding, not decoration.
-
-### Giant dashboard cards
-
-Do not consume half the screen with one KPI.
-
-### Nested cards
-
-Avoid cards inside cards inside cards.
-
-### Inconsistent status colors
-
-The same status must always have the same semantic meaning.
-
-### Random spacing
-
-All spacing should come from the spacing scale.
-
-### Random font sizes
-
-Typography should come from the defined type scale.
-
----
-
-# 84. UX Performance Principles
-
-Visual design must also support performance.
-
-Avoid:
-
-* Huge images
-* Heavy animation libraries for simple transitions
-* Rendering unnecessary dashboard charts
-* Loading all table records at once
-* Excessive DOM nesting
-* Unnecessary modal rendering
-* Large decorative assets
-
-Prefer:
-
-* Lazy loading
-* Pagination
-* Virtualized tables when necessary
-* Skeleton loading
-* Optimized images
-* Server-side filtering for large datasets
-* Debounced search
-* Progressive loading
-
----
-
-# 85. Design System Governance
-
-Any new UI pattern should answer:
-
-1. Does an existing component already solve this?
-2. Can the existing component be extended?
-3. Is this pattern likely to appear elsewhere?
-4. Does it require a new design token?
-5. Does it work in dark mode?
-6. Does it work on mobile?
-7. Does it have all necessary interaction states?
-
-Do not create new UI patterns casually.
-
----
-
-# 86. Definition of Done — UI
-
-A UI feature is considered design-complete only when:
-
-```text
-Desktop
-    ✓
-
-Tablet
-    ✓
-
-Mobile
-    ✓
-
-Light mode
-    ✓
-
-Dark mode
-    ✓
-
-Loading
-    ✓
-
-Empty
-    ✓
-
-Error
-    ✓
-
-Success
-    ✓
-
-Hover
-    ✓
-
-Focus
-    ✓
-
-Disabled
-    ✓
-
-Accessibility
-    ✓
-```
-
----
-
-# 87. Authentication Screens
-
-Login, password reset, and 2FA are the first thing every user sees — they should feel like the same product as the dashboard, not a separate marketing page.
-
-```text
-Layout:        Centered card, max-width 400px, on app-background (not a
-                large decorative hero image or gradient)
-Logo:          Top of card, modest size
-Fields:        Email, Password — standard input styling from §27
-Primary action: Full-width primary button
-Errors:        Inline, below the field that failed — never a generic
-                banner for field-specific problems
-Session:       "Remember me" as a simple checkbox, not a toggle switch
-Footer:        Forgot password / contact administrator links, small text
-```
-
-Avoid split-screen marketing layouts, stock photography, or illustrations — this is internal business software, not a SaaS landing page.
-
----
-
-# 88. Print & Export Styling
-
-Generated PDFs (quotations, policy summaries, cost documents, reports) are an extension of the product and should feel visually related to the app, not like a separate tool produced them.
-
-```text
-Font:          Inter (or nearest available print-safe equivalent)
-Primary color: Primary-700 for headings/accents (darker than screen UI —
-                print has no dark-mode fallback and needs to work on
-                plain white paper)
-Body text:     Neutral-900 on white, 10-11pt
-Tables:        Match app table alignment rules (§31) — numbers right-aligned,
-                tabular-nums
-Header/footer: Company name/logo top, page number + generated date bottom
-Status labels: Reuse the same semantic words as the app ("Active", "Expired")
-                — do not invent different wording for print
-```
-
-Never rely on color alone in exported documents either — status should still show as a text label, since printed documents are often photocopied or scanned in black and white.
-
----
-
-# 89. Version History
-
-```text
-1.1 — Added data visualization palette, numeric accessibility
-      contrast targets, Tailwind token mapping, toast/skeleton
-      timing, authentication screen pattern, print/export
-      styling, Indian currency formatting note.
-1.0 — Initial design system.
-```
-
----
-
-# 90. Final Design Principle
-
-The Insurance CRM should not try to impress users with visual complexity.
-
-It should impress users through:
-
-```text
-Consistency
-+
-Speed
-+
-Clarity
-+
-Predictability
-+
-Information hierarchy
-+
-Excellent interaction design
-```
-
-The best CRM interface is the one where an experienced insurance agent can perform common tasks almost without thinking about the interface.
-
-Every visual decision should answer:
-
-> "Does this help the user understand information or complete the task faster?"
-
-If the answer is no, remove it.
+colors:
+  primary: "#ff4f00"
+  on-primary: "#fffefb"
+  ink: "#201515"
+  ink-soft: "#2f2a26"
+  ink-mid: "#36342e"
+  body: "#605d52"
+  body-mid: "#939084"
+  mute: "#c5c0b1"
+  canvas: "#fffefb"
+  canvas-soft: "#f8f4f0"
+
+typography:
+  display-xl:
+    fontFamily: Degular Display, Inter, system-ui, -apple-system, sans-serif
+    fontSize: 56px
+    fontWeight: 500
+    lineHeight: 56px
+  display-lg:
+    fontFamily: Degular Display, Inter, system-ui, sans-serif
+    fontSize: 48px
+    fontWeight: 500
+    lineHeight: 48px
+  display-md:
+    fontFamily: Degular Display, Inter, system-ui, sans-serif
+    fontSize: 32px
+    fontWeight: 500
+    lineHeight: 36px
+    letterSpacing: 1px
+  display-sub-lg:
+    fontFamily: Inter, system-ui, sans-serif
+    fontSize: 48px
+    fontWeight: 500
+    lineHeight: 49.92px
+  display-sub-md:
+    fontFamily: Inter, system-ui, sans-serif
+    fontSize: 32px
+    fontWeight: 400
+    lineHeight: 40px
+  display-sub-sm:
+    fontFamily: Inter, system-ui, sans-serif
+    fontSize: 24px
+    fontWeight: 600
+    lineHeight: 30px
+    letterSpacing: -0.6px
+  display-xs:
+    fontFamily: Inter, system-ui, sans-serif
+    fontSize: 20px
+    fontWeight: 700
+    lineHeight: 25px
+    letterSpacing: -0.5px
+  body-lg:
+    fontFamily: Inter, system-ui, sans-serif
+    fontSize: 20px
+    fontWeight: 400
+    lineHeight: 30px
+    letterSpacing: -0.2px
+  body-md:
+    fontFamily: Inter, system-ui, sans-serif
+    fontSize: 18px
+    fontWeight: 400
+    lineHeight: 27px
+  body-md-strong:
+    fontFamily: Inter, system-ui, sans-serif
+    fontSize: 18px
+    fontWeight: 600
+    lineHeight: 27px
+  body-sm:
+    fontFamily: Inter, system-ui, sans-serif
+    fontSize: 16px
+    fontWeight: 400
+    lineHeight: 24px
+  body-sm-strong:
+    fontFamily: Inter, system-ui, sans-serif
+    fontSize: 16px
+    fontWeight: 600
+    lineHeight: 24px
+  caption:
+    fontFamily: Inter, system-ui, sans-serif
+    fontSize: 14px
+    fontWeight: 400
+    lineHeight: 21px
+  eyebrow-uppercase:
+    fontFamily: Degular Display, Inter, system-ui, sans-serif
+    fontSize: 14px
+    fontWeight: 500
+    lineHeight: 14px
+    letterSpacing: 1px
+  button-md:
+    fontFamily: Inter, system-ui, sans-serif
+    fontSize: 18px
+    fontWeight: 600
+    lineHeight: 27px
+  button-sm:
+    fontFamily: Inter, system-ui, sans-serif
+    fontSize: 14.4px
+    fontWeight: 700
+    lineHeight: 14.4px
+    letterSpacing: 0.144px
+
+rounded:
+  none: 0px
+  sm: 6px
+  md: 12px
+  pill: 9999px
+  full: 9999px
+
+spacing:
+  xxs: 2px
+  xs: 4px
+  sm: 8px
+  md: 12px
+  lg: 16px
+  xl: 24px
+  2xl: 32px
+  3xl: 48px
+  4xl: 64px
+
+components:
+  nav-bar:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body-sm}"
+    padding: "{spacing.md} {spacing.xl}"
+  nav-link:
+    textColor: "{colors.ink}"
+    typography: "{typography.body-sm}"
+  button-primary:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    typography: "{typography.button-md}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.md} {spacing.xl}"
+  button-secondary:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.on-primary}"
+    typography: "{typography.button-md}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.md} {spacing.xl}"
+  button-tertiary:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    borderColor: "{colors.ink}"
+    typography: "{typography.button-md}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.md} {spacing.xl}"
+  button-text:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    typography: "{typography.button-sm}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.sm} {spacing.lg}"
+  text-input:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    borderColor: "{colors.ink}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.md} {spacing.lg}"
+  card-content:
+    backgroundColor: "{colors.canvas-soft}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.xl}"
+  card-feature-cream:
+    backgroundColor: "{colors.canvas-soft}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.xl}"
+  card-feature-dark:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.on-primary}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.xl}"
+  pricing-card:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    borderColor: "{colors.ink}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.xl}"
+  pricing-card-featured:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.on-primary}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.xl}"
+  hero-band:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    typography: "{typography.display-xl}"
+    padding: "{spacing.4xl} {spacing.xl}"
+  hero-band-dark:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.on-primary}"
+    typography: "{typography.display-xl}"
+    padding: "{spacing.4xl} {spacing.xl}"
+  content-band-cream:
+    backgroundColor: "{colors.canvas-soft}"
+    textColor: "{colors.ink}"
+    typography: "{typography.display-lg}"
+    padding: "{spacing.4xl} {spacing.xl}"
+  content-band-light:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    typography: "{typography.display-lg}"
+    padding: "{spacing.4xl} {spacing.xl}"
+  eyebrow-uppercase:
+    textColor: "{colors.ink}"
+    typography: "{typography.eyebrow-uppercase}"
+  badge-pill:
+    backgroundColor: "{colors.canvas-soft}"
+    textColor: "{colors.ink}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.pill}"
+    padding: "{spacing.xs} {spacing.md}"
+  footer:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.canvas-soft}"
+    typography: "{typography.body-sm}"
+    padding: "{spacing.3xl} {spacing.xl}"
+
+  # ─── Examples (illustrative) — auto-derived; resolve any TO_FILL markers below ───
+  ex-pricing-tier:
+    description: "Default Pricing tier card. Re-uses feature-card chrome with brand canvas-soft surface."
+    backgroundColor: "{colors.canvas-soft}"
+    textColor: "{colors.ink}"
+    borderColor: "{colors.mute}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.xl}"
+  ex-pricing-tier-featured:
+    description: "Featured/highlighted tier — polarity-flipped surface (dark fill + light text in light mode, light fill + dark text in dark mode)."
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.on-primary}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.xl}"
+  ex-product-selector:
+    description: "What's Included summary card — re-purposed for SaaS / B2B verticals (NOT a literal product gallery)."
+    backgroundColor: "{colors.canvas-soft}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.xl}"
+  ex-cart-drawer:
+    description: "Subscription summary — re-purposed for SaaS / B2B (line items per add-on, not literal cart)."
+    backgroundColor: "{colors.canvas}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.xl}"
+    item-divider: "{colors.mute}"
+  ex-app-shell-row:
+    description: "Sidebar nav row inside the App Shell example. Active state uses brand primary as the indicator."
+    backgroundColor: "{colors.canvas}"
+    activeIndicator: "{colors.primary}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.md} {spacing.lg}"
+  ex-data-table-cell:
+    description: "Default data-table th + td chrome. Header uses mono-caps eyebrow typography; body uses body-sm."
+    headerBackground: "{colors.canvas-soft}"
+    headerTypography: "{typography.caption}"
+    bodyTypography: "{typography.body-sm}"
+    cellPadding: "{spacing.md} {spacing.lg}"
+    rowBorder: "{colors.mute}"
+  ex-auth-form-card:
+    description: "Sign-in / sign-up card. Re-uses feature-card chrome with text-input primitives inside."
+    backgroundColor: "{colors.canvas-soft}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.xl}"
+  ex-modal-card:
+    description: "Modal dialog surface — same chrome as feature-card with elevated shadow."
+    backgroundColor: "{colors.canvas}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.xl}"
+  ex-empty-state-card:
+    description: "Empty-state illustration frame."
+    backgroundColor: "{colors.canvas-soft}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.3xl}"
+    captionTypography: "{typography.body-md}"
+  ex-toast:
+    description: "Toast notification surface — feature-card shape + medium shadow."
+    backgroundColor: "{colors.canvas}"
+    rounded: "{rounded.md}"
+    padding: "{spacing.md} {spacing.lg}"
+    typography: "{typography.body-sm}"
+
+---
+
+
+## Overview
+
+Zapier is the original "connect your apps" workflow automation platform — and the marketing surface today reads as confidently-mature. The brand pairs a warm-cream canvas `{colors.canvas}` (`#fffefb`) with a deep coffee-ink `{colors.ink}` (`#201515`) and a single saturated orange `{colors.primary}` (`#ff4f00`) CTA. The warmth in the neutrals — slightly cream rather than pure white — is the brand's defining temperature signal.
+
+Type carries the second voice. The proprietary `Degular Display` family carries hero displays at weight 500. The brand uses `Inter` for everything else — sub-displays, body, button, eyebrow. The two-face pairing reads as "the brand has its own typeface for the loud moments and uses the workhorse for the rest" — modest and unflashy.
+
+Cards are universally `{rounded.md}` 12 px. Buttons share the same 12 px radius — not pills, not square. The brand sits between the friendly-rounded and the technical-square camps with a deliberate middle position.
+
+**Key Characteristics:**
+- A single primary CTA color `{colors.primary}` (`#ff4f00`) — saturated orange. The brand's conversion signature.
+- Warm-cream canvas `{colors.canvas}` (`#fffefb`) — not pure white. The temperature IS the brand voice.
+- Deep coffee ink `{colors.ink}` (`#201515`) — not pure black. Warmth carries through to text.
+- Proprietary Degular Display for hero-scale, Inter for everything else. Two-face system.
+- `{rounded.md}` 12 px for buttons and cards — the brand's middle-radius signature.
+- A muted cream / coffee neutral ladder — `{colors.canvas-soft}` (`#f8f4f0`), `{colors.mute}` (`#c5c0b1`), `{colors.body-mid}` (`#939084`), `{colors.body}` (`#605d52`) — every neutral carries warmth, none are cool grey.
+
+## Colors
+
+### Brand & Accent
+- **Zapier Orange** (`{colors.primary}` — `#ff4f00`): The single brand accent. Every primary CTA pill, every conversion target. The saturated orange IS the brand.
+
+### Surface
+- **Canvas** (`{colors.canvas}` — `#fffefb`): Warm off-white page background.
+- **Canvas Soft** (`{colors.canvas-soft}` — `#f8f4f0`): Cream-tinted soft surface for cards / inset regions.
+
+### Text
+- **Ink** (`{colors.ink}` — `#201515`): Deep coffee — every heading and primary text.
+- **Ink Soft** (`{colors.ink-soft}` — `#2f2a26`): Near-black with brown warmth.
+- **Ink Mid** (`{colors.ink-mid}` — `#36342e`): Mid-emphasis text.
+- **Body** (`{colors.body}` — `#605d52`): Default body text color.
+- **Body Mid** (`{colors.body-mid}` — `#939084`): Secondary body / metadata.
+- **Mute** (`{colors.mute}` — `#c5c0b1`): Lowest-priority text — fine print, low-emphasis captions.
+
+### Semantic
+The brand doesn't surface a separate semantic palette on its marketing pages. Status / validation cues borrow from the ink + orange hierarchy.
+
+## Typography
+
+### Font Family
+Two faces ladder the system:
+1. **Degular Display** — proprietary geometric display sans used for hero headlines at weight 500. The brand's typographic signature.
+2. **Inter** — used for sub-displays, body, links, buttons, and eyebrows. Weights 400 / 500 / 600 / 700 are present.
+
+### Hierarchy
+
+| Token | Size | Weight | Line Height | Letter Spacing | Use |
+|---|---|---|---|---|---|
+| `{typography.display-xl}` | 56px | 500 | 56px | 0 | Hero headline (Degular Display). |
+| `{typography.display-lg}` | 48px | 500 | 48px | 0 | Sub-hero displays (Degular Display). |
+| `{typography.display-md}` | 32px | 500 | 36px | 1px | Section displays (Degular Display, positive tracking). |
+| `{typography.display-sub-lg}` | 48px | 500 | 49.92px | 0 | Inter-rendered sub-display. |
+| `{typography.display-sub-md}` | 32px | 400 | 40px | 0 | Inter sub-display. |
+| `{typography.display-sub-sm}` | 24px | 600 | 30px | -0.6px | Card titles (Inter, semibold). |
+| `{typography.display-xs}` | 20px | 700 | 25px | -0.5px | Inline display micro-headings. |
+| `{typography.body-lg}` | 20px | 400 | 30px | -0.2px | Lead paragraphs. |
+| `{typography.body-md}` | 18px | 400 | 27px | 0 | Default body. |
+| `{typography.body-md-strong}` | 18px | 600 | 27px | 0 | Bolded inline body. |
+| `{typography.body-sm}` | 16px | 400 | 24px | 0 | Secondary body. |
+| `{typography.body-sm-strong}` | 16px | 600 | 24px | 0 | Bold caption. |
+| `{typography.caption}` | 14px | 400 | 21px | 0 | Fine print. |
+| `{typography.eyebrow-uppercase}` | 14px | 500 | 14px | 1px | UPPERCASE eyebrow (Degular Display, positive tracking). |
+| `{typography.button-md}` | 18px | 600 | 27px | 0 | Primary button label. |
+| `{typography.button-sm}` | 14.4px | 700 | 14.4px | 0.144px | Small button label. |
+
+### Principles
+- **Degular Display 500 for hero, Inter for everything else.** Strict role separation.
+- **Positive tracking on the Degular eyebrow** — `1 px` at 14 px is the brand's signature label style.
+- **Sentence-case headlines.** The brand never uppercases display sizes.
+
+### Note on Font Substitutes
+Degular Display is proprietary. Open-source substitutes:
+- **Display** — *Inter* weight 500 at hero scale comes closest. *Mona Sans* weight 500 is a softer alternative.
+- **Sub-display + body** — *Inter* is the brand's actual second face.
+
+## Layout
+
+### Spacing System
+- **Base unit**: 4 px.
+- **Tokens**: `{spacing.xxs}` 2 px · `{spacing.xs}` 4 px · `{spacing.sm}` 8 px · `{spacing.md}` 12 px · `{spacing.lg}` 16 px · `{spacing.xl}` 24 px · `{spacing.2xl}` 32 px · `{spacing.3xl}` 48 px · `{spacing.4xl}` 64 px.
+- **Section padding**: bands use `{spacing.4xl}` 64 px top/bottom.
+- **Card interior**: cards at `{spacing.xl}` 24 px.
+
+### Grid & Container
+- Marketing container ~1280 px wide; centred with gutters.
+- Hero: split at desktop (headline left, illustration right); stacked at mobile.
+- Pricing tier grid: 3 / 4-up at desktop.
+
+### Responsive Strategy
+
+#### Breakpoints
+
+| Name | Width | Key Changes |
+|---|---|---|
+| Mobile | < 768px | Hero stacks; grids 1-up; hamburger nav. |
+| Tablet | 768–1023px | 2-up grids. |
+| Desktop | ≥ 1024px | Full grids; hero split. |
+
+#### Touch Targets
+Buttons render ~48 px tall (12 vertical padding + 27 line). WCAG AAA met.
+
+#### Image Behavior
+The brand uses illustrative SVGs of zaps / workflows + product screenshots inside `{rounded.md}` framed cards. Photography is rare.
+
+## Elevation & Depth
+
+| Level | Treatment | Use |
+|---|---|---|
+| Level 0 — Flat | No shadow, no border. | Default for hero. |
+| Level 1 — Hairline | 1 px solid `{colors.ink}` border. | Pricing-tier card chrome, outline buttons. |
+| Level 2 — Soft Card | `{colors.canvas-soft}` cream fill against `{colors.canvas}` page. | Default content cards — surface contrast carries elevation. |
+
+## Shapes
+
+### Border Radius Scale
+
+| Token | Value | Use |
+|---|---|---|
+| `{rounded.none}` | 0px | Full-bleed bands. |
+| `{rounded.sm}` | 6px | Inline pills, form inputs. |
+| `{rounded.md}` | 12px | The brand's canonical button + card radius. |
+| `{rounded.pill}` | 9999px | Status pills, badges. |
+| `{rounded.full}` | 9999px | Circular icon containers. |
+
+## Components
+
+### Buttons
+
+**`button-primary`** — the orange CTA.
+- Background `{colors.primary}`, text `{colors.on-primary}` (warm white), label `{typography.button-md}`, padding `{spacing.md} {spacing.xl}`, shape `{rounded.md}` 12 px.
+
+**`button-secondary`** — the dark coffee-ink CTA.
+- Background `{colors.ink}`, text `{colors.on-primary}`, same typography / padding / shape.
+
+**`button-tertiary`** — the outline CTA.
+- Background `{colors.canvas}`, text `{colors.ink}`, 1 px solid `{colors.ink}` border, same typography / padding / shape.
+
+**`button-text`** — text-only CTA used inside cards / nav.
+- Background `{colors.canvas}`, text `{colors.ink}`, body in `{typography.button-sm}`, padding `{spacing.sm} {spacing.lg}`, shape `{rounded.md}`.
+
+### Cards & Containers
+
+**`card-content`** — the default cream content card.
+- Background `{colors.canvas-soft}`, text `{colors.ink}`, padding `{spacing.xl}`, shape `{rounded.md}`.
+
+**`card-feature-cream`** — the cream feature card.
+- Same chrome as `card-content`. Hosts headline + body + illustration.
+
+**`card-feature-dark`** — the polarity-flipped dark coffee card.
+- Background `{colors.ink}`, text `{colors.on-primary}`, padding `{spacing.xl}`, shape `{rounded.md}`.
+
+**`pricing-card`** — the default pricing tier card.
+- Background `{colors.canvas}`, text `{colors.ink}`, 1 px solid `{colors.ink}` border, padding `{spacing.xl}`, shape `{rounded.md}`.
+
+**`pricing-card-featured`** — the polarity-flipped featured pricing tier.
+- Background `{colors.ink}`, text `{colors.on-primary}`, same shape / padding.
+
+### Inputs & Forms
+
+**`text-input`** — the canonical text input.
+- Background `{colors.canvas}`, text `{colors.ink}`, 1 px solid `{colors.ink}` border, body in `{typography.body-md}`, padding `{spacing.md} {spacing.lg}`, shape `{rounded.sm}` 6 px.
+
+### Navigation
+
+**`nav-bar`** — the sticky top nav.
+- Background `{colors.canvas}`, text `{colors.ink}`, padding `{spacing.md} {spacing.xl}`.
+
+**`nav-link`** — link items inside nav.
+- Text `{colors.ink}`, set in `{typography.body-sm}`.
+
+**`footer`** — the dark coffee footer.
+- Background `{colors.ink}`, text `{colors.canvas-soft}`, padding `{spacing.3xl} {spacing.xl}`. Body in `{typography.body-sm}`.
+
+### Signature Components
+
+**`hero-band`** — the cream hero band.
+- Background `{colors.canvas}`, text `{colors.ink}`, padding `{spacing.4xl} {spacing.xl}`. Headline in `{typography.display-xl}` (Degular Display 56 px / 500).
+
+**`hero-band-dark`** — the polarity-flipped dark coffee hero.
+- Background `{colors.ink}`, text `{colors.on-primary}`, same scale.
+
+**`content-band-cream`** — the cream content band that follows hero.
+- Background `{colors.canvas-soft}`, text `{colors.ink}`, padding `{spacing.4xl} {spacing.xl}`. Section headline in `{typography.display-lg}`.
+
+**`content-band-light`** — the white content band.
+- Background `{colors.canvas}`, text `{colors.ink}`, same padding / scale.
+
+**`eyebrow-uppercase`** — the small UPPERCASE Degular eyebrow above section headlines.
+- Text `{colors.ink}`, set in `{typography.eyebrow-uppercase}` (14 px / 500 / `1 px` tracking).
+
+**`badge-pill`** — the inline pill for metadata / tag.
+- Background `{colors.canvas-soft}`, text `{colors.ink}`, body in `{typography.body-sm}`, padding `{spacing.xs} {spacing.md}`, shape `{rounded.pill}`.
+
+### Examples (illustrative)
+
+> Auto-derived kit-mirror demonstration surfaces (`scripts/derive-examples-block.mjs`). Each `ex-*` entry references brand-native primitives so downstream consumers (`/preview-design`, `/generate-kit`) re-skin the same 10 surfaces consistently. `TO_FILL` markers indicate missing primitives — resolve in the LLM judgment pass.
+
+**`ex-pricing-tier`** — Default Pricing tier card. Re-uses feature-card chrome with brand canvas-soft surface.
+- Properties: `backgroundColor`, `textColor`, `borderColor`, `rounded`, `padding`
+
+**`ex-pricing-tier-featured`** — Featured/highlighted tier — polarity-flipped surface (dark fill + light text in light mode, light fill + dark text in dark mode).
+- Properties: `backgroundColor`, `textColor`, `rounded`, `padding`
+
+**`ex-product-selector`** — What's Included summary card — re-purposed for SaaS / B2B verticals (NOT a literal product gallery).
+- Properties: `backgroundColor`, `rounded`, `padding`
+
+**`ex-cart-drawer`** — Subscription summary — re-purposed for SaaS / B2B (line items per add-on, not literal cart).
+- Properties: `backgroundColor`, `rounded`, `padding`, `item-divider`
+
+**`ex-app-shell-row`** — Sidebar nav row inside the App Shell example. Active state uses brand primary as the indicator.
+- Properties: `backgroundColor`, `activeIndicator`, `rounded`, `padding`
+
+**`ex-data-table-cell`** — Default data-table th + td chrome. Header uses mono-caps eyebrow typography; body uses body-sm.
+- Properties: `headerBackground`, `headerTypography`, `bodyTypography`, `cellPadding`, `rowBorder`
+
+**`ex-auth-form-card`** — Sign-in / sign-up card. Re-uses feature-card chrome with text-input primitives inside.
+- Properties: `backgroundColor`, `rounded`, `padding`
+
+**`ex-modal-card`** — Modal dialog surface — same chrome as feature-card with elevated shadow.
+- Properties: `backgroundColor`, `rounded`, `padding`
+
+**`ex-empty-state-card`** — Empty-state illustration frame.
+- Properties: `backgroundColor`, `rounded`, `padding`, `captionTypography`
+
+**`ex-toast`** — Toast notification surface — feature-card shape + medium shadow.
+- Properties: `backgroundColor`, `rounded`, `padding`, `typography`
+
+
+## Do's and Don'ts
+
+### Do
+- Reserve `{colors.primary}` Zapier orange for every primary CTA. The saturated orange IS the conversion signature.
+- Keep canvas WARM — `{colors.canvas}` `#fffefb` cream, not pure white. The temperature is the brand voice.
+- Set hero headlines in `{typography.display-xl}` Degular Display weight 500. Sentence-case, no uppercase.
+- Pair Degular Display (hero, eyebrow) with Inter (everything else). Two faces, two roles.
+- Use `{rounded.md}` 12 px for buttons + cards. The middle radius is the brand's signature.
+- Pair orange CTA with ink-dark text on cream backgrounds — the three-token rhythm is the brand's whole conversion story.
+
+### Don't
+- Don't replace cream canvas with pure white. The warmth is the brand.
+- Don't use pure black ink. The coffee-warmth in `#201515` carries through every text color.
+- Don't render CTAs as pills. The brand's button is 12 px rounded rectangle.
+- Don't introduce a second chromatic accent. Orange + cream + coffee is the entire palette.
+- Don't substitute Degular Display with a cool geometric sans (e.g., generic Helvetica) — the brand's display face has warm proportions that the substitute doesn't capture.

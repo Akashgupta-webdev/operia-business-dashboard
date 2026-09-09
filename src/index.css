@@ -11,33 +11,33 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 
-  /* Brand scale */
-  --primary-50: #eef2ff;
-  --primary-100: #e0e7ff;
-  --primary-200: #c7d2fe;
-  --primary-300: #a5b4fc;
-  --primary-400: #818cf8;
-  --primary-500: #6366f1;
-  --primary-600: #4f46e5;
-  --primary-700: #4338ca;
-  --primary-800: #3730a3;
-  --primary-900: #312e81;
+  /* Zapier brand; darker steps provide readable text on cream surfaces. */
+  --primary-50: #fff3eb;
+  --primary-100: #ffe3d1;
+  --primary-200: #ffc5a3;
+  --primary-300: #ffa275;
+  --primary-400: #ff7a3d;
+  --primary-500: #ff4f00;
+  --primary-600: #c93e00;
+  --primary-700: #a83200;
+  --primary-800: #852c0c;
+  --primary-900: #68250e;
 
   /* Neutral scale */
-  --neutral-0: #ffffff;
-  --neutral-50: #f8fafc;
-  --neutral-100: #f1f5f9;
-  --neutral-200: #e2e8f0;
-  --neutral-300: #cbd5e1;
-  --neutral-400: #94a3b8;
-  --neutral-500: #64748b;
-  --neutral-600: #475569;
-  --neutral-700: #334155;
-  --neutral-800: #1e293b;
-  --neutral-900: #0f172a;
-  --neutral-950: #020617;
+  --neutral-0: #fffefb;
+  --neutral-50: #f8f4f0;
+  --neutral-100: #eee9e2;
+  --neutral-200: #ddd7cb;
+  --neutral-300: #c5c0b1;
+  --neutral-400: #939084;
+  --neutral-500: #767266;
+  --neutral-600: #605d52;
+  --neutral-700: #36342e;
+  --neutral-800: #2f2a26;
+  --neutral-900: #201515;
+  --neutral-950: #170f0f;
 
-  /* Semantic scales */
+  /* Operational status colors remain distinct for CRM validation and compliance. */
   --success-50: #f0fdf4;
   --success-100: #dcfce7;
   --success-500: #22c55e;
@@ -60,38 +60,38 @@
   --info-700: #1d4ed8;
 
   /* Semantic application tokens */
-  --app-background: var(--neutral-50);
-  --surface-primary: var(--neutral-0);
+  --app-background: var(--neutral-0);
+  --surface-primary: var(--neutral-50);
   --surface-secondary: var(--neutral-100);
   --text-primary: var(--neutral-900);
   --text-secondary: var(--neutral-600);
   --text-muted: var(--neutral-500);
-  --border-default: var(--neutral-200);
+  --border-default: var(--neutral-300);
 
   /* Authentication experience */
-  --auth-panel-start: #471790;
-  --auth-panel-end: #6725c7;
-  --auth-page-glow: #ede9fe;
+  --auth-panel-start: var(--neutral-900);
+  --auth-panel-end: var(--neutral-800);
+  --auth-page-glow: var(--primary-100);
 
   /* shadcn/ui tokens */
   --background: var(--app-background);
   --foreground: var(--text-primary);
   --card: var(--surface-primary);
   --card-foreground: var(--text-primary);
-  --popover: var(--surface-primary);
+  --popover: var(--app-background);
   --popover-foreground: var(--text-primary);
-  --primary: var(--primary-600);
+  --primary: var(--primary-500);
   --primary-foreground: var(--neutral-0);
-  --secondary: var(--surface-secondary);
-  --secondary-foreground: var(--neutral-700);
+  --secondary: var(--neutral-900);
+  --secondary-foreground: var(--neutral-0);
   --muted: var(--surface-secondary);
   --muted-foreground: var(--text-muted);
-  --accent: var(--primary-50);
-  --accent-foreground: var(--primary-700);
+  --accent: var(--neutral-50);
+  --accent-foreground: var(--neutral-900);
   --destructive: var(--danger-600);
   --destructive-foreground: var(--neutral-0);
   --border: var(--border-default);
-  --input: var(--border-default);
+  --input: var(--neutral-900);
   --ring: var(--primary-600);
 
   /* Extended surfaces and semantic states */
@@ -100,17 +100,17 @@
   --surface-bright: var(--neutral-0);
   --surface-container-lowest: var(--neutral-0);
   --surface-container-low: var(--neutral-50);
-  --surface-container: var(--neutral-100);
+  --surface-container: var(--neutral-50);
   --surface-container-high: var(--neutral-100);
   --surface-container-highest: var(--neutral-200);
   --surface-variant: var(--neutral-100);
   --on-surface-variant: var(--text-secondary);
-  --outline: var(--neutral-300);
+  --outline: var(--neutral-900);
   --outline-variant: var(--neutral-200);
   --inverse-surface: var(--neutral-900);
   --inverse-foreground: var(--neutral-100);
   --inverse-primary: var(--primary-300);
-  --tertiary: var(--info-600);
+  --tertiary: var(--neutral-900);
   --tertiary-foreground: var(--neutral-0);
   --success: var(--success-600);
   --success-foreground: var(--neutral-0);
@@ -128,38 +128,38 @@
   --info-container-foreground: var(--info-700);
 
   /* Data visualization palette */
-  --chart-1: #4f46e5;
-  --chart-2: #0ea5e9;
-  --chart-3: #14b8a6;
-  --chart-4: #f59e0b;
-  --chart-5: #8b5cf6;
-  --chart-6: #ec4899;
+  --chart-1: var(--primary-500);
+  --chart-2: var(--neutral-900);
+  --chart-3: var(--neutral-600);
+  --chart-4: var(--primary-300);
+  --chart-5: var(--neutral-400);
+  --chart-6: var(--primary-800);
 
-  --sidebar: var(--surface-primary);
-  --sidebar-foreground: var(--text-secondary);
-  --sidebar-primary: var(--primary-600);
+  --sidebar: var(--app-background);
+  --sidebar-foreground: var(--text-primary);
+  --sidebar-primary: var(--primary);
   --sidebar-primary-foreground: var(--neutral-0);
-  --sidebar-accent: var(--primary-50);
-  --sidebar-accent-foreground: var(--primary-700);
+  --sidebar-accent: var(--neutral-50);
+  --sidebar-accent-foreground: var(--neutral-900);
   --sidebar-border: var(--border-default);
   --sidebar-ring: var(--primary-600);
 
   /* Shape, elevation, layout, and motion */
-  --radius: 0.5rem;
-  --radius-xs-token: 0.25rem;
+  --radius: 0.75rem;
+  --radius-xs-token: 0.375rem;
   --radius-sm-token: 0.375rem;
-  --radius-md-token: 0.5rem;
-  --radius-lg-token: 0.625rem;
+  --radius-md-token: 0.75rem;
+  --radius-lg-token: 0.75rem;
   --radius-xl-token: 0.75rem;
-  --radius-2xl-token: 1rem;
+  --radius-2xl-token: 0.75rem;
   --sidebar-width: 15rem;
   --header-height: 4rem;
-  --container-max-width: 90rem;
+  --container-max-width: 80rem;
   --page-gutter: 1rem;
   --page-margin: 1.5rem;
-  --shadow-level-1: 0 1px 2px rgb(15 23 42 / 6%);
-  --shadow-level-2: 0 4px 10px rgb(15 23 42 / 10%);
-  --shadow-level-3: 0 12px 28px rgb(15 23 42 / 16%);
+  --shadow-level-1: none;
+  --shadow-level-2: 0 4px 12px rgb(32 21 21 / 10%);
+  --shadow-level-3: 0 12px 28px rgb(32 21 21 / 16%);
   --duration-fast: 100ms;
   --duration-default: 150ms;
   --duration-medium: 200ms;
@@ -173,20 +173,21 @@
   --z-tooltip: 70;
 }
 
+/* Warm dark adaptation preserves the existing theme switch. */
 .dark {
   color-scheme: dark;
 
   --app-background: var(--neutral-950);
   --surface-primary: var(--neutral-900);
   --surface-secondary: var(--neutral-800);
-  --text-primary: var(--neutral-100);
-  --text-secondary: var(--neutral-400);
-  --text-muted: var(--neutral-500);
+  --text-primary: var(--neutral-0);
+  --text-secondary: var(--neutral-300);
+  --text-muted: var(--neutral-400);
   --border-default: var(--neutral-700);
 
-  --auth-panel-start: #281052;
-  --auth-panel-end: #4c1d95;
-  --auth-page-glow: #312e81;
+  --auth-panel-start: var(--neutral-900);
+  --auth-panel-end: var(--neutral-800);
+  --auth-page-glow: var(--primary-900);
 
   --background: var(--app-background);
   --foreground: var(--text-primary);
@@ -194,10 +195,10 @@
   --card-foreground: var(--text-primary);
   --popover: var(--surface-primary);
   --popover-foreground: var(--text-primary);
-  --primary: var(--primary-400);
-  --primary-foreground: var(--neutral-950);
-  --secondary: var(--surface-secondary);
-  --secondary-foreground: var(--neutral-100);
+  --primary: var(--primary-500);
+  --primary-foreground: var(--neutral-0);
+  --secondary: var(--neutral-0);
+  --secondary-foreground: var(--neutral-900);
   --muted: var(--surface-secondary);
   --muted-foreground: var(--text-secondary);
   --accent: color-mix(in srgb, var(--primary-500) 18%, var(--surface-primary));
@@ -205,7 +206,7 @@
   --destructive: var(--danger-500);
   --destructive-foreground: var(--neutral-0);
   --border: var(--border-default);
-  --input: var(--neutral-700);
+  --input: var(--neutral-400);
   --ring: var(--primary-400);
 
   --surface: var(--app-background);
@@ -223,8 +224,8 @@
   --inverse-surface: var(--neutral-100);
   --inverse-foreground: var(--neutral-900);
   --inverse-primary: var(--primary-700);
-  --tertiary: var(--info-500);
-  --tertiary-foreground: var(--neutral-950);
+  --tertiary: var(--neutral-100);
+  --tertiary-foreground: var(--neutral-900);
   --success: var(--success-500);
   --success-foreground: var(--neutral-950);
   --success-container: color-mix(in srgb, var(--success-600) 24%, var(--surface-primary));
@@ -240,29 +241,29 @@
   --info-container: color-mix(in srgb, var(--info-600) 24%, var(--surface-primary));
   --info-container-foreground: var(--info-100);
 
-  --chart-1: #818cf8;
-  --chart-2: #38bdf8;
-  --chart-3: #2dd4bf;
-  --chart-4: #fbbf24;
-  --chart-5: #a78bfa;
-  --chart-6: #f472b6;
+  --chart-1: var(--primary-500);
+  --chart-2: var(--neutral-0);
+  --chart-3: var(--neutral-300);
+  --chart-4: var(--primary-300);
+  --chart-5: var(--neutral-400);
+  --chart-6: var(--primary-200);
 
   --sidebar: var(--surface-primary);
   --sidebar-foreground: var(--text-secondary);
-  --sidebar-primary: var(--primary-400);
-  --sidebar-primary-foreground: var(--neutral-950);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
   --sidebar-accent: var(--accent);
   --sidebar-accent-foreground: var(--accent-foreground);
   --sidebar-border: var(--border-default);
   --sidebar-ring: var(--primary-400);
 
-  --shadow-level-1: 0 1px 2px rgb(0 0 0 / 24%);
+  --shadow-level-1: none;
   --shadow-level-2: 0 4px 12px rgb(0 0 0 / 32%);
   --shadow-level-3: 0 12px 32px rgb(0 0 0 / 42%);
 }
 
 @theme inline {
-  --font-heading: "Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Degular Display", "Inter Variable", Inter, system-ui, sans-serif;
   --font-sans: "Inter Variable", Inter, ui-sans-serif, system-ui, sans-serif;
 
   --color-background: var(--background);
@@ -388,34 +389,55 @@
   --radius-lg: var(--radius-lg-token);
   --radius-xl: var(--radius-xl-token);
   --radius-2xl: var(--radius-2xl-token);
-  --radius-3xl: 1.5rem;
-  --radius-4xl: 2rem;
+  --radius-3xl: var(--radius-md-token);
+  --radius-4xl: var(--radius-md-token);
   --shadow-sm: var(--shadow-level-1);
   --shadow-md: var(--shadow-level-2);
   --shadow-lg: var(--shadow-level-3);
   --shadow-card: var(--shadow-level-1);
   --shadow-overlay: var(--shadow-level-2);
 
-  --text-display: 3rem;
+  --text-display-xl: 3.5rem;
+  --text-display-xl--line-height: 3.5rem;
+  --text-display-xl--font-weight: 500;
+  --text-display-md: 2rem;
+  --text-display-md--line-height: 2.25rem;
+  --text-display-md--font-weight: 500;
+  --text-display-md--letter-spacing: 0.0625rem;
+  --text-button-md: 1.125rem;
+  --text-button-md--line-height: 1.6875rem;
+  --text-button-md--font-weight: 600;
+  --text-button-sm: 0.9rem;
+  --text-button-sm--line-height: 0.9rem;
+  --text-button-sm--font-weight: 700;
+  --text-button-sm--letter-spacing: 0.009rem;
+  --text-eyebrow: 0.875rem;
+  --text-eyebrow--line-height: 0.875rem;
+  --text-eyebrow--font-weight: 500;
+  --text-eyebrow--letter-spacing: 0.0625rem;
+
+  --text-display: 3.5rem;
   --text-display--line-height: 3.5rem;
-  --text-page-heading: 1.875rem;
-  --text-page-heading--line-height: 2.375rem;
+  --text-display--font-weight: 500;
+  --text-page-heading: 2rem;
+  --text-page-heading--line-height: 2.25rem;
   --text-section-heading: 1.5rem;
-  --text-section-heading--line-height: 2rem;
+  --text-section-heading--line-height: 1.875rem;
   --text-subsection: 1.25rem;
-  --text-subsection--line-height: 1.75rem;
-  --text-body-lg: 1.125rem;
-  --text-body-lg--line-height: 1.75rem;
-  --text-body-md: 0.875rem;
-  --text-body-md--line-height: 1.25rem;
-  --text-body-sm: 0.8125rem;
-  --text-body-sm--line-height: 1.125rem;
-  --text-caption: 0.75rem;
-  --text-caption--line-height: 1rem;
+  --text-subsection--line-height: 1.5625rem;
+  --text-body-lg: 1.25rem;
+  --text-body-lg--line-height: 1.875rem;
+  --text-body-md: 1.125rem;
+  --text-body-md--line-height: 1.6875rem;
+  --text-body-sm: 1rem;
+  --text-body-sm--line-height: 1.5rem;
+  --text-caption: 0.875rem;
+  --text-caption--line-height: 1.3125rem;
 
   /* Compatibility aliases for existing components. */
-  --text-display-lg: var(--text-page-heading);
-  --text-display-lg--line-height: var(--text-page-heading--line-height);
+  --text-display-lg: 3rem;
+  --text-display-lg--line-height: 3rem;
+  --text-display-lg--font-weight: 500;
   --text-headline-lg: var(--text-section-heading);
   --text-headline-lg--line-height: var(--text-section-heading--line-height);
   --text-headline-md: var(--text-subsection);
