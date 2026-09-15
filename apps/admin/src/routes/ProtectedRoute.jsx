@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import SuspenseLoader from "@/components/suspense-loader";
-import useAuthSession from "@/hooks/useAuthSession";
+import useAuthSession from "@/features/auth/hooks/useAuthSession";
 
 // Route element children are supplied by the router configuration.
 // eslint-disable-next-line react/prop-types

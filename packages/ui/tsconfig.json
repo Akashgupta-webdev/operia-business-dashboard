@@ -17,7 +17,6 @@
 
     "noEmit": true,
 
-    "baseUrl": ".",
     "paths": {
       "@operio/ui/*": ["./src/*"],
       "@/*": ["./src/*"]

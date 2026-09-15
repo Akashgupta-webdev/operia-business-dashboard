@@ -4,7 +4,7 @@ import * as React from "react"
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
 import { XIcon } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@operio/ui/components/button"
 import { cn } from "@operio/ui/lib/utils";
 
 function Dialog({ ...props }: DialogPrimitive.Root.Props) {

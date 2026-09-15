@@ -3,24 +3,24 @@ import { mergeProps } from "@base-ui/react/merge-props"
 import { useRender } from "@base-ui/react/use-render"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import { useIsMobile } from "@/hooks/use-mobile"
+import { useIsMobile } from "@operio/ui/hooks/use-mobile"
 import { cn } from "@operio/ui/lib/utils";
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Separator } from "@/components/ui/separator"
+import { Button } from "@operio/ui/components/button"
+import { Input } from "@operio/ui/components/input"
+import { Separator } from "@operio/ui/components/separator"
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@/components/ui/sheet"
-import { Skeleton } from "@/components/ui/skeleton"
+} from "@operio/ui/components/sheet"
+import { Skeleton } from "@operio/ui/components/skeleton"
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "@operio/ui/components/tooltip"
 import { PanelLeftIcon } from "lucide-react"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"

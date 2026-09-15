@@ -1,0 +1,677 @@
+[
+  {
+    "name": "login",
+    "module": "features/auth/api/auth.api.js",
+    "args": [
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "post",
+      "args": [
+        "/api/v1/auth/login",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "refresh",
+    "module": "features/auth/api/auth.api.js",
+    "args": [],
+    "expected": {
+      "method": "post",
+      "args": [
+        "/api/v1/auth/refresh"
+      ]
+    }
+  },
+  {
+    "name": "logout",
+    "module": "features/auth/api/auth.api.js",
+    "args": [],
+    "expected": {
+      "method": "post",
+      "args": [
+        "/api/v1/auth/logout"
+      ]
+    }
+  },
+  {
+    "name": "logoutAll",
+    "module": "features/auth/api/auth.api.js",
+    "args": [],
+    "expected": {
+      "method": "post",
+      "args": [
+        "/api/v1/auth/logout-all"
+      ]
+    }
+  },
+  {
+    "name": "changePassword",
+    "module": "features/auth/api/auth.api.js",
+    "args": [
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "post",
+      "args": [
+        "/api/v1/auth/change-password",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "sessions",
+    "module": "features/auth/api/auth.api.js",
+    "args": [],
+    "expected": {
+      "method": "get",
+      "args": [
+        "/api/v1/auth/session"
+      ]
+    }
+  },
+  {
+    "name": "me",
+    "module": "features/auth/api/auth.api.js",
+    "args": [],
+    "expected": {
+      "method": "get",
+      "args": [
+        "/api/v1/user/me"
+      ]
+    }
+  },
+  {
+    "name": "getClients",
+    "module": "features/clients/api/clients.api.js",
+    "args": [
+      {
+        "page": 2,
+        "limit": 10,
+        "search": "sample"
+      }
+    ],
+    "expected": {
+      "method": "get",
+      "args": [
+        "/api/v1/client",
+        {
+          "params": {
+            "page": 2,
+            "limit": 10,
+            "search": "sample"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "getClientDashboardKPI",
+    "module": "features/dashboard/api/dashboard.api.js",
+    "args": [
+      {
+        "page": 2,
+        "limit": 10,
+        "search": "sample"
+      }
+    ],
+    "expected": {
+      "method": "get",
+      "args": [
+        "/api/v1/client/dashboard/kpi",
+        {
+          "params": {
+            "page": 2,
+            "limit": 10,
+            "search": "sample"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "getProfitLoss",
+    "module": "features/finance/api/finance.api.js",
+    "args": [
+      {
+        "page": 2,
+        "limit": 10,
+        "search": "sample"
+      }
+    ],
+    "expected": {
+      "method": "get",
+      "args": [
+        "/api/v1/profit-loss",
+        {
+          "params": {
+            "page": 2,
+            "limit": 10,
+            "search": "sample"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "getRevenueInflows",
+    "module": "features/finance/api/finance.api.js",
+    "args": [
+      {
+        "page": 2,
+        "limit": 10,
+        "search": "sample"
+      }
+    ],
+    "expected": {
+      "method": "get",
+      "args": [
+        "/api/v1/profit-loss/revenue-inflow",
+        {
+          "params": {
+            "page": 2,
+            "limit": 10,
+            "search": "sample"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "createExpense",
+    "module": "features/finance/api/finance.api.js",
+    "args": [
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "post",
+      "args": [
+        "/api/v1/profit-loss/expense",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "getClient",
+    "module": "features/clients/api/clients.api.js",
+    "args": [
+      "fixture /?#"
+    ],
+    "expected": {
+      "method": "get",
+      "args": [
+        "/api/v1/client/fixture%20%2F%3F%23"
+      ]
+    }
+  },
+  {
+    "name": "updateClient",
+    "module": "features/clients/api/clients.api.js",
+    "args": [
+      "fixture /?#",
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "patch",
+      "args": [
+        "/api/v1/client/fixture%20%2F%3F%23",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "updateClientCompany",
+    "module": "features/clients/api/companies.api.js",
+    "args": [
+      "fixture /?#",
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "patch",
+      "args": [
+        "/api/v1/client/fixture%20%2F%3F%23/company",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "updateClientMember",
+    "module": "features/clients/api/members.api.js",
+    "args": [
+      "fixture /?#",
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "patch",
+      "args": [
+        "/api/v1/client/member/fixture%20%2F%3F%23",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "updateClientVehicle",
+    "module": "features/clients/api/vehicles.api.js",
+    "args": [
+      "fixture /?#",
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "patch",
+      "args": [
+        "/api/v1/client/vehicle/fixture%20%2F%3F%23",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "updateClientDriver",
+    "module": "features/clients/api/drivers.api.js",
+    "args": [
+      "fixture /?#",
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "patch",
+      "args": [
+        "/api/v1/client/driver/fixture%20%2F%3F%23",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "updateClientService",
+    "module": "features/clients/api/services.api.js",
+    "args": [
+      "fixture /?#",
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "patch",
+      "args": [
+        "/api/v1/client/service/fixture%20%2F%3F%23",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "deleteClientService",
+    "module": "features/clients/api/services.api.js",
+    "args": [
+      "fixture /?#"
+    ],
+    "expected": {
+      "method": "delete",
+      "args": [
+        "/api/v1/client/service/fixture%20%2F%3F%23"
+      ]
+    }
+  },
+  {
+    "name": "createClientMember",
+    "module": "features/clients/api/members.api.js",
+    "args": [
+      "fixture /?#",
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "post",
+      "args": [
+        "/api/v1/client/fixture%20%2F%3F%23/member",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "createClientVehicle",
+    "module": "features/clients/api/vehicles.api.js",
+    "args": [
+      "fixture /?#",
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "post",
+      "args": [
+        "/api/v1/client/fixture%20%2F%3F%23/vehicle",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "createClientDriver",
+    "module": "features/clients/api/drivers.api.js",
+    "args": [
+      "fixture /?#",
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "post",
+      "args": [
+        "/api/v1/client/fixture%20%2F%3F%23/driver",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "createClientService",
+    "module": "features/clients/api/services.api.js",
+    "args": [
+      "fixture /?#",
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "post",
+      "args": [
+        "/api/v1/client/fixture%20%2F%3F%23/service",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "addClientDocument",
+    "module": "features/clients/api/documents.api.js",
+    "args": [
+      "fixture /?#",
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "post",
+      "args": [
+        "/api/v1/client/fixture%20%2F%3F%23/document",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "deleteClientDocument",
+    "module": "features/clients/api/documents.api.js",
+    "args": [
+      "fixture /?#"
+    ],
+    "expected": {
+      "method": "delete",
+      "args": [
+        "/api/v1/client/document/fixture%20%2F%3F%23"
+      ]
+    }
+  },
+  {
+    "name": "deleteClientRelatedRecord",
+    "module": "features/clients/api/related-records.api.js",
+    "args": [
+      "fixture /?#",
+      "member"
+    ],
+    "expected": {
+      "method": "delete",
+      "args": [
+        "/api/v1/client/related",
+        {
+          "params": {
+            "_id": "fixture /?#",
+            "actionOn": "member"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "createClient",
+    "module": "features/clients/api/clients.api.js",
+    "args": [
+      {
+        "payload": {
+          "name": "Synthetic contract fixture"
+        }
+      }
+    ],
+    "expected": {
+      "method": "post",
+      "args": [
+        "/api/v1/client",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "createClientWithService",
+    "module": "features/clients/api/clients.api.js",
+    "args": [
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "post",
+      "args": [
+        "/api/v1/clients/with-service",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "getServices",
+    "module": "features/services/api/services.api.js",
+    "args": [
+      {
+        "page": 2,
+        "limit": 10,
+        "search": "sample"
+      }
+    ],
+    "expected": {
+      "method": "get",
+      "args": [
+        "/api/v1/service",
+        {
+          "params": {
+            "page": 2,
+            "limit": 10,
+            "search": "sample"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "createService",
+    "module": "features/services/api/services.api.js",
+    "args": [
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "post",
+      "args": [
+        "/api/v1/service",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "getClientRenewals",
+    "module": "features/renewals/api/renewals.api.js",
+    "args": [
+      {
+        "page": 2,
+        "limit": 10
+      }
+    ],
+    "expected": {
+      "method": "get",
+      "args": [
+        "/api/v1/client/renewals",
+        {
+          "params": {
+            "page": 2,
+            "limit": 10
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "getClientCompanies",
+    "module": "features/companies/api/companies.api.js",
+    "args": [
+      {
+        "page": 2,
+        "limit": 10,
+        "search": "sample"
+      }
+    ],
+    "expected": {
+      "method": "get",
+      "args": [
+        "/api/v1/client/companies",
+        {
+          "params": {
+            "page": 2,
+            "limit": 10,
+            "search": "sample"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "getClientServices",
+    "module": "features/clients/api/services.api.js",
+    "args": [
+      "fixture /?#",
+      {
+        "page": 2,
+        "limit": 10,
+        "search": "sample"
+      }
+    ],
+    "expected": {
+      "method": "get",
+      "args": [
+        "/api/v1/clients/fixture%20%2F%3F%23/services",
+        {
+          "params": {
+            "page": 2,
+            "limit": 10,
+            "search": "sample"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "updateService",
+    "module": "features/clients/api/services.api.js",
+    "args": [
+      "fixture /?#",
+      "fixture /?#",
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "patch",
+      "args": [
+        "/api/v1/clients/fixture%20%2F%3F%23/services/fixture%20%2F%3F%23",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  },
+  {
+    "name": "deleteService",
+    "module": "features/services/api/services.api.js",
+    "args": [
+      "fixture /?#"
+    ],
+    "expected": {
+      "method": "delete",
+      "args": [
+        "/api/v1/services/fixture%20%2F%3F%23"
+      ]
+    }
+  },
+  {
+    "name": "createCompany",
+    "module": "features/companies/api/companies.api.js",
+    "args": [
+      {
+        "name": "Synthetic contract fixture"
+      }
+    ],
+    "expected": {
+      "method": "post",
+      "args": [
+        "/api/v1/companies",
+        {
+          "name": "Synthetic contract fixture"
+        }
+      ]
+    }
+  }
+]

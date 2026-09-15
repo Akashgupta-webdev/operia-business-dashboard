@@ -20,7 +20,7 @@ import {
   SidebarContent,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar";
+} from "@operio/ui/components/sidebar";
 
 export type SidebarNavItem = {
   title: string;
@@ -51,7 +51,7 @@ const navigationSections: SidebarNavSection[] = [
     label: "Operations",
     items: [
       { title: "Finance - P&L", url: "/finance", icon: ChartCandlestick },
-      { title: "Support & Tasks", url: "/reminders", icon: MessageSquare },
+      { title: "Support & Tasks", url: "/support-&-tasks", icon: MessageSquare },
       { title: "Documents", url: "/documents", icon: FileText },
     ],
   },

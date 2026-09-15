@@ -1,7 +1,7 @@
 import * as React from "react"
 import { CalendarDays } from "lucide-react"
 
-import { Input } from "@/components/ui/input"
+import { Input } from "@operio/ui/components/input"
 import { cn } from "@operio/ui/lib/utils";
 
 function DateInput({ className, ...props }: React.ComponentProps<typeof Input>) {

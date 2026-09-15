@@ -1,5 +1,5 @@
-import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { Card } from "@operio/ui/components/card";
+import { cn } from "@operio/ui/lib/utils";
 
 export default function SummaryCard({ icon: Icon, label, value, description, tone }) {
   const tones = {

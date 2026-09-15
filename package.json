@@ -12,6 +12,8 @@
     "build:admin": "npm run build --workspace=@operio/admin",
     "build:client": "npm run build --workspace=@operio/client",
     "lint:admin": "npm run lint --workspace=@operio/admin",
-    "lint:client": "npm run lint --workspace=@operio/client"
+    "lint:client": "npm run lint --workspace=@operio/client",
+    "test:admin": "npm run test --workspace=@operio/admin",
+    "test:api": "npm run test --workspace=@operio/api"
   }
 }

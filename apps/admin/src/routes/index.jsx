@@ -1,24 +1,24 @@
 import { lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
-import Layout from "../pages/Layout";
+import Layout from "../app/Layout";
 
-const DashboardPage = lazy(() => import("@/pages/dashboard/DashboardPage"));
-const ClientsPage = lazy(() => import("@/pages/clients/ClientsPage"));
-const ClientDetailPage = lazy(() => import("@/pages/clients/ClientDetailPage"));
-const AddNewClientPage = lazy(() => import("@/pages/clients/AddNewClientPage"));
-const CompaniesPage = lazy(() => import("@/pages/companies/CompaniesPage"));
-const FinancePage = lazy(() => import("@/pages/finance/FinancePage"));
-const DocumentsPage = lazy(() => import("@/pages/documents/DocumentsPage"));
-const TaxCompliancePage = lazy(() => import("@/pages/tax-and-compliance/TaxCompliancePage"));
-const VisaEmployeesPage = lazy(() => import("@/pages/visa-and-employees/VisaEmployeesPage"));
-const RenewalsPage = lazy(() => import("@/pages/renewals/RenewalsPage"));
-const CalendarPage = lazy(() => import("@/pages/calendar/CalendarPage"));
-const RemindersPage = lazy(() => import("@/pages/reminders/RemindersPage"));
-const ReportsPage = lazy(() => import("@/pages/reports/ReportsPage"));
-const SettingsPage = lazy(() => import("@/pages/settings/SettingsPage"));
-const LoginPage = lazy(() => import("@/pages/auth/LoginPage"));
-const NotFoundPage = lazy(() => import("@/pages/NotFoundPage"));
+const DashboardPage = lazy(() => import("@/features/dashboard/pages/DashboardPage"));
+const ClientsPage = lazy(() => import("@/features/clients/pages/ClientsPage"));
+const ClientDetailPage = lazy(() => import("@/features/clients/pages/ClientDetailPage"));
+const AddNewClientPage = lazy(() => import("@/features/clients/pages/AddNewClientPage"));
+const CompaniesPage = lazy(() => import("@/features/companies/pages/CompaniesPage"));
+const FinancePage = lazy(() => import("@/features/finance/pages/FinancePage"));
+const DocumentsPage = lazy(() => import("@/features/documents/pages/DocumentsPage"));
+const TaxCompliancePage = lazy(() => import("@/features/tax-compliance/pages/TaxCompliancePage"));
+const VisaEmployeesPage = lazy(() => import("@/features/visa-employees/pages/VisaEmployeesPage"));
+const RenewalsPage = lazy(() => import("@/features/renewals/pages/RenewalsPage"));
+const CalendarPage = lazy(() => import("@/features/calendar/pages/CalendarPage"));
+const RemindersPage = lazy(() => import("@/features/reminders/pages/RemindersPage"));
+const ReportsPage = lazy(() => import("@/features/reports/pages/ReportsPage"));
+const SettingsPage = lazy(() => import("@/features/settings/pages/SettingsPage"));
+const LoginPage = lazy(() => import("@/features/auth/pages/LoginPage"));
+const NotFoundPage = lazy(() => import("@/app/NotFoundPage"));
 
 export default function AppRoutes() {
 
@@ -41,7 +41,7 @@ export default function AppRoutes() {
                     <Route path="/finance" element={<FinancePage />} />
                     <Route path="/dashboard" element={<DashboardPage />} />
                     <Route path="/documents" element={<DocumentsPage />} />
-                    <Route path="/reminders" element={<RemindersPage />} />
+                    <Route path="/support-&-tasks" element={<RemindersPage />} />
                     <Route path="/renewals" element={<RenewalsPage />} />
                     <Route path="/calendars" element={<CalendarPage />} />
                     <Route path="/reports" element={<ReportsPage />} />

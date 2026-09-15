@@ -7,8 +7,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
+} from "@operio/ui/components/sidebar";
+import { cn } from "@operio/ui/lib/utils";
 
 const isRouteActive = (pathname: string, url: string) => {
   if (url === "/dashboard") {
