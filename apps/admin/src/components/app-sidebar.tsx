@@ -1,3 +1,4 @@
+import { useVatAccess } from "@/features/vat/hooks/useVat";
 import {
   Building2,
   CalendarDays,
@@ -73,6 +74,8 @@ const navigationSections: SidebarNavSection[] = [
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const vatAccess = useVatAccess();
+  const sections = navigationSections.map((section) => section.label === "Compliance" && vatAccess.allowed ? { ...section, items: [...section.items, { title: "VAT filings", url: "/vat-filings", icon: FileText }] } : section);
   return (
     <Sidebar
       collapsible="icon"
@@ -98,7 +101,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
 
       <SidebarContent className="px-3 py-3 group-data-[collapsible=icon]:px-1.5">
-        <NavMain sections={navigationSections} />
+        <NavMain sections={sections} />
       </SidebarContent>
 
       <SidebarRail />

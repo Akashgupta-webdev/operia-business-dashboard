@@ -51,13 +51,13 @@ function ServiceSelect({ name, label, options, wide = false }) {
   );
 }
 
-export function ServiceFormFields() {
+export function ServiceFormFields({ excludeVat = false }) {
   const { register, formState: { errors } } = useFormContext();
   return (
     <>
       <div className="grid gap-4 md:grid-cols-3">
         <ServiceSelect name="category" label="Service category" options={SERVICE_CATEGORY_OPTIONS} />
-        <ServiceSelect name="package" label="Service package" options={SERVICE_PACKAGE_OPTIONS} wide />
+        <ServiceSelect name="package" label="Service package" options={excludeVat ? SERVICE_PACKAGE_OPTIONS.filter((item) => item !== "Quarterly VAT Return Filing Package") : SERVICE_PACKAGE_OPTIONS} wide />
         <ServiceSelect name="status" label="Status" options={SERVICE_STATUS_OPTIONS} />
         <ServiceInput name="packagePrice" label="Package price (AED)" inputMode="decimal" placeholder="0.00" />
         <ServiceSelect name="paymentStatus" label="Payment status" options={SERVICE_PAYMENT_STATUS_OPTIONS} />
@@ -96,6 +96,7 @@ export default function EditServiceDialog({ clientId, service, open, onOpenChang
 
   const submit = methods.handleSubmit(async (values) => {
     try {
+      if (service?.serviceCode === "VAT_RETURN_FILING") { toast.error("Use the VAT workspace to edit this filing."); return; }
       await mutation.mutateAsync(buildClientServiceUpdatePayload(values));
       toast.success("Service details updated successfully.");
       onOpenChange(false);

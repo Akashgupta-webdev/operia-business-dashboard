@@ -10,7 +10,7 @@ const isDocumentId = (value) => /^[a-f\d]{24}$/i.test(value || "");
 export default function DeleteDocumentDialog({ clientId, document, open, onOpenChange }) {
   const mutation = useDeleteClientDocument(clientId);
   const documentId = document?.id ?? document?._id;
-  const canDelete = isDocumentId(documentId);
+  const canDelete = isDocumentId(documentId) && !document?.service;
 
   const handleOpenChange = (nextOpen) => {
     if (!mutation.isPending) onOpenChange(nextOpen);

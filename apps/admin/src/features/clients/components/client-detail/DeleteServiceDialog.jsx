@@ -14,7 +14,7 @@ export default function DeleteServiceDialog({ clientId, service, open, onOpenCha
   };
 
   const deleteService = async () => {
-    if (!serviceId) return;
+    if (!serviceId || service?.serviceCode === "VAT_RETURN_FILING") return;
     try {
       await mutation.mutateAsync(serviceId);
       toast.success("Service deleted successfully.");

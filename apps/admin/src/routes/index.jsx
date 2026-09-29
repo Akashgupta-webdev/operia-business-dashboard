@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import Layout from "../app/Layout";
 
+const VatListPage = lazy(() => import("@/features/vat/pages/VatListPage"));
+const VatCreatePage = lazy(() => import("@/features/vat/pages/VatCreatePage"));
+const VatDetailPage = lazy(() => import("@/features/vat/pages/VatDetailPage"));
 const DashboardPage = lazy(() => import("@/features/dashboard/pages/DashboardPage"));
 const ClientsPage = lazy(() => import("@/features/clients/pages/ClientsPage"));
 const ClientDetailPage = lazy(() => import("@/features/clients/pages/ClientDetailPage"));
@@ -37,6 +40,9 @@ export default function AppRoutes() {
                     <Route path="/clients" element={<ClientsPage />} />
                     <Route path="/clients/new" element={<AddNewClientPage />} />
                     <Route path="/clients/:id" element={<ClientDetailPage />} />
+                    <Route path="/vat-filings" element={<VatListPage />} />
+                    <Route path="/vat-filings/new" element={<VatCreatePage />} />
+                    <Route path="/vat-filings/:serviceId" element={<VatDetailPage />} />
                     <Route path="/companies" element={<CompaniesPage />} />
                     <Route path="/finance" element={<FinancePage />} />
                     <Route path="/dashboard" element={<DashboardPage />} />

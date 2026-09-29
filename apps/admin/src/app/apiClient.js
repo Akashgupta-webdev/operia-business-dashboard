@@ -12,6 +12,10 @@ installAuthRefreshInterceptor(apiClient, {
     refresh: () => apiClient.post("/auth/refresh"),
     shouldRefresh: (config) => {
         const url = config.url || "";
+        if (config.vatWrite) {
+            if (typeof window !== "undefined") window.dispatchEvent(new Event("auth:unauthorized"));
+            return false;
+        }
         return !url.includes("/auth/login") && !url.includes("/auth/refresh");
     },
     onUnauthorized: () => {

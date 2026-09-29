@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import { VAT_PACKAGE } from "@/features/vat/constants/vat";
+import { useVatAccess } from "@/features/vat/hooks/useVat";
 import { useEffect } from "react";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { BriefcaseBusiness, Plus } from "lucide-react";
@@ -16,6 +19,7 @@ const normalizeServerPath = (path = "") => (Array.isArray(path) ? path.join(".")
   .replace(/\[(\d+)\]/g, ".$1");
 
 export default function AddServiceDialog({ clientId, open, onOpenChange }) {
+  const vatAccess = useVatAccess();
   const mutation = useCreateClientService(clientId);
   const methods = useForm({
     resolver: joiResolver(clientServiceCreateSchema, { abortEarly: false }),
@@ -33,6 +37,7 @@ export default function AddServiceDialog({ clientId, open, onOpenChange }) {
 
   const submit = methods.handleSubmit(async (values) => {
     try {
+      if (values.package === VAT_PACKAGE) { methods.setError("package", { message: "Create VAT filings in the dedicated VAT workspace." }); return; }
       await mutation.mutateAsync(buildClientServiceCreatePayload(values));
       toast.success("Service created successfully.");
       onOpenChange(false);
@@ -59,7 +64,7 @@ export default function AddServiceDialog({ clientId, open, onOpenChange }) {
 
         <FormProvider {...methods}>
           <form onSubmit={submit} noValidate className="flex min-h-0 flex-1 flex-col">
-            <div className="min-h-0 flex-1 space-y-5 overflow-y-auto px-5 py-5 sm:px-6"><ServiceFormFields /></div>
+            <div className="min-h-0 flex-1 space-y-5 overflow-y-auto px-5 py-5 sm:px-6"><ServiceFormFields excludeVat />{vatAccess.allowed && <Link className="block mt-4 text-primary underline" to={`/vat-filings/new?client=${clientId}`}>Create a VAT filing with period and evidence</Link>}</div>
             <DialogFooter className="shrink-0 border-t border-border-default bg-surface-primary px-5 py-4 sm:px-6">
               <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={mutation.isPending} className="px-5">Cancel</Button>
               <Button type="submit" disabled={mutation.isPending || !clientId} className="gap-2 px-5 font-semibold"><Plus aria-hidden="true" className="size-3.5" />{mutation.isPending ? "Creating..." : "Add Service"}</Button>

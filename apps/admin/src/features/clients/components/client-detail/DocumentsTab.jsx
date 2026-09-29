@@ -68,7 +68,7 @@ function DocumentActions({ document, onDelete }) {
     <div className="flex items-center justify-end gap-1.5">
       {document.documentURL && <a href={document.documentURL} target="_blank" rel="noreferrer" className={cn(buttonVariants({ variant: "outline", size: "icon-sm" }), "text-text-secondary hover:text-info-600")} aria-label={`View ${title}`} title={`View ${title}`}><Eye aria-hidden="true" className="size-3.5" /></a>}
       {document.documentURL && <a href={document.documentURL} download className={cn(buttonVariants({ variant: "outline", size: "icon-sm" }), "text-primary-600")} aria-label={`Download ${title}`} title={`Download ${title}`}><Download aria-hidden="true" className="size-3.5" /></a>}
-      <Button type="button" variant="outline" size="icon-sm" disabled={!documentId} onClick={() => onDelete(document)} title={documentId ? `Delete ${title}` : "Document ID is unavailable"} className="border-danger-200 text-danger-600 hover:bg-danger-50 hover:text-danger-700 dark:border-danger-700 dark:hover:bg-danger-700/20" aria-label={`Delete ${title}`}><Trash2 aria-hidden="true" className="size-3.5" /></Button>
+      {!document.service && <Button type="button" variant="outline" size="icon-sm" disabled={!documentId} onClick={() => onDelete(document)} title={documentId ? `Delete ${title}` : "Document ID is unavailable"} className="border-danger-200 text-danger-600 hover:bg-danger-50 hover:text-danger-700 dark:border-danger-700 dark:hover:bg-danger-700/20" aria-label={`Delete ${title}`}><Trash2 aria-hidden="true" className="size-3.5" /></Button>}{document.service && <span className="text-caption text-text-muted">Retained evidence</span>}
     </div>
   );
 }

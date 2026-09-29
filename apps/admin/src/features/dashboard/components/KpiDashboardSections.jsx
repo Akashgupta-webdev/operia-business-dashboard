@@ -35,10 +35,10 @@ export function CategoryBreakdown({ items }) {
     <Card className="gap-4 border border-border-default bg-surface-primary p-4 py-4 shadow-card ring-0 sm:p-5 sm:py-5">
       <div className="flex items-center justify-between"><h2 className="text-body-sm font-semibold text-text-primary">Category Breakdown</h2><Link to="/renewals" className="inline-flex items-center gap-1 text-[10px] font-semibold text-primary-700 hover:underline">View all<ArrowRight aria-hidden="true" className="size-3" /></Link></div>
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-        {items.map(({ icon: Icon, label, value, badge, tone = "primary" }) => (
+        {items.map(({ icon: Icon, label, value, badge, href, tone = "primary" }) => (
           <div key={label} className="flex items-center gap-3 rounded-xl border border-border-default bg-surface-primary p-3">
             <span className={cn("flex size-8 shrink-0 items-center justify-center rounded-lg", tone === "success" ? "bg-success-50 text-success-600" : tone === "warning" ? "bg-warning-50 text-warning-600" : "bg-primary-50 text-primary-600")}><Icon aria-hidden="true" className="size-4" /></span>
-            <div className="min-w-0"><p className="truncate text-[10px] leading-4 font-semibold text-text-muted">{label}</p><div className="mt-0.5 flex items-center gap-2"><span className="text-body-sm font-bold text-text-primary" data-numeric>{value ?? 0}</span><span className={cn("rounded-md px-1.5 py-0.5 text-[8px] font-semibold", tone === "success" ? "bg-success-50 text-success-700" : tone === "warning" ? "bg-warning-50 text-warning-700" : "bg-primary-50 text-primary-700")}>{badge}</span></div></div>
+            <div className="min-w-0"><p className="truncate text-[10px] leading-4 font-semibold text-text-muted">{href ? <Link to={href} className="text-primary underline">{label}</Link> : label}</p><div className="mt-0.5 flex items-center gap-2"><span className="text-body-sm font-bold text-text-primary" data-numeric>{value ?? 0}</span><span className={cn("rounded-md px-1.5 py-0.5 text-[8px] font-semibold", tone === "success" ? "bg-success-50 text-success-700" : tone === "warning" ? "bg-warning-50 text-warning-700" : "bg-primary-50 text-primary-700")}>{badge}</span></div></div>
           </div>
         ))}
       </div>

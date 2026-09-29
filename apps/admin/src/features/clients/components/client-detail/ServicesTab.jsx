@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import { isVat, money } from "@/features/vat/utils/vat";
+import { useVatAccess } from "@/features/vat/hooks/useVat";
 import { useMemo, useState } from "react";
 import { Archive, BriefcaseBusiness, CalendarDays, CheckCircle2, ChevronLeft, ChevronRight, Clock3, CreditCard, FileText, FolderOpen, LayoutGrid, List, Pencil, Plus, Search, Trash2, WalletCards } from "lucide-react";
 
@@ -76,7 +79,8 @@ function Metric({ icon: Icon, label, value, tone }) {
 }
 
 function ServiceCard({ service, listView, onDelete, onEdit }) {
-  const paymentStatus = service.paymentStatus || "Unpaid";
+  const vatAccess = useVatAccess();
+  const paymentStatus = service.paymentStatus || (isVat(service) ? "Not recorded" : "Unpaid");
   const serviceId = service.id ?? service._id;
   const detailRows = [
     {
@@ -99,7 +103,7 @@ function ServiceCard({ service, listView, onDelete, onEdit }) {
       icon: WalletCards,
       iconClassName: "bg-success-50 text-success-600 dark:bg-success-700/20 dark:text-success-500",
       label: "Package Price",
-      value: <span data-numeric>{formatPrice(service.packagePrice)}</span>,
+      value: <span data-numeric>{isVat(service) ? money(service.packagePrice) : formatPrice(service.packagePrice)}</span>,
     },
     {
       icon: CreditCard,
@@ -140,8 +144,9 @@ function ServiceCard({ service, listView, onDelete, onEdit }) {
       </div>
 
       <div className="mt-3 flex items-center justify-end gap-2">
+        {isVat(service) ? (vatAccess.allowed ? <Link to={`/vat-filings/${serviceId}`} className="text-primary underline text-sm">Open VAT filing</Link> : <span className="text-caption">VAT workflow requires an active Admin</span>) : <>
         <Button type="button" variant="outline" size="icon-sm" disabled={!serviceId} onClick={() => onEdit(service)} aria-label={`Edit ${service.package || "service"}`} title={serviceId ? `Edit ${service.package || "service"}` : "Service ID is unavailable"}><Pencil aria-hidden="true" className="size-3.5" /></Button>
-        <Button type="button" variant="outline" size="icon-sm" disabled={!serviceId} onClick={() => onDelete(service)} aria-label={`Delete ${service.package || "service"}`} title={serviceId ? `Delete ${service.package || "service"}` : "Service ID is unavailable"} className="border-danger-200 text-danger-600 hover:bg-danger-50 hover:text-danger-700 dark:border-danger-700 dark:hover:bg-danger-700/20"><Trash2 aria-hidden="true" className="size-3.5" /></Button>
+        <Button type="button" variant="outline" size="icon-sm" disabled={!serviceId} onClick={() => onDelete(service)} aria-label={`Delete ${service.package || "service"}`} title={serviceId ? `Delete ${service.package || "service"}` : "Service ID is unavailable"} className="border-danger-200 text-danger-600 hover:bg-danger-50 hover:text-danger-700 dark:border-danger-700 dark:hover:bg-danger-700/20"><Trash2 aria-hidden="true" className="size-3.5" /></Button></>}
       </div>
     </Card>
   );

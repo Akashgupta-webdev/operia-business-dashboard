@@ -1,3 +1,5 @@
+import { VatQueue } from "@/features/vat/pages/VatListPage";
+import { useVatAccess } from "@/features/vat/hooks/useVat";
 import { useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { AlertCircle } from "lucide-react";
@@ -50,11 +52,13 @@ function DetailPageSkeleton() {
 
 export default function ClientDetailPage() {
   const { id } = useParams();
+  const vatAccess = useVatAccess();
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [searchParams] = useSearchParams();
   const query = useClient(id);
   const data = query.data;
-  const initialTab = searchParams.get("tab") === "companies" ? "companies" : "overview";
+  const requestedTab = searchParams.get("tab");
+  const initialTab = tabs.some(([value]) => value === requestedTab) ? requestedTab : "overview";
 
   return (
     <div className="min-h-[calc(100svh-var(--header-height))] bg-app-background px-4 py-5 sm:px-6 lg:px-8">
@@ -82,7 +86,7 @@ export default function ClientDetailPage() {
           <Tabs defaultValue={initialTab} className="min-w-0 gap-4">
             <div className="overflow-x-auto rounded-xl border border-border-default bg-surface-primary p-1 shadow-card scrollbar-none [&::-webkit-scrollbar]:hidden">
               <TabsList className="w-max min-w-full border-b-0">
-                {tabs.map(([value, label, countKey]) => {
+                {tabs.filter(([value]) => value !== "filing-vat" || vatAccess.allowed).map(([value, label, countKey]) => {
                   const count = countKey === "renewals" ? getClientRenewalItems(data).length : countKey ? (data[countKey]?.length ?? 0) : 0;
                   return (
                     <TabsTrigger key={value} value={value} className="group h-8 gap-1.5 px-3 text-[11px] transition-opacity hover:text-inherit hover:opacity-80 data-active:rounded-lg data-active:bg-primary-700 data-active:text-neutral-0 data-active:hover:text-neutral-0 data-active:after:hidden">
@@ -111,12 +115,7 @@ export default function ClientDetailPage() {
                 <p className="text-body-sm text-text-muted">Client invoices are coming soon.</p>
               </Card>
             </TabsContent>
-            <TabsContent value="filing-vat">
-              <Card className="gap-2 border border-border-default bg-surface-primary px-6 py-12 text-center shadow-card ring-0">
-                <h2 className="text-subsection font-semibold text-text-primary">Filing VAT</h2>
-                <p className="text-body-sm text-text-muted">Client VAT filing details are coming soon.</p>
-              </Card>
-            </TabsContent>
+            {vatAccess.allowed && <TabsContent value="filing-vat"><VatQueue clientId={id} companies={data.companies} clientName={data.client.name} /></TabsContent>}
             <TabsContent value="portal-access">
               <PortalAccessTab key={id} client={data.client} clientId={id} />
             </TabsContent>
