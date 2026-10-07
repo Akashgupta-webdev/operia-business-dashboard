@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Building2, Eye, FileText, Mail, MoreHorizontal, Pencil, Phone, Trash2, Users } from "lucide-react";
+import { Building2, Eye, FileText, Mail, Phone, Users } from "lucide-react";
 
 import { Button, buttonVariants } from "@operio/ui/components/button";
 import { Card } from "@operio/ui/components/card";
@@ -52,23 +52,19 @@ function ContactActions({ client, onView }) {
     <div className="flex items-center gap-1">
       {client.mobileNumber && <a href={`tel:${client.mobileNumber}`} aria-label={`Call ${client.name}`} className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), "text-text-muted hover:text-primary")}><Phone aria-hidden="true" className="size-4" /></a>}
       {client.emailAddress && <a href={`mailto:${client.emailAddress}`} aria-label={`Email ${client.name}`} className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), "text-text-muted hover:text-primary")}><Mail aria-hidden="true" className="size-4" /></a>}
-      <Button type="button" variant="ghost" size="icon-sm" onClick={onView} className="ml-auto text-text-muted hover:text-primary" aria-label={`View ${client.name}`}><Eye aria-hidden="true" className="size-4" /></Button>
+      <Button type="button" variant="ghost" size="icon-sm" onClick={onView} className="ml-auto cursor-pointer text-text-muted hover:text-primary" aria-label={`View ${client.name}`}><Eye aria-hidden="true" className="size-4" /></Button>
     </div>
   );
 }
 
 function CardActions({ client, onView }) {
-  const navigate = useNavigate();
   const actionClass = "size-7 text-text-muted hover:bg-surface-secondary hover:text-text-primary";
 
   return (
     <div className="flex items-center gap-0.5">
       <a href={client.mobileNumber ? `tel:${client.mobileNumber}` : undefined} aria-disabled={!client.mobileNumber} aria-label={`Call ${client.name}`} className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), actionClass, !client.mobileNumber && "pointer-events-none opacity-40")}><Phone aria-hidden="true" className="size-3.5 text-info-600" /></a>
       <a href={client.emailAddress ? `mailto:${client.emailAddress}` : undefined} aria-disabled={!client.emailAddress} aria-label={`Email ${client.name}`} className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), actionClass, !client.emailAddress && "pointer-events-none opacity-40")}><Mail aria-hidden="true" className="size-3.5 text-primary-600" /></a>
-      <Button type="button" variant="ghost" size="icon-sm" onClick={onView} className={cn("ml-auto", actionClass)} aria-label={`View ${client.name}`}><Eye aria-hidden="true" className="size-3.5 text-info-600" /></Button>
-      <Button type="button" variant="outline" size="icon-sm" onClick={() => navigate(`/clients/${client._id}?mode=edit`)} className="size-7 border-primary-200 bg-primary-50 text-primary-600 shadow-none hover:bg-primary-100 hover:text-primary-700" aria-label={`Edit ${client.name}`}><Pencil aria-hidden="true" className="size-3.5" /></Button>
-      <Button type="button" variant="outline" size="icon-sm" disabled title="Delete API is not configured" className="size-7 border-danger-200 bg-danger-50 text-danger-600 opacity-100 shadow-none" aria-label={`Delete ${client.name}`}><Trash2 aria-hidden="true" className="size-3.5" /></Button>
-      <Button type="button" variant="ghost" size="icon-sm" onClick={onView} className={actionClass} aria-label={`More actions for ${client.name}`}><MoreHorizontal aria-hidden="true" className="size-3.5" /></Button>
+      <Button type="button" variant="ghost" size="icon-sm" onClick={onView} className={cn("ml-auto cursor-pointer", actionClass)} aria-label={`View ${client.name}`}><Eye aria-hidden="true" className="size-3.5 text-info-600" /></Button>
     </div>
   );
 }

@@ -43,7 +43,7 @@ const tabs = [
 
 function DetailPageSkeleton() {
   return (
-    <div className="grid gap-5 lg:grid-cols-[17.5rem_minmax(0,1fr)]">
+    <div className="grid gap-4 lg:grid-cols-[16rem_minmax(0,1fr)]">
       <Skeleton className="h-152 rounded-xl" />
       <div className="space-y-4"><Skeleton className="h-12 rounded-xl" /><div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{Array.from({ length: 4 }, (_, index) => <Skeleton key={index} className="h-28 rounded-xl" />)}</div><Skeleton className="h-120 rounded-xl" /></div>
     </div>
@@ -61,7 +61,7 @@ export default function ClientDetailPage() {
   const initialTab = tabs.some(([value]) => value === requestedTab) ? requestedTab : "overview";
 
   return (
-    <div className="min-h-[calc(100svh-var(--header-height))] bg-app-background px-4 py-5 sm:px-6 lg:px-8">
+    <div className="min-h-[calc(100svh-var(--header-height))] bg-app-background px-3 py-5 sm:px-4">
       <Breadcrumb className="mb-5">
         <BreadcrumbList className="text-caption">
           <BreadcrumbItem><BreadcrumbLink render={<Link to="/clients" />}>Clients</BreadcrumbLink></BreadcrumbItem>
@@ -81,7 +81,7 @@ export default function ClientDetailPage() {
       )}
 
       {data?.client && (
-        <div className="grid items-start gap-5 lg:grid-cols-[17.5rem_minmax(0,1fr)]">
+        <div className="grid items-start gap-4 lg:grid-cols-[16rem_minmax(0,1fr)]">
           <ClientProfileCard client={data.client} onEditClient={() => setIsEditDialogOpen(true)} />
           <Tabs defaultValue={initialTab} className="min-w-0 gap-4">
             <div className="overflow-x-auto rounded-xl border border-border-default bg-surface-primary p-1 shadow-card scrollbar-none [&::-webkit-scrollbar]:hidden">
@@ -89,7 +89,7 @@ export default function ClientDetailPage() {
                 {tabs.filter(([value]) => value !== "filing-vat" || vatAccess.allowed).map(([value, label, countKey]) => {
                   const count = countKey === "renewals" ? getClientRenewalItems(data).length : countKey ? (data[countKey]?.length ?? 0) : 0;
                   return (
-                    <TabsTrigger key={value} value={value} className="group h-8 gap-1.5 px-3 text-[11px] transition-opacity hover:text-inherit hover:opacity-80 data-active:rounded-lg data-active:bg-primary-700 data-active:text-neutral-0 data-active:hover:text-neutral-0 data-active:after:hidden">
+                    <TabsTrigger key={value} value={value} className="group h-8 gap-1.5 px-3 text-[11px] font-semibold text-text-primary transition-colors hover:text-primary data-active:rounded-lg data-active:bg-primary-700 data-active:text-neutral-0 data-active:hover:text-neutral-0 data-active:after:hidden">
                       {label}
                       {countKey && <span className="rounded-md bg-primary-50 px-1.5 py-0.5 text-[9px] font-semibold text-primary-700 group-data-active:bg-neutral-0/20 group-data-active:text-neutral-0">{count}</span>}
                     </TabsTrigger>

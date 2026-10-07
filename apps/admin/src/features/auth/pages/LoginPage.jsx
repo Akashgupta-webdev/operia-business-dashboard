@@ -1,3 +1,4 @@
+import { NetworkBackground, NetworkMarker } from "@operio/ui/components/network-background";
 import { authKeys } from "@/features/auth/constants/queryKeys";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { useQueryClient } from "@tanstack/react-query";
@@ -16,7 +17,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import Grainient from "@/components/Grainient";
 import { Button } from "@operio/ui/components/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@operio/ui/components/card";
 import { Input } from "@operio/ui/components/input";
@@ -91,30 +91,14 @@ export default function LoginPage() {
 
   return (
     <main className="relative flex min-h-svh items-center justify-center overflow-hidden bg-app-background px-4 py-5 text-text-primary sm:px-6 lg:px-8">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <Grainient
-          color1="#A78BFA"
-          color2="#4F46E5"
-          color3="#312E81"
-          timeSpeed={0.7}
-          colorBalance={-0.05}
-          warpStrength={1.2}
-          warpFrequency={5}
-          warpSpeed={2.2}
-          warpAmplitude={36}
-          blendAngle={22}
-          blendSoftness={0.08}
-          rotationAmount={420}
-          noiseScale={2}
-          grainAmount={0.12}
-          grainScale={2}
-          grainAnimated
-          contrast={1.25}
-          saturation={1.05}
-          zoom={1}
-        />
-        <div className="absolute inset-0 bg-neutral-950/5" />
-      </div>
+      <NetworkBackground>
+        <NetworkMarker x={192} y={152} label="CLIENTS.CORE" color="#b192ed"><circle cx="12" cy="8" r="3" /><path d="M5 21v-2a7 7 0 0 1 14 0v2M9 15l3 3 3-3" /></NetworkMarker>
+        <NetworkMarker x={416} y={176} label="COMPLIANCE.RADAR" color="#59c6ca" below><path d="M12 3l8 4-2 9-6 5-6-5-2-9zM9 12l2 2 4-4" /></NetworkMarker>
+        <NetworkMarker x={112} y={304} label="RENEWALS.SYNC" color="#9eb6ff"><path d="M5 8a7 7 0 1 1 0 8M5 3v5h5M12 8v5l-3 2" /></NetworkMarker>
+        <NetworkMarker x={1136} y={656} label="DOCUMENTS.VAULT" color="#59c6ca"><path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6M9 16h4" /></NetworkMarker>
+        <NetworkMarker x={1344} y={608} label="ANALYTICS.INSIGHTS" color="#b192ed" below><path d="M5 19V9M12 19V5M19 19v-7M3 12l5-5 5 4 7-7" /></NetworkMarker>
+        <NetworkMarker x={1408} y={736} label="OPERATIONS.HUB" color="#9eb6ff" below><circle cx="12" cy="12" r="3" /><path d="M12 3v3M12 18v3M3 12h3M18 12h3" /></NetworkMarker>
+      </NetworkBackground>
 
       <Card className="relative grid w-full max-w-[1040px] gap-0 overflow-hidden rounded-2xl border border-border-default bg-surface-primary py-0 shadow-lg ring-0 lg:grid-cols-[minmax(310px,38%)_1fr]">
         <aside className="relative flex overflow-hidden bg-[linear-gradient(145deg,var(--auth-panel-start),var(--auth-panel-end))] p-5 text-neutral-0 sm:p-6 lg:flex-col lg:p-8">

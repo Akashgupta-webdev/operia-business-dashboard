@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useVatAccess } from "@/features/vat/hooks/useVat";
 import { useState } from "react";
 import { joiResolver } from "@hookform/resolvers/joi";
@@ -104,7 +103,6 @@ export default function DashboardPage() {
         <div><h1 className="text-section-heading font-bold text-text-primary">Business Dashboard</h1><p className="mt-1 text-caption text-text-secondary">Renewal, compliance, client and fleet performance at a glance.</p></div>
         <div className="flex items-center gap-2 text-caption text-text-secondary sm:ml-auto"><CalendarClock aria-hidden="true" className="size-4 text-primary-600" /><span>Today, {todayLabel}</span>{query.isFetching && <LoaderCircle aria-label="Refreshing dashboard" className="size-3.5 animate-spin text-primary-600" />}</div>
       </header>
-      {vatAccess.allowed && <p className="mb-4 text-caption text-text-secondary"><Link className="text-primary underline" to="/vat-filings">Open VAT work queue</Link> ? VAT Due counts unfinished filings due within 60 days, including overdue periods. It ignores the expiry filters; the queue includes all statuses.</p>}
 
       <Card className="mb-5 gap-4 border border-border-default bg-surface-primary p-3 py-3 shadow-card ring-0 sm:p-4 sm:py-4 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(30rem,auto)] lg:items-center">
         <div className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">

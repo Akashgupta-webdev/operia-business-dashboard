@@ -1,3 +1,4 @@
+import { NetworkBackground, NetworkMarker } from "@operio/ui/components/network-background";
 import { useState } from 'react';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { useForm } from 'react-hook-form';
@@ -32,8 +33,16 @@ export default function LoginPage() {
   }
   if (session.isPending) return <SuspenseLoader label="Checking your session…" />;
   if (session.data) return <Navigate to={destination} replace />;
-  return <main className="flex min-h-svh items-center justify-center bg-app-background p-4 sm:p-8">
-    <Card className="grid w-full max-w-5xl gap-0 overflow-hidden py-0 rounded-2xl border-border-default bg-surface-primary shadow-lg lg:grid-cols-2">
+  return <main className="relative isolate flex min-h-svh items-center justify-center overflow-hidden bg-app-background p-4 sm:p-8">
+    <NetworkBackground>
+        <NetworkMarker x={192} y={152} label="CLIENTS.CORE" color="#b192ed"><circle cx="12" cy="8" r="3" /><path d="M5 21v-2a7 7 0 0 1 14 0v2M9 15l3 3 3-3" /></NetworkMarker>
+        <NetworkMarker x={416} y={176} label="COMPLIANCE.RADAR" color="#59c6ca" below><path d="M12 3l8 4-2 9-6 5-6-5-2-9zM9 12l2 2 4-4" /></NetworkMarker>
+        <NetworkMarker x={112} y={304} label="RENEWALS.SYNC" color="#9eb6ff"><path d="M5 8a7 7 0 1 1 0 8M5 3v5h5M12 8v5l-3 2" /></NetworkMarker>
+        <NetworkMarker x={1136} y={656} label="DOCUMENTS.VAULT" color="#59c6ca"><path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6M9 16h4" /></NetworkMarker>
+        <NetworkMarker x={1344} y={608} label="ANALYTICS.INSIGHTS" color="#b192ed" below><path d="M5 19V9M12 19V5M19 19v-7M3 12l5-5 5 4 7-7" /></NetworkMarker>
+        <NetworkMarker x={1408} y={736} label="OPERATIONS.HUB" color="#9eb6ff" below><circle cx="12" cy="12" r="3" /><path d="M12 3v3M12 18v3M3 12h3M18 12h3" /></NetworkMarker>
+      </NetworkBackground>
+    <Card className="relative grid w-full max-w-5xl gap-0 overflow-hidden py-0 rounded-2xl border-border-default bg-surface-primary shadow-lg lg:grid-cols-2">
       <section className="flex flex-col justify-between gap-8 bg-primary p-8 text-primary-foreground sm:p-10">
         <div className="flex items-center gap-3"><ShieldCheck aria-hidden="true" className="size-8" /><span className="text-heading-md font-bold">Operio</span></div>
         <div><p className="text-caption font-semibold uppercase tracking-wide opacity-75">Your client workspace</p><h1 className="mt-3 text-display-md font-bold tracking-tight">Your business.<br />One connected space.</h1><p className="mt-4 text-body-sm leading-relaxed opacity-80">Access your company information, follow applications, and keep important documents close.</p></div>
