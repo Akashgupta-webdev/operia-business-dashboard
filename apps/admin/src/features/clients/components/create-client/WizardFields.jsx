@@ -49,6 +49,7 @@ export function WizardField({
   required = false,
   className,
   inputClassName,
+  prefix,
   type = "text",
   ...props
 }) {
@@ -58,10 +59,12 @@ export function WizardField({
 
   return (
     <div className={cn("min-w-0", className)}>
-      <label htmlFor={name} className="mb-1 block text-caption font-semibold text-text-primary">
+      <label htmlFor={name} className="mb-1 block text-xs font-medium text-primary">
         {label}
         {required && <span className="ml-1 text-destructive">*</span>}
       </label>
+      <div className="relative">
+        {prefix && <span className="absolute inset-y-0 left-0 z-10 flex items-center rounded-l-sm border border-border-default bg-surface-secondary px-2 text-xs text-text-secondary">{prefix}</span>}
       <Input
         {...register(name)}
         id={name}
@@ -69,13 +72,15 @@ export function WizardField({
         aria-invalid={Boolean(error)}
         aria-describedby={error ? errorId : undefined}
         className={cn(
-          "h-9 border-border-default bg-surface-primary px-2.5 text-caption shadow-none placeholder:text-caption hover:border-outline focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20",
+          "h-8 min-h-8! border-border-default bg-surface-primary px-2.5 text-xs shadow-none placeholder:text-xs md:text-xs hover:border-outline focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20",
+          prefix && "pl-12",
           inputClassName,
         )}
         {...props}
       />
+      </div>
       {error?.message && (
-        <p id={errorId} role="alert" className="mt-1 text-caption text-destructive">
+        <p id={errorId} role="alert" className="mt-1 text-xs text-destructive">
           {error.message}
         </p>
       )}
@@ -97,7 +102,7 @@ export function WizardSelect({
 
   return (
     <div className={cn("min-w-0", className)}>
-      <label className="mb-1 block text-caption font-semibold text-text-primary">
+      <label className="mb-1 block text-xs font-medium text-primary">
         {label}
         {required && <span className="ml-1 text-destructive">*</span>}
       </label>
@@ -111,7 +116,7 @@ export function WizardSelect({
               aria-invalid={Boolean(error)}
               aria-describedby={error ? errorId : undefined}
               size="sm"
-              className="h-9 w-full border-border-default bg-surface-primary px-2.5 text-caption text-text-primary hover:border-outline focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
+              className="h-8 min-h-8! w-full border-border-default bg-surface-primary px-2.5 text-xs text-text-primary hover:border-outline focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
             >
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
@@ -130,7 +135,7 @@ export function WizardSelect({
         )}
       />
       {error?.message && (
-        <p id={errorId} role="alert" className="mt-1 text-caption text-destructive">
+        <p id={errorId} role="alert" className="mt-1 text-xs text-destructive">
           {error.message}
         </p>
       )}
@@ -145,7 +150,7 @@ export function WizardTextarea({ name, label, placeholder, className }) {
 
   return (
     <div className={cn("min-w-0", className)}>
-      <label htmlFor={name} className="mb-1 block text-caption font-semibold text-text-primary">
+      <label htmlFor={name} className="mb-1 block text-xs font-medium text-primary">
         {label}
       </label>
       <Textarea
@@ -154,10 +159,10 @@ export function WizardTextarea({ name, label, placeholder, className }) {
         placeholder={placeholder}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? errorId : undefined}
-        className="min-h-16 border-border-default bg-surface-primary text-caption shadow-none placeholder:text-caption hover:border-outline focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
+        className="min-h-16 border-border-default bg-surface-primary text-xs shadow-none placeholder:text-xs md:text-xs hover:border-outline focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
       />
       {error?.message && (
-        <p id={errorId} role="alert" className="mt-1 text-caption text-destructive">
+        <p id={errorId} role="alert" className="mt-1 text-xs text-destructive">
           {error.message}
         </p>
       )}
@@ -172,7 +177,7 @@ export function WizardFileField({ name, label = "File", accept }) {
 
   return (
     <div className="min-w-0">
-      <label htmlFor={name} className="mb-1 block text-caption font-semibold text-text-primary">
+      <label htmlFor={name} className="mb-1 block text-xs font-medium text-primary">
         {label}
       </label>
       <Input
@@ -182,14 +187,14 @@ export function WizardFileField({ name, label = "File", accept }) {
         accept={accept}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? errorId : undefined}
-        className="h-9 border-border-default bg-surface-primary px-2 py-1 text-caption file:mr-3 file:h-6 file:rounded-md file:bg-surface-secondary file:px-2 file:text-caption file:text-text-primary"
+        className="h-8 min-h-8! border-border-default bg-surface-primary px-2 py-1 text-xs file:mr-3 file:h-6 file:rounded-md file:bg-surface-secondary file:px-2 file:text-xs file:text-text-primary"
       />
       {error?.message ? (
-        <p id={errorId} role="alert" className="mt-1 text-caption text-destructive">
+        <p id={errorId} role="alert" className="mt-1 text-xs text-destructive">
           {error.message}
         </p>
       ) : (
-        <p className="mt-1 text-caption text-text-muted">Maximum 10 MiB.</p>
+        <p className="mt-1 text-xs text-text-muted">Maximum 10 MiB.</p>
       )}
     </div>
   );
@@ -200,14 +205,14 @@ export function StepHeading({ title, description, action }) {
   const Icon = visual.icon;
 
   return (
-    <div className="mb-4 flex items-start justify-between gap-3">
+    <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
       <div>
-        <h2 className="text-base font-bold tracking-tight text-text-primary">{title}</h2>
-        <p className="mt-0.5 text-caption text-text-secondary">{description}</p>
+        <h2 className="text-xs font-semibold tracking-tight text-text-primary">{title}</h2>
+        <p className="mt-0.5 text-xs leading-4 text-text-secondary">{description}</p>
       </div>
       <div className="flex shrink-0 items-center gap-2">
         {action}
-        <span className={cn("flex size-9 items-center justify-center rounded-lg", visual.className)}>
+        <span className={cn("flex size-8 items-center justify-center rounded-lg", visual.className)}>
           <Icon aria-hidden="true" className="size-4.5" strokeWidth={2} />
         </span>
       </div>
@@ -221,10 +226,10 @@ export function RepeatableCard({ number, title, onRemove, children }) {
       <legend className="sr-only">{title} {number}</legend>
       <div className="flex items-center justify-between border-b border-border-default bg-surface-secondary px-3 py-2">
         <div className="flex items-center gap-2">
-          <span className="flex size-6 items-center justify-center rounded-md bg-accent text-caption font-bold text-accent-foreground">
+          <span className="flex size-6 items-center justify-center rounded-md bg-accent text-xs font-bold text-accent-foreground">
             {number}
           </span>
-          <p className="text-body-sm font-semibold text-text-primary">{title}</p>
+          <p className="text-xs font-medium text-primary">{title}</p>
         </div>
         {onRemove && (
           <Button
@@ -232,7 +237,7 @@ export function RepeatableCard({ number, title, onRemove, children }) {
             variant="ghost"
             size="sm"
             onClick={onRemove}
-            className="h-7 px-2 text-caption font-semibold text-destructive hover:bg-destructive-container hover:text-destructive"
+            className="h-7 px-2 text-xs font-semibold text-destructive hover:bg-destructive-container hover:text-destructive"
           >
             Remove
           </Button>

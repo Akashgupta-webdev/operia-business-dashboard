@@ -63,27 +63,27 @@ export default function EditMemberDialog({ clientId, member, open, onOpenChange 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="flex max-h-[calc(100svh-2rem)] max-w-5xl flex-col overflow-hidden p-0">
-        <DialogHeader className="shrink-0 border-b border-border-default px-5 py-4 pr-14 sm:px-6 sm:py-5 sm:pr-14">
+        <DialogHeader className="shrink-0 border-b border-border-default px-4 py-3 pr-12 sm:px-4 sm:py-3 sm:pr-12">
           <div className="flex items-start gap-3">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-600 dark:bg-primary-900/40 dark:text-primary-300">
-              <UserRoundPen aria-hidden="true" className="size-5" />
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-600 dark:bg-primary-900/40 dark:text-primary-300">
+              <UserRoundPen aria-hidden="true" className="size-4" />
             </span>
             <div className="min-w-0">
-              <DialogTitle className="text-subsection font-semibold text-text-primary">Edit Member</DialogTitle>
-              <DialogDescription className="mt-0.5 text-body-sm text-text-secondary">Update member details.</DialogDescription>
+              <DialogTitle className="text-base leading-5 font-semibold text-text-primary">Edit Member</DialogTitle>
+              <DialogDescription className="mt-1 text-xs leading-4 text-text-secondary">Update member details.</DialogDescription>
             </div>
           </div>
         </DialogHeader>
 
         <FormProvider {...methods}>
           <form onSubmit={submit} noValidate className="flex min-h-0 flex-1 flex-col">
-            <div className="min-h-0 flex-1 space-y-6 overflow-y-auto px-5 py-5 sm:px-6">
+            <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3 sm:px-4">
               <MemberFormFields member={member} />
             </div>
 
-            <DialogFooter className="shrink-0 border-t border-border-default bg-surface-primary px-5 py-4 sm:justify-between sm:px-6">
-              <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={mutation.isPending} className="px-5">Cancel</Button>
-              <Button type="submit" disabled={mutation.isPending || !memberId} className="gap-2 px-5 font-semibold">
+            <DialogFooter className="shrink-0 border-t border-border-default bg-surface-primary px-4 py-3 sm:justify-between sm:px-4">
+              <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={mutation.isPending} className="px-3 h-8 text-xs">Cancel</Button>
+              <Button type="submit" disabled={mutation.isPending || !memberId} className="gap-2 px-3 font-medium h-8 text-xs">
                 <Save aria-hidden="true" className="size-3.5" />
                 {mutation.isPending ? "Saving..." : "Save Changes"}
               </Button>

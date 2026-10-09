@@ -62,20 +62,20 @@ export default function EditVehicleDialog({ clientId, vehicle, open, onOpenChang
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="flex max-h-[calc(100svh-2rem)] max-w-2xl flex-col overflow-hidden p-0">
-        <DialogHeader className="shrink-0 border-b border-border-default px-5 py-5 pr-14 sm:px-6 sm:py-6 sm:pr-14">
-          <DialogTitle className="text-subsection font-semibold text-text-primary">Edit Vehicle</DialogTitle>
-          <DialogDescription className="text-body-sm text-text-secondary">Update vehicle details.</DialogDescription>
+        <DialogHeader className="shrink-0 border-b border-border-default px-4 py-3 pr-12 sm:px-4 sm:py-3 sm:pr-12">
+          <DialogTitle className="text-base leading-5 font-semibold text-text-primary">Edit Vehicle</DialogTitle>
+          <DialogDescription className="mt-1 text-xs leading-4 text-text-secondary">Update vehicle details.</DialogDescription>
         </DialogHeader>
 
         <FormProvider {...methods}>
           <form onSubmit={submit} noValidate className="flex min-h-0 flex-1 flex-col">
-            <div className="min-h-0 flex-1 overflow-y-auto px-5 py-6 sm:px-6">
+            <div className="min-h-0 flex-1 overflow-y-auto px-4 py-3 sm:px-4">
               <VehicleFormFields />
             </div>
 
-            <DialogFooter className="grid shrink-0 gap-3 border-t border-border-default bg-surface-primary px-5 py-4 sm:grid-cols-2 sm:px-6">
-              <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={mutation.isPending} className="w-full px-5">Cancel</Button>
-              <Button type="submit" disabled={mutation.isPending || !vehicleId} className="w-full gap-2 px-5 font-semibold">
+            <DialogFooter className="grid shrink-0 gap-3 border-t border-border-default bg-surface-primary px-4 py-3 sm:grid-cols-2 sm:px-4">
+              <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={mutation.isPending} className="w-full px-3 h-8 text-xs">Cancel</Button>
+              <Button type="submit" disabled={mutation.isPending || !vehicleId} className="w-full gap-2 px-3 font-medium h-8 text-xs">
                 <Save aria-hidden="true" className="size-3.5" />
                 {mutation.isPending ? "Saving..." : "Save Changes"}
               </Button>

@@ -55,19 +55,19 @@ export default function AddServiceDialog({ clientId, open, onOpenChange }) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="flex max-h-[calc(100svh-2rem)] max-w-4xl flex-col overflow-hidden p-0">
-        <DialogHeader className="shrink-0 border-b border-border-default px-5 py-5 pr-14 sm:px-6 sm:pr-14">
+        <DialogHeader className="shrink-0 border-b border-border-default px-4 py-3 pr-12 sm:px-4 sm:pr-12">
           <div className="flex items-start gap-3">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-600 dark:bg-primary-900/40 dark:text-primary-300"><BriefcaseBusiness aria-hidden="true" className="size-5" /></span>
-            <div className="min-w-0"><DialogTitle className="text-body-lg font-semibold text-text-primary">Add Service</DialogTitle><DialogDescription className="mt-0.5 text-caption text-text-secondary">Add a new service package to this client.</DialogDescription></div>
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-600 dark:bg-primary-900/40 dark:text-primary-300"><BriefcaseBusiness aria-hidden="true" className="size-4" /></span>
+            <div className="min-w-0"><DialogTitle className="text-base leading-5 font-semibold text-text-primary">Add Service</DialogTitle><DialogDescription className="mt-1 text-xs leading-4 text-text-secondary">Add a new service package to this client.</DialogDescription></div>
           </div>
         </DialogHeader>
 
         <FormProvider {...methods}>
           <form onSubmit={submit} noValidate className="flex min-h-0 flex-1 flex-col">
-            <div className="min-h-0 flex-1 space-y-5 overflow-y-auto px-5 py-5 sm:px-6"><ServiceFormFields excludeVat />{vatAccess.allowed && <Link className="block mt-4 text-primary underline" to={`/vat-filings/new?client=${clientId}`}>Create a VAT filing with period and evidence</Link>}</div>
-            <DialogFooter className="shrink-0 border-t border-border-default bg-surface-primary px-5 py-4 sm:px-6">
-              <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={mutation.isPending} className="px-5">Cancel</Button>
-              <Button type="submit" disabled={mutation.isPending || !clientId} className="gap-2 px-5 font-semibold"><Plus aria-hidden="true" className="size-3.5" />{mutation.isPending ? "Creating..." : "Add Service"}</Button>
+            <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3 sm:px-4"><ServiceFormFields excludeVat />{vatAccess.allowed && <Link className="block mt-3 text-primary underline" to={`/vat-filings/new?client=${clientId}`}>Create a VAT filing with period and evidence</Link>}</div>
+            <DialogFooter className="shrink-0 border-t border-border-default bg-surface-primary px-4 py-3 sm:px-4">
+              <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={mutation.isPending} className="px-3 h-8 text-xs">Cancel</Button>
+              <Button type="submit" disabled={mutation.isPending || !clientId} className="gap-2 px-3 font-medium h-8 text-xs"><Plus aria-hidden="true" className="size-3.5" />{mutation.isPending ? "Creating..." : "Add Service"}</Button>
             </DialogFooter>
           </form>
         </FormProvider>

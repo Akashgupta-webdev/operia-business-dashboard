@@ -30,7 +30,7 @@ function CompanyField({ name, label, required = false, date = false }) {
 
   return (
     <div>
-      <label htmlFor={name} className="mb-1.5 block text-caption font-medium text-text-primary">
+      <label htmlFor={name} className="mb-1 block text-xs font-medium text-text-primary">
         {label}
         {required && <span className="ml-1 text-destructive">*</span>}
       </label>
@@ -39,9 +39,9 @@ function CompanyField({ name, label, required = false, date = false }) {
         id={name}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? errorId : undefined}
-        className="h-10 border-border-default bg-surface-primary px-3 text-body-sm shadow-none hover:border-outline focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
+        className="h-9 border-border-default bg-surface-primary px-3 shadow-none hover:border-outline focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 min-h-9! text-[13px] md:text-[13px] placeholder:text-[13px]"
       />
-      {error?.message && <p id={errorId} role="alert" className="mt-1 text-caption text-destructive">{error.message}</p>}
+      {error?.message && <p id={errorId} role="alert" className="mt-1 text-xs text-destructive">{error.message}</p>}
     </div>
   );
 }
@@ -89,23 +89,23 @@ export default function EditCompanyDialog({ clientId, company, open, onOpenChang
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="flex max-h-[calc(100svh-2rem)] max-w-2xl flex-col overflow-hidden p-0">
-        <DialogHeader className="shrink-0 border-b border-border-default px-5 py-4 pr-14 sm:px-6 sm:py-5 sm:pr-14">
+        <DialogHeader className="shrink-0 border-b border-border-default px-4 py-3 pr-12 sm:px-4 sm:py-3 sm:pr-12">
           <div className="flex items-start gap-3">
             <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-600">
-              <Building2 aria-hidden="true" className="size-4.5" />
+              <Building2 aria-hidden="true" className="size-4" />
             </span>
             <div className="min-w-0">
-              <DialogTitle className="text-body-lg font-semibold text-text-primary">Edit Company Information</DialogTitle>
-              <DialogDescription className="mt-0.5 text-caption text-text-secondary">Update the company details and registration information.</DialogDescription>
+              <DialogTitle className="text-base leading-5 font-semibold text-text-primary">Edit Company Information</DialogTitle>
+              <DialogDescription className="mt-1 text-xs leading-4 text-text-secondary">Update the company details and registration information.</DialogDescription>
             </div>
           </div>
         </DialogHeader>
 
         <FormProvider {...methods}>
           <form onSubmit={submit} noValidate className="flex min-h-0 flex-1 flex-col">
-            <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-5 py-5 sm:px-6">
+            <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3 sm:px-4">
               <CompanyField name="companyName" label="Company Name" required />
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2">
                 <CompanyField name="tradeLicence.tradeLicenceNo" label="Trade Licence Number" />
                 <CompanyField name="tradeLicence.tradeLicenceExpiry" label="Trade Licence Expiry" date />
                 <CompanyField name="establishment.establishmentCard" label="Establishment Card Number" />
@@ -114,9 +114,9 @@ export default function EditCompanyDialog({ clientId, company, open, onOpenChang
               <CompanyField name="vatTaxRegistrationNumber" label="VAT Registration Number" />
               <CompanyField name="corporateTaxNumber" label="Corporate Tax Registration Number" />
             </div>
-            <DialogFooter className="shrink-0 border-t border-border-default bg-surface-primary px-5 py-4 sm:px-6">
-              <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={mutation.isPending} className="px-5">Cancel</Button>
-              <Button type="submit" disabled={mutation.isPending || !clientId || !methods.formState.isDirty} className="gap-2 px-5 font-semibold">
+            <DialogFooter className="shrink-0 border-t border-border-default bg-surface-primary px-4 py-3 sm:px-4">
+              <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={mutation.isPending} className="px-3 h-8 text-xs">Cancel</Button>
+              <Button type="submit" disabled={mutation.isPending || !clientId || !methods.formState.isDirty} className="gap-2 px-3 font-medium h-8 text-xs">
                 <Save aria-hidden="true" className="size-3.5" />
                 {mutation.isPending ? "Saving..." : "Save Changes"}
               </Button>

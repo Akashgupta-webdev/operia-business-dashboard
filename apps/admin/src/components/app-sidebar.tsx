@@ -93,7 +93,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <p className="truncate text-body-lg leading-6 font-bold tracking-tight text-text-primary">
               Operio
             </p>
-            <p className="truncate text-caption font-semibold tracking-wide text-primary-600 uppercase">
+            <p className="truncate text-xs font-semibold tracking-wide text-primary-600 uppercase">
               CRM &amp; Compliance Suite
             </p>
           </div>

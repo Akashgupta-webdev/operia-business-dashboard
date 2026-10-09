@@ -12,6 +12,8 @@ import { cn } from "@operio/ui/lib/utils";
 import { DashboardPagination } from "@/features/dashboard/components/DashboardPagination";
 import ClientResults, { ClientResultsSkeleton } from "../components/ClientResults";
 
+import DeleteClientDialog from "../components/DeleteClientDialog";
+
 const PAGE_SIZE = 20;
 
 function EmptyState({ filtered }) {
@@ -26,6 +28,7 @@ function EmptyState({ filtered }) {
 
 export default function ClientsPage() {
   const navigate = useNavigate();
+  const [deletingClient, setDeletingClient] = useState(null);
   const [view, setView] = useState("grid");
   const [search, setSearch] = useState("");
   const [clientType, setClientType] = useState("all");
@@ -84,9 +87,10 @@ export default function ClientsPage() {
         {query.isPending && <ClientResultsSkeleton view={view} />}
         {query.isError && <div role="alert" className="rounded-xl border border-danger-200 bg-danger-50 px-6 py-10 text-center dark:bg-destructive-container"><h2 className="font-semibold text-danger-700 dark:text-destructive-container-foreground">Unable to load clients</h2><p className="mt-1 text-body-sm text-text-secondary">{query.error?.response?.data?.error?.message ?? "Please try again."}</p><Button type="button" variant="outline" onClick={() => query.refetch()} className="mt-4">Try again</Button></div>}
         {!query.isPending && !query.isError && clients.length === 0 && <EmptyState filtered={hasFilters} />}
-        {!query.isPending && !query.isError && clients.length > 0 && <div className={cn(query.isFetching && "opacity-60 transition-opacity")}><ClientResults clients={clients} view={view} /></div>}
+        {!query.isPending && !query.isError && clients.length > 0 && <div className={cn(query.isFetching && "opacity-60 transition-opacity")}><ClientResults clients={clients} view={view} onDelete={setDeletingClient} /></div>}
         {!query.isError && pageInfo.totalPages > 1 && <div className="mt-6 flex justify-end"><DashboardPagination page={pageInfo.page} pageCount={pageInfo.totalPages} onPageChange={setPage} /></div>}
       </main>
+      <DeleteClientDialog client={deletingClient} onOpenChange={(open) => { if (!open) setDeletingClient(null); }} />
     </div>
   );
 }

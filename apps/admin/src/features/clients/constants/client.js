@@ -1,3 +1,5 @@
+import { NATIONALITIES } from "./nationalities.js";
+
 
 export const CLIENT_TYPE_OPTIONS = [
   { label: "All Types", value: "all" },
@@ -24,7 +26,7 @@ export const CLIENT_SETUP_STEPS = [
   { title: "Client details", description: "Identity & contact" },
   { title: "Company", description: "Business information" },
   { title: "Personnel", description: "Members & employees" },
-  { title: "Vehicles", description: "Fleet registration" },
+  { title: "Vehicles and Drivers", description: "Fleet registration" },
   { title: "Drivers", description: "Driver details" },
   { title: "Services", description: "Work requirements" },
   { title: "Documents", description: "Supporting files" },
@@ -33,15 +35,7 @@ export const CLIENT_SETUP_STEPS = [
   { title: "Review", description: "Confirm & complete" },
 ];
 
-export const NATIONALITY_OPTIONS = [
-  "United Arab Emirates",
-  "India",
-  "Pakistan",
-  "Philippines",
-  "Egypt",
-  "United Kingdom",
-  "Germany",
-];
+export const NATIONALITY_OPTIONS = NATIONALITIES.map(({ name }) => name);
 
 export const CLIENT_EDIT_TYPE_OPTIONS = [
   { label: "Individual", value: "INDIVIDUAL" },

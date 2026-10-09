@@ -44,7 +44,7 @@ function buildDocumentFormData(values) {
 }
 
 function FieldError({ error }) {
-  return error ? <p role="alert" className="mt-1.5 text-[10px] leading-4 text-danger-600">{error.message}</p> : null;
+  return error ? <p role="alert" className="mt-1 text-[10px] leading-4 text-danger-600">{error.message}</p> : null;
 }
 
 const normalizeServerPath = (path = "") => (Array.isArray(path) ? path.join(".") : path)
@@ -86,62 +86,62 @@ export default function AddDocumentDialog({ clientId, open, onOpenChange }) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="flex max-h-[calc(100svh-2rem)] max-w-2xl flex-col overflow-hidden p-0">
-        <DialogHeader className="shrink-0 px-5 py-5 pr-14 sm:px-6 sm:pr-14">
+        <DialogHeader className="shrink-0 px-4 py-3 pr-12 sm:px-4 sm:pr-12">
           <div className="flex items-start gap-3">
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-600 dark:bg-primary-900/40 dark:text-primary-300"><FileUp aria-hidden="true" className="size-5" /></span>
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-600 dark:bg-primary-900/40 dark:text-primary-300"><FileUp aria-hidden="true" className="size-4" /></span>
             <div className="min-w-0">
-              <DialogTitle className="text-body-lg font-semibold text-text-primary">Add / Upload Document</DialogTitle>
-              <DialogDescription className="mt-0.5 text-caption text-text-secondary">Upload a new document for the client.</DialogDescription>
+              <DialogTitle className="text-base leading-5 font-semibold text-text-primary">Add / Upload Document</DialogTitle>
+              <DialogDescription className="mt-1 text-xs leading-4 text-text-secondary">Upload a new document for the client.</DialogDescription>
             </div>
           </div>
         </DialogHeader>
 
         <form onSubmit={submit} noValidate className="flex min-h-0 flex-1 flex-col">
-          <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-5 pb-5 sm:px-6">
+          <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 pb-3 sm:px-4">
             <div>
-              <label htmlFor="document-title" className="text-caption font-semibold text-text-primary">Document Title</label>
-              <Input id="document-title" placeholder="e.g. Passport Copy" aria-invalid={Boolean(errors.documentTitle)} className="mt-1.5 h-10" {...register("documentTitle")} />
+              <label htmlFor="document-title" className="text-xs font-medium text-text-primary">Document Title</label>
+              <Input id="document-title" placeholder="e.g. Passport Copy" aria-invalid={Boolean(errors.documentTitle)} className="mt-1 h-9 min-h-9! text-[13px] md:text-[13px] placeholder:text-[13px]" {...register("documentTitle")} />
               <FieldError error={errors.documentTitle} />
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-3">
               <div>
-                <label htmlFor="document-type" className="text-caption font-semibold text-text-primary">Document Type</label>
+                <label htmlFor="document-type" className="text-xs font-medium text-text-primary">Document Type</label>
                 <Controller
                   name="documentType"
                   control={control}
                   render={({ field }) => (
                     <Select value={field.value || null} onValueChange={field.onChange}>
-                      <SelectTrigger id="document-type" aria-invalid={Boolean(errors.documentType)} className="mt-1.5 h-10 w-full"><SelectValue placeholder="Select Type" /></SelectTrigger>
-                      <SelectContent>{DOCUMENT_TYPE_OPTIONS.map((type) => <SelectItem key={type} value={type}>{type}</SelectItem>)}</SelectContent>
+                      <SelectTrigger id="document-type" aria-invalid={Boolean(errors.documentType)} className="mt-1 h-9 w-full min-h-9! text-[13px] md:text-[13px] placeholder:text-[13px]"><SelectValue placeholder="Select Type" /></SelectTrigger>
+                      <SelectContent>{DOCUMENT_TYPE_OPTIONS.map((type) => <SelectItem className="text-[13px]" key={type} value={type}>{type}</SelectItem>)}</SelectContent>
                     </Select>
                   )}
                 />
                 <FieldError error={errors.documentType} />
               </div>
               <div>
-                <label htmlFor="document-issue-date" className="text-caption font-semibold text-text-primary">Issue Date</label>
-                <DateInput id="document-issue-date" aria-invalid={Boolean(errors.issueDate)} className="mt-1.5 h-10" {...register("issueDate")} />
+                <label htmlFor="document-issue-date" className="text-xs font-medium text-text-primary">Issue Date</label>
+                <DateInput id="document-issue-date" aria-invalid={Boolean(errors.issueDate)} className="mt-1 h-9 min-h-9! text-[13px] md:text-[13px] placeholder:text-[13px]" {...register("issueDate")} />
                 <FieldError error={errors.issueDate} />
               </div>
               <div>
-                <label htmlFor="document-expiry-date" className="text-caption font-semibold text-text-primary">Expiry Date</label>
-                <DateInput id="document-expiry-date" aria-invalid={Boolean(errors.expiryDate)} className="mt-1.5 h-10" {...register("expiryDate")} />
+                <label htmlFor="document-expiry-date" className="text-xs font-medium text-text-primary">Expiry Date</label>
+                <DateInput id="document-expiry-date" aria-invalid={Boolean(errors.expiryDate)} className="mt-1 h-9 min-h-9! text-[13px] md:text-[13px] placeholder:text-[13px]" {...register("expiryDate")} />
                 <FieldError error={errors.expiryDate} />
               </div>
             </div>
 
             <div>
-              <label htmlFor="document-file" className="text-caption font-semibold text-text-primary">Document file <span className="text-danger-600" aria-hidden="true">*</span></label>
-              <Input id="document-file" type="file" aria-required="true" aria-invalid={Boolean(errors.documents)} className="mt-1.5 h-10 cursor-pointer py-1.5 file:mr-3 file:rounded-md file:bg-surface-secondary file:px-3 file:py-1 file:text-caption file:font-semibold file:text-text-primary" {...register("documents")} />
-              <p className="mt-1.5 text-[10px] leading-4 text-text-muted">Maximum 10 MiB.</p>
+              <label htmlFor="document-file" className="text-xs font-medium text-text-primary">Document file <span className="text-danger-600" aria-hidden="true">*</span></label>
+              <Input id="document-file" type="file" aria-required="true" aria-invalid={Boolean(errors.documents)} className="mt-1 h-9 cursor-pointer py-1.5 file:mr-3 file:rounded-md file:bg-surface-secondary file:px-3 file:py-1 file:text-xs file:font-semibold file:text-text-primary min-h-9! text-[13px] md:text-[13px] placeholder:text-[13px]" {...register("documents")} />
+              <p className="mt-1 text-[10px] leading-4 text-text-muted">Maximum 10 MiB.</p>
               <FieldError error={errors.documents} />
             </div>
           </div>
 
-          <DialogFooter className="shrink-0 border-t border-border-default bg-surface-primary px-5 py-4 sm:px-6">
-            <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={mutation.isPending} className="min-w-28 px-5">Cancel</Button>
-            <Button type="submit" disabled={mutation.isPending || !clientId} className="min-w-36 gap-2 px-5 font-semibold"><Upload aria-hidden="true" className="size-3.5" />{mutation.isPending ? "Uploading..." : "Upload Document"}</Button>
+          <DialogFooter className="shrink-0 border-t border-border-default bg-surface-primary px-4 py-3 sm:px-4">
+            <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={mutation.isPending} className="px-3 h-8 text-xs">Cancel</Button>
+            <Button type="submit" disabled={mutation.isPending || !clientId} className="gap-2 px-3 font-medium h-8 text-xs"><Upload aria-hidden="true" className="size-3.5" />{mutation.isPending ? "Uploading..." : "Upload Document"}</Button>
           </DialogFooter>
         </form>
       </DialogContent>

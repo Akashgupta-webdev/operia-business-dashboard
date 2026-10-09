@@ -1,3 +1,4 @@
+import { uaeMobileSchema } from "./uaeMobile.schema.js";
 import Joi from "joi";
 
 import {
@@ -84,6 +85,9 @@ const memberSchema = Joi.object({
   emirates: emiratesSchema,
   visa: visaSchema,
   healthInsurance: healthInsuranceSchema,
+  insuranceCompany: optionalText(200),
+  premium: optionalDecimal,
+  note: optionalText(2000),
 }).unknown(false);
 
 const vehicleSchema = Joi.object({
@@ -162,8 +166,8 @@ export const clientCreationSchema = Joi.object({
       "string.min": "Full name must contain at least 2 characters.",
     }),
     nationality: Joi.string().valid(...NATIONALITY_OPTIONS).empty("").optional(),
-    mobileNumber: optionalText(30),
-    whatsappNumber: optionalText(30),
+    mobileNumber: uaeMobileSchema,
+    whatsappNumber: uaeMobileSchema,
     emailAddress: Joi.string().trim().lowercase().email({ tlds: false }).max(254).empty("").optional(),
     clientType: Joi.string().valid("INDIVIDUAL", "COMPANY").required(),
     passport: identitySchema,
@@ -177,7 +181,7 @@ export const clientCreationSchema = Joi.object({
       .fork("companyName", (field) => field.required())
       .required()
       .messages({ "any.required": "Company information is required." }),
-    otherwise: companySchema.optional(),
+    otherwise: Joi.any().strip(),
   }),
   members: Joi.array().items(memberSchema).max(MAX_RELATED_ITEMS).required(),
   vehicles: Joi.array().items(vehicleSchema).max(MAX_RELATED_ITEMS).required(),
@@ -364,7 +368,7 @@ export const CLIENT_STEP_FIELDS = {
   1: ["client"],
   2: ["client.clientType", "company"],
   3: ["members"],
-  4: ["vehicles"],
+  4: ["vehicles", "drivers"],
   5: ["drivers"],
   6: ["services"],
   7: ["documents"],

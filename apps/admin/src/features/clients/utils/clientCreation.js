@@ -24,6 +24,9 @@ const emptyHealthInsurance = () => ({
 
 export const createEmptyMember = () => ({
   memberType: "Partner",
+  insuranceCompany: "",
+  premium: "",
+  note: "",
   name: "",
   passport: emptyPassport(),
   emirates: emptyEmirates(),
@@ -70,7 +73,7 @@ export const createClientDefaultValues = () => ({
     mobileNumber: "",
     whatsappNumber: "",
     emailAddress: "",
-    clientType: "INDIVIDUAL",
+    clientType: "COMPANY",
     passport: emptyPassport(),
     emirates: emptyEmirates(),
     visa: emptyVisa(),
@@ -174,9 +177,12 @@ export const buildClientCreationRequest = (values) => {
   });
 
   const members = values.members
-    .filter((member) => hasText(member.name) || [member.passport, member.emirates, member.visa, member.healthInsurance].some(hasNestedValue))
+    .filter((member) => [member.name, member.insuranceCompany, member.premium, member.note].some(hasText) || [member.passport, member.emirates, member.visa, member.healthInsurance].some(hasNestedValue))
     .map((member) => prune({
       memberType: member.memberType,
+      insuranceCompany: member.insuranceCompany,
+      premium: member.premium,
+      note: member.note,
       name: member.name,
       passport: mapPassport(member.passport),
       emirates: mapEmirates(member.emirates),

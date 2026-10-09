@@ -29,7 +29,7 @@ function EditField({ name, label, type = "text", placeholder, className, ...prop
 
   return (
     <div className={cn("min-w-0", className)}>
-      <label htmlFor={name} className="mb-1.5 block text-[11px] leading-4 font-medium text-text-secondary">{label}</label>
+      <label htmlFor={name} className="mb-1 block text-[11px] leading-4 font-medium text-text-secondary">{label}</label>
       <FieldComponent
         {...register(name)}
         id={name}
@@ -37,7 +37,7 @@ function EditField({ name, label, type = "text", placeholder, className, ...prop
         placeholder={placeholder}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? errorId : undefined}
-        className="h-9 border-border-default bg-surface-primary px-3 text-caption shadow-none placeholder:text-caption hover:border-outline focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
+        className="h-9 border-border-default bg-surface-primary px-3 shadow-none hover:border-outline focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 min-h-9! text-[13px] md:text-[13px] placeholder:text-[13px]"
         {...props}
       />
       {error?.message && <p id={errorId} role="alert" className="mt-1 text-[10px] leading-4 text-destructive">{error.message}</p>}
@@ -52,7 +52,7 @@ function EditSelect({ name, label, options, placeholder = "Select an option" }) 
 
   return (
     <div className="min-w-0">
-      <label className="mb-1.5 block text-[11px] leading-4 font-medium text-text-secondary">{label}</label>
+      <label className="mb-1 block text-[11px] leading-4 font-medium text-text-secondary">{label}</label>
       <Controller
         name={name}
         control={control}
@@ -62,7 +62,7 @@ function EditSelect({ name, label, options, placeholder = "Select an option" }) 
               aria-label={label}
               aria-invalid={Boolean(error)}
               aria-describedby={error ? errorId : undefined}
-              className="h-9 w-full border-border-default bg-surface-primary px-3 text-caption text-text-primary hover:border-outline focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20"
+              className="h-9 w-full border-border-default bg-surface-primary px-3 text-text-primary hover:border-outline focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 min-h-9! text-[13px] md:text-[13px] placeholder:text-[13px]"
             >
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
@@ -70,7 +70,7 @@ function EditSelect({ name, label, options, placeholder = "Select an option" }) 
               {options.map((option) => {
                 const value = typeof option === "string" ? option : option.value;
                 const optionLabel = typeof option === "string" ? option : option.label;
-                return <SelectItem key={value} value={value}>{optionLabel}</SelectItem>;
+                return <SelectItem className="text-[13px]" key={value} value={value}>{optionLabel}</SelectItem>;
               })}
             </SelectContent>
           </Select>
@@ -85,12 +85,12 @@ function IdentitySection({ icon: Icon, iconClassName, title, numberField, number
   return (
     <fieldset className="rounded-lg border border-border-default bg-app-background/40 p-4">
       <legend className="sr-only">{title}</legend>
-      <div className="mb-4 flex items-center gap-2">
+      <div className="mb-3 flex items-center gap-2">
         <Icon aria-hidden="true" className={cn("size-4", iconClassName)} />
-        <h3 className="text-body-sm font-semibold text-text-primary">{title}</h3>
+        <h3 className="text-[13px] font-semibold text-text-primary">{title}</h3>
       </div>
       <EditField name={numberField} label={numberLabel} placeholder="Not registered" />
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+      <div className="mt-3 grid gap-3 sm:grid-cols-2">
         <EditField name={issueField} label="Issue Date" type="date" />
         <EditField name={expiryField} label="Expiry Date" type="date" />
       </div>
@@ -100,16 +100,16 @@ function IdentitySection({ icon: Icon, iconClassName, title, numberField, number
 
 export default function EditClientFields() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-3">
       <section aria-labelledby="basic-information-heading">
-        <h2 id="basic-information-heading" className="mb-4 text-body-sm font-semibold text-text-primary">Basic Information</h2>
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <h2 id="basic-information-heading" className="mb-3 text-[13px] font-semibold text-text-primary">Basic Information</h2>
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <EditField name="name" label="Full Legal Name" />
           <EditSelect name="clientType" label="Client Type" options={CLIENT_EDIT_TYPE_OPTIONS} />
           <EditSelect name="nationality" label="Nationality" options={NATIONALITY_OPTIONS} />
           <EditSelect name="preferredCommunicationMethod" label="Preferred Communication" options={PREFERRED_COMMUNICATION_OPTIONS} />
         </div>
-        <div className="mt-4 grid gap-4 md:grid-cols-3">
+        <div className="mt-3 grid gap-3 md:grid-cols-3">
           <EditField name="mobileNumber" label="Mobile Number" inputMode="tel" />
           <EditField name="whatsappNumber" label="WhatsApp Number" inputMode="tel" />
           <EditField name="emailAddress" label="Email Address" type="email" />
@@ -117,8 +117,8 @@ export default function EditClientFields() {
       </section>
 
       <section aria-labelledby="identity-documents-heading">
-        <h2 id="identity-documents-heading" className="mb-4 text-body-sm font-semibold text-text-primary">Identity Documents</h2>
-        <div className="grid gap-4 lg:grid-cols-2">
+        <h2 id="identity-documents-heading" className="mb-3 text-[13px] font-semibold text-text-primary">Identity Documents</h2>
+        <div className="grid gap-3 lg:grid-cols-2">
           <IdentitySection icon={CreditCard} iconClassName="text-info-600" title="Emirates ID (EID)" numberField="emirates.emiratesId" numberLabel="Emirates ID Number" issueField="emirates.emiratesIssueDate" expiryField="emirates.emiratesExpiryDate" />
           <IdentitySection icon={FileBadge} iconClassName="text-primary-600" title="Passport" numberField="passport.passportNumber" numberLabel="Passport Number" issueField="passport.passportIssueDate" expiryField="passport.passportExpiryDate" />
           <IdentitySection icon={FileText} iconClassName="text-warning-600" title="Visa / Residency Permit" numberField="visa.visaUIDNumber" numberLabel="Visa Number" issueField="visa.visaIssueDate" expiryField="visa.visaExpiryDate" />

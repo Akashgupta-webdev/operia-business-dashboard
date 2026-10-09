@@ -98,24 +98,24 @@ export default function DashboardPage() {
   const rootError = errors.root?.message || errors[""]?.message;
 
   return (
-    <div className="min-h-[calc(100svh-var(--header-height))] bg-app-background px-4 py-5 sm:px-6 lg:px-8">
-      <header className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+    <div className="min-h-[calc(100svh-var(--header-height))] bg-app-background px-4 py-4 sm:px-6">
+      <header className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center">
         <div><h1 className="text-section-heading font-bold text-text-primary">Business Dashboard</h1><p className="mt-1 text-caption text-text-secondary">Renewal, compliance, client and fleet performance at a glance.</p></div>
         <div className="flex items-center gap-2 text-caption text-text-secondary sm:ml-auto"><CalendarClock aria-hidden="true" className="size-4 text-primary-600" /><span>Today, {todayLabel}</span>{query.isFetching && <LoaderCircle aria-label="Refreshing dashboard" className="size-3.5 animate-spin text-primary-600" />}</div>
       </header>
 
-      <Card className="mb-5 gap-4 border border-border-default bg-surface-primary p-3 py-3 shadow-card ring-0 sm:p-4 sm:py-4 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(30rem,auto)] lg:items-center">
-        <div className="overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <div className="flex min-w-max gap-1">
-            {CLIENT_DASHBOARD_TYPES.map(({ label, value }) => <Button key={value} type="button" variant="ghost" size="sm" aria-pressed={filters.type === value} onClick={() => selectType(value)} className={cn("h-8 px-3 text-[11px]", filters.type === value && "bg-primary-700 text-neutral-0 hover:bg-primary-700 hover:text-neutral-0")}>{label}</Button>)}
+      <Card className="mb-3 flex-row flex-wrap items-center gap-x-4 gap-y-2 overflow-visible border border-border-default bg-surface-primary px-3 py-2 shadow-card ring-0">
+        <div className="min-w-0">
+          <div className="flex flex-wrap gap-1">
+            {CLIENT_DASHBOARD_TYPES.map(({ label, value }) => <Button key={value} type="button" variant="ghost" size="sm" aria-pressed={filters.type === value} onClick={() => selectType(value)} className={cn("h-8 px-3 text-[12px]", filters.type === value && "bg-primary-700 text-neutral-0 hover:bg-primary-700 hover:text-neutral-0")}>{label}</Button>)}
           </div>
         </div>
-        <form onSubmit={applyDates} noValidate className="grid items-start gap-3 md:grid-cols-[minmax(10rem,1fr)_auto_minmax(10rem,1fr)_auto] lg:ml-auto lg:w-full lg:max-w-2xl">
+        <form onSubmit={applyDates} noValidate className="grid w-full items-start gap-2 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto] xl:ml-auto xl:w-auto xl:grid-cols-[10rem_auto_10rem_auto]">
           <div><label htmlFor="dashboard-from-date" className="sr-only">From date</label><DateInput id="dashboard-from-date" aria-invalid={Boolean(errors.fromDate || rootError)} className="h-10 bg-surface-primary" {...register("fromDate")} />{errors.fromDate?.message && <p className="mt-1 text-[10px] text-danger-600">{errors.fromDate.message}</p>}</div>
-          <span className="hidden self-center text-caption text-text-muted md:block">to</span>
+          <span className="hidden self-center text-caption text-text-muted sm:block">to</span>
           <div><label htmlFor="dashboard-to-date" className="sr-only">To date</label><DateInput id="dashboard-to-date" aria-invalid={Boolean(errors.toDate || rootError)} className="h-10 bg-surface-primary" {...register("toDate")} />{errors.toDate?.message && <p className="mt-1 text-[10px] text-danger-600">{errors.toDate.message}</p>}</div>
           <Button type="submit" disabled={query.isFetching} className="h-10 gap-2 px-4"><SlidersHorizontal aria-hidden="true" className="size-3.5" />Filter</Button>
-          {rootError && <p role="alert" className="text-[10px] text-danger-600 md:col-span-4">{rootError}</p>}
+          {rootError && <p role="alert" className="text-[10px] text-danger-600 sm:col-span-4">{rootError}</p>}
         </form>
       </Card>
 
@@ -127,12 +127,12 @@ export default function DashboardPage() {
       )}
 
       {data && (
-        <div className={cn("space-y-5 transition-opacity", query.isFetching && "opacity-70")}>
+        <div className={cn("space-y-3 transition-opacity", query.isFetching && "opacity-70")}>
           {query.isError && <div role="alert" className="flex items-center gap-2 rounded-lg border border-warning-200 bg-warning-50 px-3 py-2 text-caption text-warning-700"><AlertCircle aria-hidden="true" className="size-4" />Unable to refresh KPIs. Showing the last available results.</div>}
           <section aria-label="Renewal KPIs" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{primaryMetrics.map((metric) => <DashboardMetricCard key={metric.label} {...metric} />)}</section>
           <section aria-label="Inventory KPIs" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{inventoryMetrics.map((metric) => <DashboardMetricCard key={metric.label} {...metric} />)}</section>
           <CategoryBreakdown items={categories} />
-          <div className="grid items-stretch gap-4 xl:grid-cols-2"><RenewalStatusOverview data={data} /><DueSoonBreakdown breakdown={data.dueSoonBreakdown} totalDueSoon={data.totalDueSoon ?? 0} /></div>
+          <div className="grid items-stretch gap-3 xl:grid-cols-2"><RenewalStatusOverview data={data} /><DueSoonBreakdown breakdown={data.dueSoonBreakdown} totalDueSoon={data.totalDueSoon ?? 0} /></div>
         </div>
       )}
     </div>

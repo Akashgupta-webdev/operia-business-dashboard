@@ -39,7 +39,7 @@ export function NavMain({ sections }: { sections: SidebarNavSection[] }) {
           key={section.label}
           className="px-0 py-2 first:pt-1 last:pb-1 group-data-[collapsible=icon]:py-1"
         >
-          <SidebarGroupLabel className="mb-1 h-8 px-3 text-body-md font-semibold tracking-wide text-primary-600 uppercase group-data-[collapsible=icon]:hidden">
+          <SidebarGroupLabel className="mb-1 h-8 px-3 text-body-sm font-semibold tracking-wide text-primary-600 uppercase group-data-[collapsible=icon]:hidden">
             {section.label}
           </SidebarGroupLabel>
           <SidebarMenu className="gap-1">

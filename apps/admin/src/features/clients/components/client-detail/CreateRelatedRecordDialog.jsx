@@ -69,24 +69,24 @@ export default function CreateRelatedRecordDialog({
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className={`flex max-h-[calc(100svh-2rem)] ${widthClassName} flex-col overflow-hidden p-0`}>
-        <DialogHeader className="shrink-0 border-b border-border-default px-5 py-5 pr-14 sm:px-6 sm:py-6 sm:pr-14">
+        <DialogHeader className="shrink-0 border-b border-border-default px-4 py-3 pr-12 sm:px-4 sm:py-3 sm:pr-12">
           <div className="flex items-start gap-3">
-            <span className={`flex size-10 shrink-0 items-center justify-center rounded-lg ${iconClassName}`}>
-              <Icon aria-hidden="true" className="size-5" />
+            <span className={`flex size-9 shrink-0 items-center justify-center rounded-lg ${iconClassName}`}>
+              <Icon aria-hidden="true" className="size-4" />
             </span>
             <div className="min-w-0">
-              <DialogTitle className="text-subsection font-semibold text-text-primary">{title}</DialogTitle>
-              <DialogDescription className="mt-0.5 text-body-sm text-text-secondary">{description}</DialogDescription>
+              <DialogTitle className="text-base leading-5 font-semibold text-text-primary">{title}</DialogTitle>
+              <DialogDescription className="mt-1 text-xs leading-4 text-text-secondary">{description}</DialogDescription>
             </div>
           </div>
         </DialogHeader>
 
         <FormProvider {...methods}>
           <form onSubmit={submit} noValidate className="flex min-h-0 flex-1 flex-col">
-            <div className="min-h-0 flex-1 space-y-6 overflow-y-auto px-5 py-6 sm:px-6">{children}</div>
-            <DialogFooter className="grid shrink-0 gap-3 border-t border-border-default bg-surface-primary px-5 py-4 sm:grid-cols-2 sm:px-6">
-              <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={mutation.isPending} className="w-full px-5">Cancel</Button>
-              <Button type="submit" disabled={mutation.isPending || !clientId} className="w-full gap-2 px-5 font-semibold">
+            <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3 sm:px-4">{children}</div>
+            <DialogFooter className="grid shrink-0 gap-3 border-t border-border-default bg-surface-primary px-4 py-3 sm:grid-cols-2 sm:px-4">
+              <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={mutation.isPending} className="w-full px-3 h-8 text-xs">Cancel</Button>
+              <Button type="submit" disabled={mutation.isPending || !clientId} className="w-full gap-2 px-3 font-medium h-8 text-xs">
                 <Plus aria-hidden="true" className="size-3.5" />
                 {mutation.isPending ? "Creating..." : `Add ${entityName}`}
               </Button>
