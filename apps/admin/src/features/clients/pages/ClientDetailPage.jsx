@@ -19,6 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@operio/ui/components/
 import useClient from "@/features/clients/hooks/useClient";
 import { getClientRenewalItems } from "@/features/clients/utils/clientRenewals";
 import ClientProfileCard from "../components/client-detail/ClientProfileCard";
+import BankAccountsTab from "../components/client-detail/BankAccountsTab";
 import CompaniesTab from "../components/client-detail/CompaniesTab";
 import DocumentsTab from "../components/client-detail/DocumentsTab";
 import EditClientDialog from "../components/client-detail/EditClientDialog";
@@ -34,11 +35,9 @@ const tabs = [
   ["services", "Services", "services"],
   ["documents", "Documents", "documents"],
   ["renewals", "Renewals", "renewals"],
-  ["account", "Account"],
-  ["invoice", "Invoice"],
+  ["account", "Bank Accounts"],
   ["filing-vat", "Filing VAT"],
   ["portal-access", "Portal Access"],
-  ["activity", "Activity"],
 ];
 
 function DetailPageSkeleton() {
@@ -103,27 +102,10 @@ export default function ClientDetailPage() {
             <TabsContent value="services"><ServicesTab clientId={data.client.id ?? data.client._id} services={data.services} /></TabsContent>
             <TabsContent value="documents"><DocumentsTab clientId={data.client.id ?? data.client._id} documents={data.documents} /></TabsContent>
             <TabsContent value="renewals"><RenewalsTab data={data} /></TabsContent>
-            <TabsContent value="account">
-              <Card className="gap-2 border border-border-default bg-surface-primary px-6 py-12 text-center shadow-card ring-0">
-                <h2 className="text-subsection font-semibold text-text-primary">Account</h2>
-                <p className="text-body-sm text-text-muted">Client account details are coming soon.</p>
-              </Card>
-            </TabsContent>
-            <TabsContent value="invoice">
-              <Card className="gap-2 border border-border-default bg-surface-primary px-6 py-12 text-center shadow-card ring-0">
-                <h2 className="text-subsection font-semibold text-text-primary">Invoice</h2>
-                <p className="text-body-sm text-text-muted">Client invoices are coming soon.</p>
-              </Card>
-            </TabsContent>
+            <TabsContent value="account"><BankAccountsTab /></TabsContent>
             {vatAccess.allowed && <TabsContent value="filing-vat"><VatQueue clientId={id} companies={data.companies} clientName={data.client.name} /></TabsContent>}
             <TabsContent value="portal-access">
               <PortalAccessTab key={id} client={data.client} clientId={id} />
-            </TabsContent>
-            <TabsContent value="activity">
-              <Card className="gap-2 border border-border-default bg-surface-primary px-6 py-12 text-center shadow-card ring-0">
-                <h2 className="text-subsection font-semibold text-text-primary">Activity</h2>
-                <p className="text-body-sm text-text-muted">Client activity is coming soon.</p>
-              </Card>
             </TabsContent>
           </Tabs>
           <EditClientDialog client={data.client} open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen} />

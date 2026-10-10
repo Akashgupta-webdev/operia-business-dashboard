@@ -1,7 +1,6 @@
 import { useVatAccess } from "@/features/vat/hooks/useVat";
 import {
   Building2,
-  CalendarDays,
   ChartCandlestick,
   ChartNoAxesColumnIncreasing,
   DollarSign,
@@ -61,7 +60,6 @@ const navigationSections: SidebarNavSection[] = [
     items: [
       { title: "Renewals", url: "/renewals", icon: RefreshCw },
       { title: "Compliance", url: "/tax-and-compliance", icon: ShieldCheck },
-      { title: "Calendar", url: "/calendars", icon: CalendarDays },
     ],
   },
   {

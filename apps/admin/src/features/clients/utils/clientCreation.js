@@ -53,7 +53,7 @@ export const createEmptyService = () => ({
   package: "",
   status: "Pending",
   packagePrice: "",
-  paymentStatus: "Unpaid",
+  paymentStatus: "",
   targetCompletionDate: "",
   notes: "",
 });
@@ -94,7 +94,7 @@ export const createClientDefaultValues = () => ({
   payments: [{
     totalBilled: "",
     amountReceived: "",
-    paymentStatus: "Unpaid",
+    paymentStatus: "",
     paymentMethod: "",
     notes: "",
   }],

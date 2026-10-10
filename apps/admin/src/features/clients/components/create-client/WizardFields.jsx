@@ -93,6 +93,8 @@ export function WizardSelect({
   label,
   options,
   placeholder = "Select an option",
+  onChange,
+  allowClear = false,
   required = false,
   className,
 }) {
@@ -110,7 +112,7 @@ export function WizardSelect({
         name={name}
         control={control}
         render={({ field }) => (
-          <Select value={field.value || null} onValueChange={field.onChange}>
+          <Select value={field.value || null} onValueChange={(value) => { field.onChange(value === "__clear__" ? "" : value); onChange?.(value); }}>
             <SelectTrigger
               aria-label={label}
               aria-invalid={Boolean(error)}
@@ -121,6 +123,7 @@ export function WizardSelect({
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent align="start">
+              {allowClear && <SelectItem value="__clear__">Not Set</SelectItem>}
               {options.map((option) => {
                 const value = typeof option === "string" ? option : option.value;
                 const optionLabel = typeof option === "string" ? option : option.label;

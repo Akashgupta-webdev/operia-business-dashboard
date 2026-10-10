@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { BriefcaseBusiness, Save } from "lucide-react";
-import { Controller, FormProvider, useForm, useFormContext } from "react-hook-form";
+import { Controller, FormProvider, useForm, useFormContext, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 
 import { Button } from "@operio/ui/components/button";
@@ -33,7 +33,7 @@ function ServiceInput({ name, label, date = false, ...props }) {
   );
 }
 
-function ServiceSelect({ name, label, options, wide = false }) {
+function ServiceSelect({ name, label, options, wide = false, placeholder, onChange }) {
   const { control, formState: { errors } } = useFormContext();
   const error = errors[name];
   const errorId = `${name}-error`;
@@ -41,9 +41,9 @@ function ServiceSelect({ name, label, options, wide = false }) {
     <div className="min-w-0">
       <label htmlFor={name} className="mb-1 block text-xs font-medium text-text-primary">{label}</label>
       <Controller name={name} control={control} render={({ field }) => (
-        <Select value={field.value || null} onValueChange={(value) => field.onChange(value === "__clear__" ? "" : value)}>
-          <SelectTrigger id={name} onBlur={field.onBlur} aria-invalid={Boolean(error)} aria-describedby={error ? errorId : undefined} className="h-9 w-full border-border-default bg-surface-primary px-3 shadow-none hover:border-outline focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 min-h-9! text-[13px] md:text-[13px] placeholder:text-[13px]"><SelectValue placeholder={`Select ${label.toLowerCase()}`} /></SelectTrigger>
-          <SelectContent align="start" className={wide ? "w-[min(36rem,calc(100vw-2rem))]" : undefined}><SelectItem className="text-[13px]" value="__clear__">Not set</SelectItem>{options.map((option) => <SelectItem className="text-[13px]" key={option} value={option}>{option}</SelectItem>)}</SelectContent>
+        <Select value={field.value || null} onValueChange={(value) => { field.onChange(value === "__clear__" ? "" : value); onChange?.(value); }}>
+          <SelectTrigger id={name} onBlur={field.onBlur} aria-invalid={Boolean(error)} aria-describedby={error ? errorId : undefined} className="h-9 w-full border-border-default bg-surface-primary px-3 shadow-none hover:border-outline focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 min-h-9! text-[13px] md:text-[13px] placeholder:text-[13px]"><SelectValue placeholder={placeholder || `Select ${label.toLowerCase()}`} /></SelectTrigger>
+          <SelectContent align="start" className={wide ? "w-[min(36rem,calc(100vw-2rem))]" : undefined}><SelectItem className="text-[13px]" value="__clear__">Not Set</SelectItem>{options.map((option) => <SelectItem className="text-[13px]" key={option} value={option}>{option}</SelectItem>)}</SelectContent>
         </Select>
       )} />
       <FieldError error={error} id={errorId} />
@@ -52,15 +52,16 @@ function ServiceSelect({ name, label, options, wide = false }) {
 }
 
 export function ServiceFormFields({ excludeVat = false }) {
-  const { register, formState: { errors } } = useFormContext();
+  const { register, control, setValue, formState: { errors } } = useFormContext();
+  const category = useWatch({ control, name: "category" });
   return (
     <>
       <div className="grid gap-3 md:grid-cols-3">
-        <ServiceSelect name="category" label="Service category" options={SERVICE_CATEGORY_OPTIONS} />
-        <ServiceSelect name="package" label="Service package" options={excludeVat ? SERVICE_PACKAGE_OPTIONS.filter((item) => item !== "Quarterly VAT Return Filing Package") : SERVICE_PACKAGE_OPTIONS} wide />
+        <ServiceSelect name="category" label="Service category" options={SERVICE_CATEGORY_OPTIONS} onChange={() => setValue("package", "", { shouldDirty: true, shouldValidate: true })} />
+        {category === "Operio Package" ? <ServiceInput name="package" label="Service package" placeholder="Enter service package" /> : <ServiceSelect name="package" label="Service package" options={excludeVat ? SERVICE_PACKAGE_OPTIONS.filter((item) => item !== "Quarterly VAT Return Filing Package") : SERVICE_PACKAGE_OPTIONS} wide />}
         <ServiceSelect name="status" label="Status" options={SERVICE_STATUS_OPTIONS} />
         <ServiceInput name="packagePrice" label="Package price (AED)" inputMode="decimal" placeholder="0.00" />
-        <ServiceSelect name="paymentStatus" label="Payment status" options={SERVICE_PAYMENT_STATUS_OPTIONS} />
+        <ServiceSelect name="paymentStatus" label="Payment status" options={SERVICE_PAYMENT_STATUS_OPTIONS} placeholder="Select Payment Status" />
         <ServiceInput name="targetCompletionDate" label="Target completion date" date />
       </div>
       <div>

@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
+
 import { VAT_PACKAGE } from "@/features/vat/constants/vat";
-import { useVatAccess } from "@/features/vat/hooks/useVat";
+
 import { useEffect } from "react";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { BriefcaseBusiness, Plus } from "lucide-react";
@@ -19,7 +19,7 @@ const normalizeServerPath = (path = "") => (Array.isArray(path) ? path.join(".")
   .replace(/\[(\d+)\]/g, ".$1");
 
 export default function AddServiceDialog({ clientId, open, onOpenChange }) {
-  const vatAccess = useVatAccess();
+
   const mutation = useCreateClientService(clientId);
   const methods = useForm({
     resolver: joiResolver(clientServiceCreateSchema, { abortEarly: false }),
@@ -64,7 +64,7 @@ export default function AddServiceDialog({ clientId, open, onOpenChange }) {
 
         <FormProvider {...methods}>
           <form onSubmit={submit} noValidate className="flex min-h-0 flex-1 flex-col">
-            <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3 sm:px-4"><ServiceFormFields excludeVat />{vatAccess.allowed && <Link className="block mt-3 text-primary underline" to={`/vat-filings/new?client=${clientId}`}>Create a VAT filing with period and evidence</Link>}</div>
+            <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3 sm:px-4"><ServiceFormFields excludeVat /></div>
             <DialogFooter className="shrink-0 border-t border-border-default bg-surface-primary px-4 py-3 sm:px-4">
               <Button type="button" variant="outline" onClick={() => handleOpenChange(false)} disabled={mutation.isPending} className="px-3 h-8 text-xs">Cancel</Button>
               <Button type="submit" disabled={mutation.isPending || !clientId} className="gap-2 px-3 font-medium h-8 text-xs"><Plus aria-hidden="true" className="size-3.5" />{mutation.isPending ? "Creating..." : "Add Service"}</Button>

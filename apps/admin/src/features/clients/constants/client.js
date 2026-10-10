@@ -53,6 +53,7 @@ export const MEMBER_TYPE_OPTIONS = [
 ];
 
 export const SERVICE_CATEGORY_OPTIONS = [
+  "Operio Package",
   "Business Setup",
   "Visa & Immigration",
   "Tax & Accounting",

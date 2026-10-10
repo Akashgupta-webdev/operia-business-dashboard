@@ -75,15 +75,34 @@ export function VehiclesAndDriversStep() {
   return <div className="space-y-5"><section><VehiclesStep /></section><section className="border-t border-border-default pt-4"><DriversStep /></section></div>;
 }
 
-export function ServicesStep() { return <RepeatedStep name="services" heading="Services" description="Add work requirements and commercial details. Create VAT filings from the client?s VAT tab after saving the client and company." addLabel="Add service" createItem={createEmptyService} title="Service Details">
-  {(i) => <Grid><WizardSelect name={`services.${i}.category`} label="Service category" options={SERVICE_CATEGORY_OPTIONS} /><WizardSelect name={`services.${i}.package`} label="Service package" options={SERVICE_PACKAGE_OPTIONS.filter((item) => item !== "Quarterly VAT Return Filing Package")} /><WizardSelect name={`services.${i}.status`} label="Status" options={SERVICE_STATUS_OPTIONS} /><WizardField name={`services.${i}.packagePrice`} label="Package price (AED)" placeholder="0.00" inputMode="decimal" /><WizardSelect name={`services.${i}.paymentStatus`} label="Payment status" options={SERVICE_PAYMENT_STATUS_OPTIONS} /><WizardField name={`services.${i}.targetCompletionDate`} label="Target completion date" type="date" /><WizardTextarea name={`services.${i}.notes`} label="Service notes" placeholder="Requirements, scope, or internal notes..." className="md:col-span-2 xl:col-span-3" /></Grid>}
-  </RepeatedStep>; }
+function ServiceSetupFields({ index }) {
+  const { control, setValue } = useFormContext();
+  const prefix = `services.${index}`;
+  const category = useWatch({ control, name: `${prefix}.category` });
+  return <Grid>
+    <WizardSelect name={`${prefix}.category`} label="Service category" options={SERVICE_CATEGORY_OPTIONS} onChange={() => setValue(`${prefix}.package`, "", { shouldDirty: true, shouldValidate: true })} />
+    {category === "Operio Package"
+      ? <WizardField name={`${prefix}.package`} label="Service package" placeholder="Enter service package" />
+      : <WizardSelect name={`${prefix}.package`} label="Service package" options={SERVICE_PACKAGE_OPTIONS.filter((item) => item !== "Quarterly VAT Return Filing Package")} />}
+    <WizardSelect name={`${prefix}.status`} label="Status" options={SERVICE_STATUS_OPTIONS} />
+    <WizardField name={`${prefix}.packagePrice`} label="Package price (AED)" placeholder="0.00" inputMode="decimal" />
+    <WizardSelect name={`${prefix}.paymentStatus`} label="Payment status" options={SERVICE_PAYMENT_STATUS_OPTIONS} placeholder="Select Payment Status" allowClear />
+    <WizardField name={`${prefix}.targetCompletionDate`} label="Target completion date" type="date" />
+    <WizardTextarea name={`${prefix}.notes`} label="Service notes" placeholder="Requirements, scope, or internal notes..." className="md:col-span-2 xl:col-span-3" />
+  </Grid>;
+}
+
+export function ServicesStep() {
+  return <RepeatedStep name="services" heading="Services" description="Add work requirements and commercial details." addLabel="Add service" createItem={createEmptyService} title="Service Details">
+    {(index) => <ServiceSetupFields index={index} />}
+  </RepeatedStep>;
+}
 
 export function DocumentsStep() { return <RepeatedStep name="documents" heading="Supporting documents" description="Register the files associated with this client." addLabel="Add document" createItem={createEmptyDocument} title="Document" max={MAX_DOCUMENTS}>
   {(i) => <Grid><WizardField name={`documents.${i}.documentTitle`} label="Document Title" placeholder="e.g. Passport Copy" className="md:col-span-2 xl:col-span-3" /><WizardSelect name={`documents.${i}.documentType`} label="Document Type" options={DOCUMENT_TYPE_OPTIONS} placeholder="Select Type" /><WizardField name={`documents.${i}.issueDate`} label="Issue Date" type="date" /><WizardField name={`documents.${i}.expiryDate`} label="Expiry Date" type="date" /><WizardFileField name={`documents.${i}.file`} label="Document file" /></Grid>}
   </RepeatedStep>; }
 
-export function PaymentStep() { return <><StepHeading title="Fees & collection" description="Record the payment details for this client's setup." /><Grid><WizardField name="payments.0.totalBilled" label="Total Billed (AED)" placeholder="0.00" inputMode="decimal" /><WizardField name="payments.0.amountReceived" label="Amount Received (AED)" placeholder="0.00" inputMode="decimal" /><WizardSelect name="payments.0.paymentStatus" label="Payment Status" options={PAYMENT_STATUS_OPTIONS} /><WizardSelect name="payments.0.paymentMethod" label="Payment Method" options={PAYMENT_METHOD_OPTIONS} placeholder="Select method" /><WizardTextarea name="payments.0.notes" label="Payment Reference / Notes" placeholder="Transaction ID, Cheque number or notes..." className="md:col-span-2 xl:col-span-3" /></Grid></>; }
+export function PaymentStep() { return <><StepHeading title="Fees & collection" description="Record the payment details for this client's setup." /><Grid><WizardField name="payments.0.totalBilled" label="Total Billed (AED)" placeholder="0.00" inputMode="decimal" /><WizardField name="payments.0.amountReceived" label="Amount Received (AED)" placeholder="0.00" inputMode="decimal" /><WizardSelect name="payments.0.paymentStatus" label="Payment Status" options={PAYMENT_STATUS_OPTIONS} placeholder="Select Payment Status" allowClear /><WizardSelect name="payments.0.paymentMethod" label="Payment Method" options={PAYMENT_METHOD_OPTIONS} placeholder="Select method" /><WizardTextarea name="payments.0.notes" label="Payment Reference / Notes" placeholder="Transaction ID, Cheque number or notes..." className="md:col-span-2 xl:col-span-3" /></Grid></>; }
 
 export function ReminderStep() { return <><StepHeading title="Dates & follow-up" description="Schedule a follow-up or expiry reminder." /><Grid><WizardField name="reminders.0.followupDate" label="Follow-up Date / Due Date" type="date" /><WizardSelect name="reminders.0.remindBefore" label="Remind me before" options={REMIND_BEFORE_OPTIONS} /><WizardSelect name="reminders.0.priority" label="Priority" options={REMINDER_PRIORITY_OPTIONS} /><WizardTextarea name="reminders.0.notes" label="Reminder Notes" placeholder="What needs to be done?" className="md:col-span-2 xl:col-span-3" /></Grid></>; }
 

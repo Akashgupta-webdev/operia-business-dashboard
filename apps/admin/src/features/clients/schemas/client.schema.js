@@ -106,7 +106,11 @@ const driverSchema = Joi.object({
 
 const serviceSchema = Joi.object({
   category: Joi.string().valid(...SERVICE_CATEGORY_OPTIONS).empty("").optional(),
-  package: Joi.string().valid(...SERVICE_PACKAGE_OPTIONS).empty("").optional(),
+  package: Joi.when("category", {
+    is: "Operio Package",
+    then: Joi.string().trim().empty("").optional(),
+    otherwise: Joi.string().valid(...SERVICE_PACKAGE_OPTIONS).empty("").optional(),
+  }),
   status: Joi.string().valid(...SERVICE_STATUS_OPTIONS).empty("").optional(),
   packagePrice: optionalDecimal,
   paymentStatus: Joi.string().valid(...SERVICE_PAYMENT_STATUS_OPTIONS).empty("").optional(),
@@ -264,7 +268,11 @@ const serviceUpdateNotes = Joi.string().allow("").custom((value, helpers) => {
 
 export const clientServiceUpdateSchema = Joi.object({
   category: Joi.string().valid(...SERVICE_CATEGORY_OPTIONS).empty("").optional(),
-  package: Joi.string().valid(...SERVICE_PACKAGE_OPTIONS).empty("").optional(),
+  package: Joi.when("category", {
+    is: "Operio Package",
+    then: Joi.string().trim().empty("").optional(),
+    otherwise: Joi.string().valid(...SERVICE_PACKAGE_OPTIONS).empty("").optional(),
+  }),
   status: Joi.string().valid(...SERVICE_STATUS_OPTIONS).empty("").optional(),
   packagePrice: Joi.string()
     .pattern(/^(?:0|[1-9]\d*)(?:\.\d{1,2})?$/)
@@ -321,7 +329,11 @@ export const clientDriverCreateSchema = Joi.object({
 
 export const clientServiceCreateSchema = Joi.object({
   category: Joi.string().valid(...SERVICE_CATEGORY_OPTIONS).empty("").optional(),
-  package: Joi.string().valid(...SERVICE_PACKAGE_OPTIONS).empty("").optional(),
+  package: Joi.when("category", {
+    is: "Operio Package",
+    then: Joi.string().trim().empty("").optional(),
+    otherwise: Joi.string().valid(...SERVICE_PACKAGE_OPTIONS).empty("").optional(),
+  }),
   status: Joi.string().valid(...SERVICE_STATUS_OPTIONS).empty("").optional(),
   packagePrice: Joi.string()
     .pattern(/^(?:0|[1-9]\d*)(?:\.\d{1,2})?$/)
