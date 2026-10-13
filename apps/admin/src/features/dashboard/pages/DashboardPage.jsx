@@ -1,24 +1,22 @@
 import { useVatAccess } from "@/features/vat/hooks/useVat";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { joiResolver } from "@hookform/resolvers/joi";
 import {
   AlertCircle,
-  Building2,
+  ArrowRight,
   CalendarClock,
   Car,
   Clock3,
   FileCheck2,
   FileText,
-  IdCard,
   Landmark,
-  ListTodo,
   LoaderCircle,
-  ShieldCheck,
   SlidersHorizontal,
   TriangleAlert,
   Users,
 } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { useForm, useWatch } from "react-hook-form";
 
 import { Button } from "@operio/ui/components/button";
 import { Card } from "@operio/ui/components/card";
@@ -60,15 +58,35 @@ const initialDates = currentMonth();
 
 export default function DashboardPage() {
   const vatAccess = useVatAccess();
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
   const [filters, setFilters] = useState({ type: "all", fromDate: apiDate(initialDates.fromDate), toDate: apiDate(initialDates.toDate) });
-  const { formState: { errors }, handleSubmit, register } = useForm({
+  const { control, formState: { errors }, handleSubmit, register, setValue } = useForm({
     resolver: joiResolver(dashboardFilterSchema, { abortEarly: false }),
     defaultValues: initialDates,
     mode: "onSubmit",
   });
+  const fromDate = useWatch({ control, name: "fromDate" });
+
+  const handleFromDateChange = (event) => {
+    const value = event.target.value;
+    if (!value) return;
+    const [year, month] = value.split("-").map(Number);
+    setValue("toDate", inputDate(new Date(year, month, 0)), {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+  };
   const query = useClientDashboardKPI(filters);
   const data = query.data;
-  const todayLabel = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "2-digit", month: "short", year: "numeric" }).format(new Date());
+  const dateParts = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Dubai", weekday: "short", day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(now);
+  const parts = Object.fromEntries(dateParts.map(({ type, value }) => [type, value]));
+  const hour = Number(parts.hour);
+  const greeting = hour >= 5 && hour < 12 ? "Good Morning" : hour >= 12 && hour < 17 ? "Good Noon" : hour >= 17 && hour < 21 ? "Good Evening" : "Good Night";
+  const todayLabel = `${parts.hour}:${parts.minute}, Today, ${parts.weekday}, ${parts.day} ${parts.month}, ${parts.year} (UAE Timezone)`;
 
   const applyDates = handleSubmit((values) => {
     setFilters((current) => ({ ...current, fromDate: apiDate(values.fromDate), toDate: apiDate(values.toDate) }));
@@ -80,44 +98,38 @@ export default function DashboardPage() {
     { icon: FileText, label: "Total Renewals Tracked", value: data.totalRenewalsTracked, helper: "Licences, visas & fleet", href: "/renewals", tone: "primary" },
     { icon: TriangleAlert, label: "Total Expired", value: data.totalExpired, helper: "Action required", href: "/renewals", tone: "danger" },
     { icon: Clock3, label: "Total Due Soon (0–60d)", value: data.totalDueSoon, helper: "Due for renewal", href: "/renewals", tone: "warning" },
-    { icon: ShieldCheck, label: "Valid & Compliant", value: data.validAndCompliant, helper: "Compliant records", href: "/renewals", tone: "success" },
-  ] : [];
-  const inventoryMetrics = data ? [
+
     { icon: Users, label: "Total Clients", value: data.totalClients, helper: "View clients", href: "/clients", tone: "info" },
-    { icon: Building2, label: "Active Companies", value: data.activeCompanies, helper: "View companies", href: "/companies", tone: "info" },
-    { icon: Landmark, label: "Finance and P&L", value: data.financeAndPL, helper: "View finance", href: "/finance", tone: "primary" },
-    { icon: ListTodo, label: "Pending Actions & Tasks", value: data.pendingActionsAndTasks, helper: "View reminders", href: "/reminders", tone: "warning" },
   ] : [];
   const categories = data ? [
     { icon: FileCheck2, label: "VAT Due", href: vatAccess.allowed ? "/vat-filings" : undefined, value: data.vatDue, badge: data.vatDue ? "Due" : "Clear", tone: data.vatDue ? "warning" : "success" },
     { icon: Landmark, label: "Corporate Tax", value: data.corporateTax, badge: "Tracked", tone: "primary" },
-    { icon: IdCard, label: "Visa / EID / Passport", value: data.visaEidPassport, badge: "Identity", tone: "primary" },
     { icon: Car, label: "Insurance & Fleet", value: data.insuranceAndFleet, badge: "Fleet/Health", tone: "success" },
     { icon: FileCheck2, label: "Trade Licences & Est.", value: data.tradeLicense, badge: "Registered", tone: "primary" },
   ] : [];
   const rootError = errors.root?.message || errors[""]?.message;
 
   return (
-    <div className="min-h-[calc(100svh-var(--header-height))] bg-app-background px-4 py-4 sm:px-6">
-      <header className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center">
-        <div><h1 className="text-section-heading font-bold text-text-primary">Business Dashboard</h1><p className="mt-1 text-caption text-text-secondary">Renewal, compliance, client and fleet performance at a glance.</p></div>
-        <div className="flex items-center gap-2 text-caption text-text-secondary sm:ml-auto"><CalendarClock aria-hidden="true" className="size-4 text-primary-600" /><span>Today, {todayLabel}</span>{query.isFetching && <LoaderCircle aria-label="Refreshing dashboard" className="size-3.5 animate-spin text-primary-600" />}</div>
+    <div className="min-h-[calc(100svh-var(--header-height))] bg-[#f6f7fb] px-4 py-5 dark:bg-app-background sm:px-6">
+      <header className="mb-3 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+        <div><h1 className="text-2xl font-bold tracking-tight text-text-primary sm:text-[28px]">Hello Team, <span className="text-primary-600">{greeting}</span></h1><p className="mt-1 text-xs text-text-muted">Here's what's happening with your compliance today.</p></div>
+        <div className="flex items-center gap-2 pt-1 text-[11px] text-text-secondary"><CalendarClock aria-hidden="true" className="size-4 text-primary-600" /><time dateTime={now.toISOString()}>{todayLabel}</time>{query.isFetching && <LoaderCircle aria-label="Refreshing dashboard" className="size-3.5 animate-spin text-primary-600" />}</div>
       </header>
 
-      <Card className="mb-3 flex-row flex-wrap items-center gap-x-4 gap-y-2 overflow-visible border border-border-default bg-surface-primary px-3 py-2 shadow-card ring-0">
+      <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap gap-1">
-            {CLIENT_DASHBOARD_TYPES.map(({ label, value }) => <Button key={value} type="button" variant="ghost" size="sm" aria-pressed={filters.type === value} onClick={() => selectType(value)} className={cn("h-8 px-3 text-[12px]", filters.type === value && "bg-primary-700 text-neutral-0 hover:bg-primary-700 hover:text-neutral-0")}>{label}</Button>)}
+            {CLIENT_DASHBOARD_TYPES.map(({ label, value }) => <Button key={value} type="button" variant="ghost" size="sm" aria-pressed={filters.type === value} onClick={() => selectType(value)} className={cn("h-8 rounded-full border border-border-default/60 bg-surface-primary px-4 text-xs font-medium hover:bg-primary-50", filters.type === value && "border-primary-700 bg-primary-700 text-neutral-0 hover:bg-primary-700 hover:text-neutral-0")}>{label}</Button>)}
           </div>
         </div>
-        <form onSubmit={applyDates} noValidate className="grid w-full items-start gap-2 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto] xl:ml-auto xl:w-auto xl:grid-cols-[10rem_auto_10rem_auto]">
-          <div><label htmlFor="dashboard-from-date" className="sr-only">From date</label><DateInput id="dashboard-from-date" aria-invalid={Boolean(errors.fromDate || rootError)} className="h-10 bg-surface-primary" {...register("fromDate")} />{errors.fromDate?.message && <p className="mt-1 text-[10px] text-danger-600">{errors.fromDate.message}</p>}</div>
+        <form onSubmit={applyDates} noValidate className="grid w-full items-start gap-2 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto] lg:ml-auto lg:w-auto lg:grid-cols-[9rem_auto_9rem_auto]">
+          <div><label htmlFor="dashboard-from-date" className="sr-only">From date</label><DateInput id="dashboard-from-date" aria-invalid={Boolean(errors.fromDate || rootError)} className="h-9 rounded-lg border-border-default/60 bg-surface-primary text-xs" {...register("fromDate", { onChange: handleFromDateChange })} />{errors.fromDate?.message && <p className="mt-1 text-[10px] text-danger-600">{errors.fromDate.message}</p>}</div>
           <span className="hidden self-center text-caption text-text-muted sm:block">to</span>
-          <div><label htmlFor="dashboard-to-date" className="sr-only">To date</label><DateInput id="dashboard-to-date" aria-invalid={Boolean(errors.toDate || rootError)} className="h-10 bg-surface-primary" {...register("toDate")} />{errors.toDate?.message && <p className="mt-1 text-[10px] text-danger-600">{errors.toDate.message}</p>}</div>
-          <Button type="submit" disabled={query.isFetching} className="h-10 gap-2 px-4"><SlidersHorizontal aria-hidden="true" className="size-3.5" />Filter</Button>
+          <div><label htmlFor="dashboard-to-date" className="sr-only">To date</label><DateInput id="dashboard-to-date" min={fromDate || undefined} aria-invalid={Boolean(errors.toDate || rootError)} className="h-9 rounded-lg border-border-default/60 bg-surface-primary text-xs" {...register("toDate")} />{errors.toDate?.message && <p className="mt-1 text-[10px] text-danger-600">{errors.toDate.message}</p>}</div>
+          <Button type="submit" disabled={query.isFetching} className="h-9 gap-2 rounded-lg px-4 text-xs"><SlidersHorizontal aria-hidden="true" className="size-3.5" />Filter</Button>
           {rootError && <p role="alert" className="text-[10px] text-danger-600 sm:col-span-4">{rootError}</p>}
         </form>
-      </Card>
+      </div>
 
       {query.isPending && <DashboardSkeleton />}
       {query.isError && !data && (
@@ -129,10 +141,17 @@ export default function DashboardPage() {
       {data && (
         <div className={cn("space-y-3 transition-opacity", query.isFetching && "opacity-70")}>
           {query.isError && <div role="alert" className="flex items-center gap-2 rounded-lg border border-warning-200 bg-warning-50 px-3 py-2 text-caption text-warning-700"><AlertCircle aria-hidden="true" className="size-4" />Unable to refresh KPIs. Showing the last available results.</div>}
-          <section aria-label="Renewal KPIs" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{primaryMetrics.map((metric) => <DashboardMetricCard key={metric.label} {...metric} />)}</section>
-          <section aria-label="Inventory KPIs" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{inventoryMetrics.map((metric) => <DashboardMetricCard key={metric.label} {...metric} />)}</section>
+          <section aria-label="Dashboard KPIs" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{primaryMetrics.map((metric) => <DashboardMetricCard key={metric.label} {...metric} />)}</section>
           <CategoryBreakdown items={categories} />
-          <div className="grid items-stretch gap-3 xl:grid-cols-2"><RenewalStatusOverview data={data} /><DueSoonBreakdown breakdown={data.dueSoonBreakdown} totalDueSoon={data.totalDueSoon ?? 0} /></div>
+          <div className="grid items-stretch gap-3 lg:grid-cols-2"><RenewalStatusOverview data={data} /><DueSoonBreakdown breakdown={data.dueSoonBreakdown} totalDueSoon={data.totalDueSoon ?? 0} /></div>
+          {data.totalDueSoon > 0 && (
+            <div className="flex flex-wrap items-center gap-3 rounded-xl border border-danger-100 bg-danger-50/60 px-3 py-2.5 dark:bg-danger-700/10">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-danger-100 text-danger-600"><TriangleAlert aria-hidden="true" className="size-5" /></span>
+              <p className="text-xs font-semibold text-text-primary">Needs attention</p>
+              <p className="min-w-0 flex-1 text-[11px] text-text-secondary">{data.totalDueSoon} renewals are due within the next 60 days. Keep track and renew on time to avoid interruptions.</p>
+              <Link to="/renewals" className="inline-flex items-center gap-2 rounded-lg bg-danger-100/70 px-3 py-2 text-[11px] font-semibold text-primary-700 hover:underline">View renewals<ArrowRight aria-hidden="true" className="size-3" /></Link>
+            </div>
+          )}
         </div>
       )}
     </div>

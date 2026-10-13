@@ -63,7 +63,7 @@ export default function FinancePage() {
   return (
     <div className="min-h-[calc(100svh-var(--header-height))] bg-app-background px-4 py-5 sm:px-6 lg:px-8">
       <header className="flex flex-col gap-4 xl:flex-row xl:items-start">
-        <div className="min-w-0"><h1 className="text-section-heading font-bold text-text-primary">{activeTab === "revenue-inflows" ? "Revenue Inflows" : "Finance — Profit & Loss (P&L)"}</h1><p className="mt-1 text-body-md text-text-secondary">{activeTab === "revenue-inflows" ? "Track client service package inflows and payment status." : "Track client fee revenues, operating disbursements and net profit margins."}</p></div>
+        <div className="min-w-0"><h1 className="text-section-heading font-bold text-text-primary">{activeTab === "revenue-inflows" ? "Client Inflow" : "Finance — Profit & Loss (P&L)"}</h1><p className="mt-1 text-body-md text-text-secondary">{activeTab === "revenue-inflows" ? "Track client service package inflows and payment status." : "Track client fee revenues, operating disbursements and net profit margins."}</p></div>
         {activeTab === "profit-loss" && <div className="flex flex-wrap items-center gap-2 xl:ml-auto">
           <div className="flex items-center gap-2" aria-label="Profit and loss period filters">
             <label htmlFor="finance-month" className="sr-only">Reporting month</label>
@@ -97,7 +97,7 @@ export default function FinancePage() {
       <Card className="mt-5 border border-border-default bg-surface-primary p-3 py-3 shadow-card ring-0 sm:p-4 sm:py-4">
         <div className="flex gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <Button type="button" size="sm" variant={activeTab === "profit-loss" ? "default" : "ghost"} onClick={() => setActiveTab("profit-loss")} className="h-8 shrink-0 gap-2 px-3 text-[10px]"><FileText aria-hidden="true" className="size-3.5" />P&amp;L Statement</Button>
-          <Button type="button" variant={activeTab === "revenue-inflows" ? "default" : "ghost"} size="sm" onClick={() => setActiveTab("revenue-inflows")} className="h-8 shrink-0 gap-2 px-3 text-[10px]"><Link2 aria-hidden="true" className="size-3.5" />Revenue Inflows</Button>
+          <Button type="button" variant={activeTab === "revenue-inflows" ? "default" : "ghost"} size="sm" onClick={() => setActiveTab("revenue-inflows")} className="h-8 shrink-0 gap-2 px-3 text-[10px]"><Link2 aria-hidden="true" className="size-3.5" />Client Inflow</Button>
           <Button type="button" variant="ghost" size="sm" disabled className="h-8 shrink-0 gap-2 px-3 text-[10px] opacity-100"><ReceiptText aria-hidden="true" className="size-3.5" />Operating Expenses</Button>
           <Button type="button" variant="ghost" size="sm" disabled className="h-8 shrink-0 gap-2 px-3 text-[10px] opacity-100"><CalendarDays aria-hidden="true" className="size-3.5" />Monthly Financial Trajectory</Button>
         </div>

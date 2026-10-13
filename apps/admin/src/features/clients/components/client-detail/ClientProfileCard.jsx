@@ -49,7 +49,7 @@ function ProfileField({ icon: Icon, label, value, copyable = false }) {
 export default function ClientProfileCard({ client, onEditClient }) {
   return (
     <Card className="min-w-0 gap-0 border border-border-default bg-surface-primary py-0 shadow-card ring-0 lg:sticky lg:top-5">
-      <CardContent className="p-4">
+      <CardContent className="p-4 px-2">
         <div>
           <div className="flex items-center gap-3">
             <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary-700 text-body-md font-bold text-neutral-0 shadow-sm">{getInitials(client.name)}</div>
@@ -64,7 +64,7 @@ export default function ClientProfileCard({ client, onEditClient }) {
         <Separator className="my-5" />
         <div className="space-y-4">
           <ProfileField icon={Phone} label="Mobile phone" value={client.mobileNumber} copyable />
-          <ProfileField icon={Mail} label="Email" value={client.emailAddress} copyable />
+          <ProfileField icon={Mail} label="Email" value={`${client.emailAddress.slice(0,25)}${client.emailAddress.length > 25 ? "...": ""}`} copyable />
           <ProfileField icon={Flag} label="Nationality" value={client.nationality} />
           <ProfileField icon={CreditCard} label="Emirates ID" value={client.emirates?.emiratesId} copyable />
           <ProfileField icon={FileText} label="Passport" value={client.passport?.passportNumber} copyable />

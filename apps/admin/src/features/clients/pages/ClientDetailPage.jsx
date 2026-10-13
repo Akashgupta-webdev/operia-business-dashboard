@@ -1,5 +1,3 @@
-import { VatQueue } from "@/features/vat/pages/VatListPage";
-import { useVatAccess } from "@/features/vat/hooks/useVat";
 import { useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { AlertCircle } from "lucide-react";
@@ -36,7 +34,6 @@ const tabs = [
   ["documents", "Documents", "documents"],
   ["renewals", "Renewals", "renewals"],
   ["account", "Bank Accounts"],
-  ["filing-vat", "Filing VAT"],
   ["portal-access", "Portal Access"],
 ];
 
@@ -51,7 +48,6 @@ function DetailPageSkeleton() {
 
 export default function ClientDetailPage() {
   const { id } = useParams();
-  const vatAccess = useVatAccess();
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [searchParams] = useSearchParams();
   const query = useClient(id);
@@ -85,7 +81,7 @@ export default function ClientDetailPage() {
           <Tabs defaultValue={initialTab} className="min-w-0 gap-4">
             <div className="overflow-x-auto rounded-xl border border-border-default bg-surface-primary p-1 shadow-card scrollbar-none [&::-webkit-scrollbar]:hidden">
               <TabsList className="w-max min-w-full border-b-0">
-                {tabs.filter(([value]) => value !== "filing-vat" || vatAccess.allowed).map(([value, label, countKey]) => {
+                {tabs.map(([value, label, countKey]) => {
                   const count = countKey === "renewals" ? getClientRenewalItems(data).length : countKey ? (data[countKey]?.length ?? 0) : 0;
                   return (
                     <TabsTrigger key={value} value={value} className="group h-8 gap-1.5 px-3 text-[11px] font-semibold text-text-primary transition-colors hover:text-primary data-active:rounded-lg data-active:bg-primary-700 data-active:text-neutral-0 data-active:hover:text-neutral-0 data-active:after:hidden">
@@ -103,7 +99,6 @@ export default function ClientDetailPage() {
             <TabsContent value="documents"><DocumentsTab clientId={data.client.id ?? data.client._id} documents={data.documents} /></TabsContent>
             <TabsContent value="renewals"><RenewalsTab data={data} /></TabsContent>
             <TabsContent value="account"><BankAccountsTab /></TabsContent>
-            {vatAccess.allowed && <TabsContent value="filing-vat"><VatQueue clientId={id} companies={data.companies} clientName={data.client.name} /></TabsContent>}
             <TabsContent value="portal-access">
               <PortalAccessTab key={id} client={data.client} clientId={id} />
             </TabsContent>

@@ -31,7 +31,6 @@ export const CLIENT_SETUP_STEPS = [
   { title: "Services", description: "Work requirements" },
   { title: "Documents", description: "Supporting files" },
   { title: "Payment", description: "Fees & collection" },
-  { title: "Reminder", description: "Dates & follow-up" },
   { title: "Review", description: "Confirm & complete" },
 ];
 
@@ -135,15 +134,6 @@ export const PAYMENT_METHOD_OPTIONS = [
   "Credit Card",
   "Cheque",
 ];
-export const REMIND_BEFORE_OPTIONS = [
-  "1 day before",
-  "3 day before",
-  "7 day before",
-  "14 day before",
-  "30 before day",
-];
-export const REMINDER_PRIORITY_OPTIONS = ["Low", "Normal", "High"];
-
 export const MAX_RELATED_ITEMS = 100;
 export const MAX_DOCUMENTS = 10;
 export const MAX_DOCUMENT_FILE_SIZE = 10 * 1024 * 1024;

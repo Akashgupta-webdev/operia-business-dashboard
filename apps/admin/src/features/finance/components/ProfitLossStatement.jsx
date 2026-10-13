@@ -1,5 +1,6 @@
-import { Building2, CalendarDays, ChartNoAxesColumnIncreasing, CircleDollarSign, FileCheck2, Info, Landmark, ReceiptText, Scale, ShieldCheck, WalletCards } from "lucide-react";
+import { Building2, CalendarDays, ChevronDown, ChartNoAxesColumnIncreasing, CircleDollarSign, FileCheck2, Info, Landmark, ReceiptText, Scale, ShieldCheck, WalletCards } from "lucide-react";
 
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@operio/ui/components/collapsible";
 import { Card } from "@operio/ui/components/card";
 import { Skeleton } from "@operio/ui/components/skeleton";
 import { cn } from "@operio/ui/lib/utils";
@@ -22,18 +23,25 @@ export function FinanceSummaryCard({ icon: Icon, label, value, description, tone
 const inflowIcons = [Building2, ShieldCheck, Landmark, FileCheck2, Scale];
 const outflowIcons = [Landmark, ReceiptText, WalletCards, Building2, CircleDollarSign, Scale, FileCheck2];
 
-function StatementGroup({ title, subtitle, categories, total, inflow }) {
+function StatementGroup({ title, categories, total, inflow }) {
   return (
-    <section className={cn("overflow-hidden rounded-xl border", inflow ? "border-success-200 dark:border-success-700" : "border-danger-200 dark:border-danger-700")}>
-      <header className={cn("flex items-center justify-between gap-3 border-b px-4 py-3", inflow ? "border-success-200 bg-success-50/50 text-success-700 dark:border-success-700 dark:bg-success-700/10 dark:text-success-500" : "border-danger-200 bg-danger-50/50 text-danger-700 dark:border-danger-700 dark:bg-danger-700/10 dark:text-danger-500")}><h3 className="text-[10px] font-bold uppercase">{title}</h3><span className="text-[9px] font-semibold">{subtitle}</span></header>
+    <Collapsible className={cn("overflow-hidden rounded-xl border", inflow ? "border-success-200 dark:border-success-700" : "border-danger-200 dark:border-danger-700")}>
+      <h3>
+        <CollapsibleTrigger className={cn("group flex w-full items-center gap-3 px-4 py-3 text-left focus-visible:outline-2 focus-visible:outline-primary-500", inflow ? "bg-success-50/50 text-success-700 dark:bg-success-700/10 dark:text-success-500" : "bg-danger-50/50 text-danger-700 dark:bg-danger-700/10 dark:text-danger-500")}>
+          <span className="min-w-0 flex-1 text-[10px] font-bold uppercase">{title}</span>
+          <span className="shrink-0 text-xs font-bold tabular-nums">{money(total)}</span>
+          <ChevronDown aria-hidden="true" className="size-4 shrink-0 transition-transform group-data-panel-open:rotate-180" />
+        </CollapsibleTrigger>
+      </h3>
+      <CollapsibleContent keepMounted className="h-[var(--collapsible-panel-height)] overflow-hidden transition-[height] data-ending-style:h-0 data-starting-style:h-0 print:h-auto! print:overflow-visible! print:[content-visibility:visible]!">
       <div className="divide-y divide-border-default px-4">
         {categories.map((category, index) => {
           const Icon = (inflow ? inflowIcons : outflowIcons)[index % (inflow ? inflowIcons.length : outflowIcons.length)];
           return <div key={category.category} className="flex items-center gap-3 py-3"><Icon aria-hidden="true" className={cn("size-4 shrink-0", inflow ? "text-success-600" : "text-danger-600")} /><span className="min-w-0 flex-1 truncate text-caption font-medium text-text-secondary">{category.category}</span><span className="whitespace-nowrap text-caption font-semibold text-text-primary" data-numeric>{money(category.amount)}</span></div>;
         })}
       </div>
-      <div className={cn("mx-3 mb-3 flex items-center justify-between rounded-lg px-3 py-3 text-[10px] font-bold uppercase", inflow ? "bg-success-50 text-success-700 dark:bg-success-700/10 dark:text-success-500" : "bg-danger-50 text-danger-700 dark:bg-danger-700/10 dark:text-danger-500")}><span>{inflow ? "Total Gross Revenue" : "Total Operating Expenses"}</span><span data-numeric>{money(total)}</span></div>
-    </section>
+      </CollapsibleContent>
+    </Collapsible>
   );
 }
 
@@ -44,8 +52,8 @@ export function ProfitLossStatement({ report }) {
   return (
     <Card className="gap-4 border border-border-default bg-surface-primary p-4 py-4 shadow-card ring-0 sm:p-5 sm:py-5">
       <div><h2 className="text-body-sm font-semibold text-text-primary">Profit &amp; Loss Financial Statement (AED)</h2><p className="mt-1 text-[10px] text-text-muted">Comprehensive audit of operating revenues and cost disbursements.</p></div>
-      <StatementGroup title="1. Operating Revenue & Package Inflows" subtitle="Gross / Collected (AED)" categories={report.inflows?.categories ?? []} total={report.inflows?.totalGrossRevenue} inflow />
-      <StatementGroup title="2. Cost of Operations & Direct Disbursements" subtitle="Total Outflow (AED)" categories={report.outflows?.categories ?? []} total={report.outflows?.totalOperatingExpense} />
+      <StatementGroup title="1. Operating Revenue & Package Inflows" categories={report.inflows?.categories ?? []} total={report.inflows?.totalGrossRevenue} inflow />
+      <StatementGroup title="2. Cost of Operations & Direct Disbursements" categories={report.outflows?.categories ?? []} total={report.outflows?.totalOperatingExpense} />
 
       <section className="rounded-xl border border-primary-200 bg-primary-50/30 p-4 dark:border-primary-700 dark:bg-primary-900/10">
         <p className="text-[10px] font-bold uppercase text-primary-700 dark:text-primary-300">3. Net Operating Profit</p>

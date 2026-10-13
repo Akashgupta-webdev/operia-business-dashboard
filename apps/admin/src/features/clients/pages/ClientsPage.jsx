@@ -5,7 +5,7 @@ import { Grid2X2, List, Plus, Search, UsersRound } from "lucide-react";
 import { Button } from "@operio/ui/components/button";
 import { Input } from "@operio/ui/components/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@operio/ui/components/select";
-import { CLIENT_SORT_OPTIONS, CLIENT_STATUS_OPTIONS, CLIENT_TYPE_OPTIONS } from "@/features/clients/constants/client";
+import { CLIENT_SORT_OPTIONS, CLIENT_STATUS_OPTIONS } from "@/features/clients/constants/client";
 import useClients from "@/features/clients/hooks/useClients";
 import useDebouncedValue from "@/hooks/useDebouncedValue";
 import { cn } from "@operio/ui/lib/utils";
@@ -31,7 +31,6 @@ export default function ClientsPage() {
   const [deletingClient, setDeletingClient] = useState(null);
   const [view, setView] = useState("grid");
   const [search, setSearch] = useState("");
-  const [clientType, setClientType] = useState("all");
   const [status, setStatus] = useState("all");
   const [sort, setSort] = useState("Newest First");
   const [page, setPage] = useState(1);
@@ -42,12 +41,11 @@ export default function ClientsPage() {
     limit: PAGE_SIZE,
     search: debouncedSearch || undefined,
     status: status === "all" ? undefined : status,
-    clientType: clientType === "all" ? undefined : clientType,
     sort,
   });
   const clients = query.data?.clients ?? [];
   const pageInfo = query.data?.page ?? { page, limit: PAGE_SIZE, total: 0, totalPages: 0 };
-  const hasFilters = Boolean(debouncedSearch || clientType !== "all" || status !== "all");
+  const hasFilters = Boolean(debouncedSearch || status !== "all");
 
   const updateFilter = (setter) => (value) => {
     setter(value);
@@ -71,7 +69,6 @@ export default function ClientsPage() {
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Select items={CLIENT_TYPE_OPTIONS} value={clientType} onValueChange={updateFilter(setClientType)}><SelectTrigger aria-label="Filter by client type" className="h-10 w-full min-w-36 border-border-default bg-app-background px-3 font-medium text-text-primary sm:w-36"><SelectValue /></SelectTrigger><SelectContent align="end" alignItemWithTrigger={false}>{CLIENT_TYPE_OPTIONS.map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}</SelectContent></Select>
           <Select items={CLIENT_STATUS_OPTIONS} value={status} onValueChange={updateFilter(setStatus)}><SelectTrigger aria-label="Filter by client status" className="h-10 w-full min-w-36 border-border-default bg-app-background px-3 font-medium text-text-primary sm:w-36"><SelectValue /></SelectTrigger><SelectContent align="end" alignItemWithTrigger={false}>{CLIENT_STATUS_OPTIONS.map((option) => <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>)}</SelectContent></Select>
           <div className="flex items-center gap-3">
             <Select value={sort} onValueChange={updateFilter(setSort)}><SelectTrigger aria-label="Sort clients" className="h-10 min-w-40 flex-1 border-border-default bg-app-background px-3 font-medium text-text-primary"><SelectValue /></SelectTrigger><SelectContent align="end" alignItemWithTrigger={false}>{CLIENT_SORT_OPTIONS.map((option) => <SelectItem key={option} value={option}>{option}</SelectItem>)}</SelectContent></Select>

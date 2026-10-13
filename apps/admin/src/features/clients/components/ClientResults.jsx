@@ -97,14 +97,13 @@ function ClientList({ clients, onDelete }) {
   return (
     <div className="overflow-x-auto rounded-xl border border-border-default bg-surface-primary shadow-card">
       <table className="w-full min-w-200 text-left text-xs">
-        <thead className="border-b border-border-default bg-surface-secondary text-[11px] font-medium text-text-muted"><tr><th className="px-3 py-2">Client</th><th className="px-3 py-2">Contact</th><th className="px-3 py-2">Type</th><th className="px-3 py-2">Added By</th><th className="px-3 py-2">Created By</th><th className="px-3 py-2">Status</th><th className="px-3 py-2 text-center">Actions</th></tr></thead>
+        <thead className="border-b border-border-default bg-surface-secondary text-[13px] font-medium text-text-primary"><tr><th className="px-3 py-2">Client</th><th className="px-3 py-2">Contact</th><th className="px-3 py-2">Added By</th><th className="px-3 py-2">Created By</th><th className="px-3 py-2">Status</th><th className="px-3 py-2 text-center">Actions</th></tr></thead>
         <tbody className="divide-y divide-border-default">{clients.map((client) => <tr key={client._id} className="hover:bg-surface-secondary/60">
-          <td className="px-3 py-2"><button type="button" onClick={() => navigate(`/clients/${client._id}`)} className="font-semibold text-text-primary hover:text-primary">{client.name}</button><p className="mt-0.5 text-[11px] text-text-muted">{client.companyName || client.nationality || "—"}</p></td>
-          <td className="px-3 py-2 text-text-secondary"><p>{client.mobileNumber || "—"}</p><p className="text-[11px]">{client.emailAddress || "—"}</p></td>
-          <td className="px-3 py-2 text-text-secondary">{client.clientType === "COMPANY" ? "Company" : "Individual"}</td>
-          <td className="px-3 py-2 text-text-secondary">{authorName(client.addedBy)}</td><td className="px-3 py-2 text-text-secondary">{authorName(client.createdBy)}</td>
-          <td className="px-3 py-2"><StatusBadge status={client.status} /></td>
-          <td className="px-3 py-2"><ClientActions centered onDelete={onDelete} client={client} onView={() => navigate(`/clients/${client._id}`)} /></td>
+          <td className="px-3 py-[10.5px]"><button type="button" onClick={() => navigate(`/clients/${client._id}`)} className="font-semibold text-text-primary hover:text-primary">{client.name}</button><p className="mt-0.5 text-[11px] text-text-muted">{client.companyName || client.nationality || "—"}</p></td>
+          <td className="px-3 py-[10.5px] text-text-secondary"><p>{client.mobileNumber || "—"}</p><p className="text-[11px]">{client.emailAddress || "—"}</p></td>
+          <td className="px-3 py-[10.5px] text-text-secondary"><span className="inline-flex items-center rounded-md bg-primary-50 px-2 py-0.5 text-[10px] leading-4 font-semibold text-primary-700 dark:bg-accent dark:text-accent-foreground">Admin</span></td><td className="px-3 py-[10.5px] text-text-secondary">{authorName(client.createdBy)}</td>
+          <td className="px-3 py-[10.5px]"><StatusBadge status={client.status} /></td>
+          <td className="px-3 py-[10.5px]"><ClientActions centered onDelete={onDelete} client={client} onView={() => navigate(`/clients/${client._id}`)} /></td>
         </tr>)}</tbody>
       </table>
     </div>

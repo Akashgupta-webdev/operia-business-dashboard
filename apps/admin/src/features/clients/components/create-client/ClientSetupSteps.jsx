@@ -7,7 +7,7 @@ import { Button } from "@operio/ui/components/button";
 import {
   DOCUMENT_TYPE_OPTIONS, MAX_DOCUMENTS, MAX_RELATED_ITEMS, MEMBER_TYPE_OPTIONS,
   PAYMENT_METHOD_OPTIONS, PAYMENT_STATUS_OPTIONS,
-  REMIND_BEFORE_OPTIONS, REMINDER_PRIORITY_OPTIONS, SERVICE_CATEGORY_OPTIONS,
+  SERVICE_CATEGORY_OPTIONS,
   SERVICE_PACKAGE_OPTIONS, SERVICE_PAYMENT_STATUS_OPTIONS, SERVICE_STATUS_OPTIONS,
 } from "@/features/clients/constants/client";
 import { createEmptyDocument, createEmptyDriver, createEmptyMember, createEmptyService, createEmptyVehicle } from "@/features/clients/utils/clientCreation";
@@ -21,7 +21,7 @@ export function ClientDetailsStep() {
     <Grid>
       <WizardField name="client.name" label="Full name" placeholder="e.g. Mohammed Ali" required />
       <NationalityField />
-      <WizardSelect name="client.clientType" label="Client type" options={[{ label: "Company", value: "COMPANY" }, { label: "Individual", value: "INDIVIDUAL" }]} />
+      <WizardSelect name="client.clientType" label="Client type" options={[{ label: "Company", value: "COMPANY" }]} />
       <UaeMobileField name="client.mobileNumber" label="Mobile number" />
       <UaeMobileField name="client.whatsappNumber" label="WhatsApp number" />
       <WizardField name="client.emailAddress" label="Email address" placeholder="client@example.com" type="email" />
@@ -103,8 +103,6 @@ export function DocumentsStep() { return <RepeatedStep name="documents" heading=
   </RepeatedStep>; }
 
 export function PaymentStep() { return <><StepHeading title="Fees & collection" description="Record the payment details for this client's setup." /><Grid><WizardField name="payments.0.totalBilled" label="Total Billed (AED)" placeholder="0.00" inputMode="decimal" /><WizardField name="payments.0.amountReceived" label="Amount Received (AED)" placeholder="0.00" inputMode="decimal" /><WizardSelect name="payments.0.paymentStatus" label="Payment Status" options={PAYMENT_STATUS_OPTIONS} placeholder="Select Payment Status" allowClear /><WizardSelect name="payments.0.paymentMethod" label="Payment Method" options={PAYMENT_METHOD_OPTIONS} placeholder="Select method" /><WizardTextarea name="payments.0.notes" label="Payment Reference / Notes" placeholder="Transaction ID, Cheque number or notes..." className="md:col-span-2 xl:col-span-3" /></Grid></>; }
-
-export function ReminderStep() { return <><StepHeading title="Dates & follow-up" description="Schedule a follow-up or expiry reminder." /><Grid><WizardField name="reminders.0.followupDate" label="Follow-up Date / Due Date" type="date" /><WizardSelect name="reminders.0.remindBefore" label="Remind me before" options={REMIND_BEFORE_OPTIONS} /><WizardSelect name="reminders.0.priority" label="Priority" options={REMINDER_PRIORITY_OPTIONS} /><WizardTextarea name="reminders.0.notes" label="Reminder Notes" placeholder="What needs to be done?" className="md:col-span-2 xl:col-span-3" /></Grid></>; }
 
 const ReviewRow = ({ label, value }) => <div className="flex items-center justify-between gap-4 border-b border-border-default py-2 last:border-0"><span className="text-sm text-text-secondary">{label}</span><span className="text-right text-sm font-semibold text-text-primary">{value || "—"}</span></div>;
 export function ReviewStep() {

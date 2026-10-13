@@ -11,8 +11,6 @@ import {
   PREFERRED_COMMUNICATION_OPTIONS,
   PAYMENT_METHOD_OPTIONS,
   PAYMENT_STATUS_OPTIONS,
-  REMIND_BEFORE_OPTIONS,
-  REMINDER_PRIORITY_OPTIONS,
   SERVICE_CATEGORY_OPTIONS,
   SERVICE_PACKAGE_OPTIONS,
   SERVICE_PAYMENT_STATUS_OPTIONS,
@@ -155,13 +153,6 @@ const paymentSchema = Joi.object({
   notes: optionalText(1000),
 }).unknown(false);
 
-const reminderSchema = Joi.object({
-  followupDate: optionalDate,
-  remindBefore: Joi.string().valid(...REMIND_BEFORE_OPTIONS).empty("").optional(),
-  priority: Joi.string().valid(...REMINDER_PRIORITY_OPTIONS).empty("").optional(),
-  notes: optionalText(1000),
-}).unknown(false);
-
 export const clientCreationSchema = Joi.object({
   client: Joi.object({
     name: Joi.string().trim().min(2).max(200).required().messages({
@@ -193,7 +184,6 @@ export const clientCreationSchema = Joi.object({
   services: Joi.array().items(serviceSchema).max(MAX_RELATED_ITEMS).required(),
   documents: Joi.array().items(documentSchema).max(MAX_DOCUMENTS).required(),
   payments: Joi.array().items(paymentSchema).max(MAX_RELATED_ITEMS).required(),
-  reminders: Joi.array().items(reminderSchema).max(MAX_RELATED_ITEMS).required(),
 }).unknown(false);
 
 export const clientUpdateSchema = Joi.object({
@@ -385,5 +375,4 @@ export const CLIENT_STEP_FIELDS = {
   6: ["services"],
   7: ["documents"],
   8: ["payments"],
-  9: ["reminders"],
 };

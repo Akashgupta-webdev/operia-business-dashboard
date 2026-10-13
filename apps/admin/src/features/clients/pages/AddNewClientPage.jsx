@@ -13,14 +13,14 @@ import { CLIENT_STEP_FIELDS, clientCreationSchema } from "@/features/clients/sch
 import ClientSetupSidebar from "../components/create-client/ClientSetupSidebar";
 import {
   ClientDetailsStep, CompanyStep, DocumentsStep, PaymentStep,
-  PersonnelStep, ReminderStep, ReviewStep, ServicesStep, VehiclesAndDriversStep,
+  PersonnelStep, ReviewStep, ServicesStep, VehiclesAndDriversStep,
 } from "../components/create-client/ClientSetupSteps";
 
 const FIELD_STEP_PREFIXES = [
   ["client", 1], ["company", 2], ["members", 3], ["vehicles", 4], ["drivers", 4],
-  ["services", 6], ["documents", 7], ["payments", 8], ["reminders", 9],
+  ["services", 6], ["documents", 7], ["payments", 8],
 ];
-const CLIENT_STEP_COMPONENTS = [ClientDetailsStep, CompanyStep, PersonnelStep, VehiclesAndDriversStep, null, ServicesStep, DocumentsStep, PaymentStep, ReminderStep, ReviewStep];
+const CLIENT_STEP_COMPONENTS = [ClientDetailsStep, CompanyStep, PersonnelStep, VehiclesAndDriversStep, null, ServicesStep, DocumentsStep, PaymentStep, ReviewStep];
 
 const normalizeServerPath = (path = "") => path.replace(/^payload\./, "").replace(/\[(\d+)\]/g, ".$1");
 const getStepForField = (path) => FIELD_STEP_PREFIXES.find(([prefix]) => path === prefix || path.startsWith(`${prefix}.`))?.[1] || 1;
@@ -93,7 +93,7 @@ export default function AddNewClientPage() {
               <section className="flex-1 p-3 sm:p-4"><Step /></section>
               <footer className="flex items-center justify-between border-t border-border-default bg-surface-secondary/40 px-3 py-2 sm:px-4">
                 <Button type="button" variant="outline" size="lg" onClick={() => setCurrentStep(visibleSteps[Math.max(0, stepIndex - 1)])} disabled={currentStep === 1 || mutation.isPending} className="h-9 px-4"><ArrowLeft className="size-4" /> Back</Button>
-                {currentStep < 10 ? <Button type="button" size="lg" onClick={goNext} className="h-9 px-4 font-semibold shadow-md">Save & continue <ArrowRight className="size-4" /></Button> : <Button type="submit" size="lg" disabled={mutation.isPending} className="h-9 px-4 font-semibold shadow-md">{mutation.isPending ? "Creating client..." : <>Complete setup <Check className="size-4" /></>}</Button>}
+                {stepIndex < visibleSteps.length - 1 ? <Button type="button" size="lg" onClick={goNext} className="h-9 px-4 font-semibold shadow-md">Save & continue <ArrowRight className="size-4" /></Button> : <Button type="submit" size="lg" disabled={mutation.isPending} className="h-9 px-4 font-semibold shadow-md">{mutation.isPending ? "Creating client..." : <>Complete setup <Check className="size-4" /></>}</Button>}
               </footer>
             </form>
           </div>

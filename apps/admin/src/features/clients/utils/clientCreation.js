@@ -98,12 +98,6 @@ export const createClientDefaultValues = () => ({
     paymentMethod: "",
     notes: "",
   }],
-  reminders: [{
-    followupDate: "",
-    remindBefore: "7 day before",
-    priority: "Normal",
-    notes: "",
-  }],
 });
 
 const hasText = (value) => typeof value === "string" && Boolean(value.trim());
@@ -239,15 +233,6 @@ export const buildClientCreationRequest = (values) => {
       notes: noteArray(payment.notes),
     }));
 
-  const reminders = values.reminders
-    .filter((reminder) => [reminder.followupDate, reminder.notes].some(hasText))
-    .map((reminder) => prune({
-      followupDate: apiDate(reminder.followupDate),
-      remindBefore: reminder.remindBefore,
-      priority: reminder.priority,
-      notes: noteArray(reminder.notes),
-    }));
-
   const payload = prune({
     client,
     company: values.client.clientType === "COMPANY" ? prune({
@@ -263,7 +248,6 @@ export const buildClientCreationRequest = (values) => {
     services,
     documents: files.length ? documents : undefined,
     payments,
-    reminders,
   });
 
   return { payload, files };

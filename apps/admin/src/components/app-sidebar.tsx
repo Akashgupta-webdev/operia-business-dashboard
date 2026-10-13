@@ -1,9 +1,7 @@
-import { useVatAccess } from "@/features/vat/hooks/useVat";
 import {
   Building2,
   ChartCandlestick,
   ChartNoAxesColumnIncreasing,
-  DollarSign,
   FileText,
   LayoutDashboard,
   MessageSquare,
@@ -59,7 +57,7 @@ const navigationSections: SidebarNavSection[] = [
     label: "Compliance",
     items: [
       { title: "Renewals", url: "/renewals", icon: RefreshCw },
-      { title: "Compliance", url: "/tax-and-compliance", icon: ShieldCheck },
+      { title: "Compliance - VAT/TAX", url: "/tax-and-compliance", icon: ShieldCheck },
     ],
   },
   {
@@ -72,8 +70,6 @@ const navigationSections: SidebarNavSection[] = [
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const vatAccess = useVatAccess();
-  const sections = navigationSections.map((section) => section.label === "Compliance" && vatAccess.allowed ? { ...section, items: [...section.items, { title: "VAT filings", url: "/vat-filings", icon: FileText }] } : section);
   return (
     <Sidebar
       collapsible="icon"
@@ -83,15 +79,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader className="h-(--header-height) justify-center border-b border-sidebar-border px-5 py-0 group-data-[collapsible=icon]:px-1.5">
         <div className="flex min-w-0 items-center gap-3 group-data-[collapsible=icon]:justify-center">
           <img
-            src="/favicon.jpeg"
+            src="/operia-logo.jpeg"
             alt="Operio"
-            className="size-8 shrink-0 rounded-lg border border-sidebar-border object-cover shadow-sm group-data-[collapsible=icon]:size-8"
+            className="size-10 shrink-0 rounded-lg border border-sidebar-border object-cover shadow-sm group-data-[collapsible=icon]:size-8"
           />
           <div className="min-w-0 group-data-[collapsible=icon]:hidden">
             <p className="truncate text-body-lg leading-6 font-bold tracking-tight text-text-primary">
               Operio
             </p>
-            <p className="truncate text-xs font-semibold tracking-wide text-primary-600 uppercase">
+            <p className="truncate text-[10px] font-semibold tracking-wide text-primary-600 uppercase">
               CRM &amp; Compliance Suite
             </p>
           </div>
@@ -99,7 +95,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
 
       <SidebarContent className="px-3 py-3 group-data-[collapsible=icon]:px-1.5">
-        <NavMain sections={sections} />
+        <NavMain sections={navigationSections} />
       </SidebarContent>
 
       <SidebarRail />

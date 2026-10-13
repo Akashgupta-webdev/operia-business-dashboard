@@ -1,4 +1,4 @@
-import { Building2, ChevronLeft, ChevronRight, Eye, Pencil, Trash2, UserRound } from "lucide-react";
+import { Building2, ChevronLeft, ChevronRight, Eye, Trash2, UserRound } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { Button, buttonVariants } from "@operio/ui/components/button";
@@ -45,8 +45,7 @@ export function CompanyCard({ company }) {
       <dl className="grid grid-cols-2 gap-3 text-[10px] leading-4 text-text-secondary"><div><dt className="text-text-muted">Trade licence</dt><dd className="mt-0.5 truncate font-semibold text-text-primary">{company.tradeLicenceNumber || "—"}</dd></div><div className="text-right"><dt className="text-text-muted">Added on</dt><dd className="mt-0.5 font-semibold text-text-primary" data-numeric>{formatDate(company.createdAt)}</dd></div></dl>
       <div className="mt-3 flex items-center border-t border-border-default pt-3">
         {detailUrl ? <Link to={detailUrl} className={cn(buttonVariants({ variant: "ghost", size: "xs" }), "gap-1.5 px-0 text-[10px] font-semibold text-primary-700 hover:bg-transparent hover:text-primary-800")}><Eye aria-hidden="true" className="size-3.5" />View Details</Link> : <Button type="button" variant="ghost" size="xs" disabled className="gap-1.5 px-0"><Eye aria-hidden="true" className="size-3.5" />View Details</Button>}
-        <Button type="button" variant="ghost" size="icon-xs" disabled title="Company edit is available from the client record" aria-label={`Edit ${name}`} className="ml-auto opacity-100"><Pencil aria-hidden="true" className="size-3" /></Button>
-        <Button type="button" variant="ghost" size="icon-xs" disabled title="Delete company API is not configured" aria-label={`Delete ${name}`} className="text-danger-600 opacity-100"><Trash2 aria-hidden="true" className="size-3" /></Button>
+        <Button type="button" variant="ghost" size="icon-xs" disabled title="Delete company API is not configured" aria-label={`Delete ${name}`} className="ml-auto text-danger-600 opacity-100"><Trash2 aria-hidden="true" className="size-3" /></Button>
       </div>
     </Card>
   );

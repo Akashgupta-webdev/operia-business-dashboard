@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Send } from "lucide-react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "@operio/ui/components/button";
@@ -10,11 +10,17 @@ import { clientCredentialsIdSchema, clientCredentialsSchema } from "@/features/c
 
 import { generateClientPortalPassword } from "@/features/clients/utils/clientPortalPassword";
 
+import SendCredentialsDialog from "./SendCredentialsDialog";
+
+// Responses use Enabled/Disabled; credential updates use Enable/Disable.
+const normalizePortalAccess = (value) => value === "Enabled" || value === "Enable" ? "Enable" : "Disable";
+
 export default function PortalAccessTab({ client, clientId }) {
   const [showPassword, setShowPassword] = useState(false);
+  const [sendDialogOpen, setSendDialogOpen] = useState(false);
   const mutation = useUpdateClientCredentials(clientId);
   const { register, control, setValue, handleSubmit, reset, setError, clearErrors, formState: { errors, defaultValues } } = useForm({
-    defaultValues: { emailAddress: client.emailAddress ?? "", password: client.password ?? "", portalAccess: client.portalAccess ?? "Disable" },
+    defaultValues: { emailAddress: client.emailAddress ?? "", password: client.password ?? "", portalAccess: normalizePortalAccess(client.portalAccess) },
   });
 
   const emailAddress = useWatch({ control, name: "emailAddress" });
@@ -24,6 +30,11 @@ export default function PortalAccessTab({ client, clientId }) {
   const hasChanges = emailAddress.trim().toLowerCase() !== defaultValues.emailAddress.trim().toLowerCase()
     || password !== defaultValues.password
     || portalAccess !== defaultValues.portalAccess;
+
+  const cannotSend = hasChanges ? "Save your credential changes before sending."
+    : !portalEnabled ? "Enable and save portal access before sending."
+    : !defaultValues.password || clientCredentialsSchema.validate({ emailAddress: defaultValues.emailAddress, password: defaultValues.password }).error ? "Save a valid email address and temporary password before sending."
+    : "";
 
   const generatePassword = () => {
     setValue("password", generateClientPortalPassword(client.name), { shouldDirty: true });
@@ -52,7 +63,7 @@ export default function PortalAccessTab({ client, clientId }) {
 
     try {
       const updated = await mutation.mutateAsync(validation.value);
-      reset({ emailAddress: updated?.emailAddress ?? validation.value.emailAddress ?? values.emailAddress, password: values.password, portalAccess: updated?.portalAccess ?? values.portalAccess });
+      reset({ emailAddress: updated?.emailAddress ?? validation.value.emailAddress ?? values.emailAddress, password: values.password, portalAccess: normalizePortalAccess(updated?.portalAccess ?? values.portalAccess) });
       setShowPassword(false);
       toast.success("Client credentials updated successfully.");
     } catch (error) {
@@ -67,7 +78,8 @@ export default function PortalAccessTab({ client, clientId }) {
   return (
     <Card className="gap-5 border border-border-default bg-surface-primary p-5 shadow-card ring-0 sm:p-6">
       <div>
-        <h2 className="text-subsection font-semibold text-text-primary">Portal Access</h2>
+        <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-subsection font-semibold text-text-primary">Portal Access</h2><Button type="button" disabled={mutation.isPending || Boolean(cannotSend)} onClick={() => setSendDialogOpen(true)} aria-describedby={cannotSend ? "send-credentials-help" : undefined}><Send className="size-4" />Send Credentials</Button></div>
+        {cannotSend && <p id="send-credentials-help" className="mt-2 text-caption text-text-muted">{cannotSend}</p>}
         <p className="mt-1 text-body-sm text-text-secondary">View and update the client’s sign-in credentials. Only changed fields are saved.</p>
       </div>
       <form onSubmit={submit} noValidate className="space-y-4">
@@ -105,6 +117,7 @@ export default function PortalAccessTab({ client, clientId }) {
         {errors.root && <p role="alert" className="text-body-sm text-danger-600">{errors.root.message}</p>}
         <Button type="submit" disabled={mutation.isPending || !hasChanges}>{mutation.isPending ? "Saving..." : "Save credentials"}</Button>
       </form>
+      {sendDialogOpen && <SendCredentialsDialog client={client} credentials={defaultValues} open={sendDialogOpen} onOpenChange={setSendDialogOpen} />}
     </Card>
   );
 }
