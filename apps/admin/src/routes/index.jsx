@@ -13,6 +13,7 @@ const AddNewClientPage = lazy(() => import("@/features/clients/pages/AddNewClien
 const CompaniesPage = lazy(() => import("@/features/companies/pages/CompaniesPage"));
 const FinancePage = lazy(() => import("@/features/finance/pages/FinancePage"));
 const DocumentsPage = lazy(() => import("@/features/documents/pages/DocumentsPage"));
+const ClientTaxCompliancePage = lazy(() => import("@/features/tax-compliance/pages/ClientTaxCompliancePage"));
 const TaxCompliancePage = lazy(() => import("@/features/tax-compliance/pages/TaxCompliancePage"));
 const VisaEmployeesPage = lazy(() => import("@/features/visa-employees/pages/VisaEmployeesPage"));
 const RenewalsPage = lazy(() => import("@/features/renewals/pages/RenewalsPage"));
@@ -52,6 +53,7 @@ export default function AppRoutes() {
                     <Route path="/calendars" element={<CalendarPage />} />
                     <Route path="/reports" element={<ReportsPage />} />
                     <Route path="/settings" element={<SettingsPage />} />
+                    <Route path="/tax-and-compliance/:id" element={<ClientTaxCompliancePage />} />
                     <Route path="/tax-and-compliance" element={<TaxCompliancePage />} />
                     <Route path="/visa-and-employees" element={<VisaEmployeesPage />} />
                 </Route>

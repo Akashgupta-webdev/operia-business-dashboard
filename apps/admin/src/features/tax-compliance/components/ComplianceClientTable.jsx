@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { Clock3, Eye, Hourglass, TriangleAlert, Trash2 } from "lucide-react";
 import { Button } from "@operio/ui/components/button";
@@ -51,7 +52,7 @@ export default function ComplianceClientTable({ status = "All", query, nationali
                 <td className="whitespace-nowrap px-3 py-2">{formatComplianceDate(client.nextDueDate)}</td>
                 <td className="px-3 py-2"><span className={cn("inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-medium", statusStyles[filingStatus])}><StatusIcon aria-hidden="true" className="size-3" />{filingStatus}</span></td>
               </>}
-              {onRemove && <td className="px-3 py-2"><div className="flex items-center gap-1"><Button variant="ghost" size="icon-sm" disabled aria-label={`View ${client.name} (coming soon)`} title="Client compliance details coming soon"><Eye className="size-3.5" /></Button><Button variant="ghost" size="icon-sm" aria-label={`Remove ${client.name} from compliance`} disabled={disabled} onClick={() => onRemove(client._id)}><Trash2 className="size-3.5 text-destructive" /></Button></div></td>}
+              {onRemove && <td className="px-3 py-2"><div className="flex items-center gap-1"><Button variant="ghost" size="icon-sm" render={<Link to={`/tax-and-compliance/${client._id}`} />} aria-label={`View compliance for ${client.name}`}><Eye className="size-3.5" /></Button><Button variant="ghost" size="icon-sm" aria-label={`Remove ${client.name} from compliance`} disabled={disabled} onClick={() => onRemove(client._id)}><Trash2 className="size-3.5 text-destructive" /></Button></div></td>}
             </tr>;
           })}
         </tbody>

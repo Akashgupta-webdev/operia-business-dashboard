@@ -1,0 +1,127 @@
+.operio-login { min-height: 100svh; display: flex; align-items: center; padding: 20px 5.6%; background: #f6f5ff url('/login-background.png') center / cover no-repeat; color: #090c25; font-family: 'Inter Variable', Inter, sans-serif; }
+.login-layout { position: relative; display: grid; grid-template-columns: 1fr 40%; align-items: center; gap: 40px; width: 100%; max-width: 1440px; margin: auto; }
+.login-brand { display: flex; align-items: center; gap: 16px; }
+.login-brand img { width: 60px; height: 60px; object-fit: contain; mix-blend-mode: multiply; }
+.login-brand p { margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -1.5px; line-height: 1.1; }
+.login-brand span { display: block; margin-top: 4px; font-size: 12px; font-weight: 500; color: #656b80; }
+.login-intro { position: relative; z-index: 1; max-width: 460px; }
+.login-intro h2 { margin: 22px 0 12px; font-size: clamp(40px, 6.5svh, 58px); line-height: 1; font-weight: 600; letter-spacing: -2px; }
+.login-intro h2 span { color: #7821bd; }
+.login-intro h2 em { font-style: normal; color: #30354e; }
+.login-intro-copy { font-size: 15px; color: #62697f; line-height: 1.4; margin: 0; }
+.login-features { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px; margin-top: 24px; }
+.login-feature { display: flex; gap: 12px; align-items: flex-start; }
+.login-feature-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 13px; flex-shrink: 0; }
+.login-feature-icon svg { width: 25px; height: 25px; stroke-width: 2; }
+.login-feature-icon.purple { color: #7c19cd; background: #eee4fc; }
+.login-feature-icon.green { color: #0ca875; background: #dff7ec; }
+.login-feature-icon.orange { color: #ed9618; background: #fff1db; }
+.login-feature-icon.blue { color: #126ceb; background: #e2edff; }
+.login-feature-icon.pink { color: #e51a83; background: #ffe2f0; }
+.login-feature h3 { margin: 2px 0 5px; font-size: 13px; font-weight: 600; line-height: 1.2; max-width: 130px; }
+.login-feature p { margin: 0; font-size: 12px; line-height: 1.4; color: #636b80; max-width: 130px; }
+.login-tagline { margin: 24px 0 0; font-size: 13px; line-height: 1.4; color: #62697f; }
+.login-tagline::before { content: ''; display: block; width: 52px; height: 3px; background: #7821bd; margin-bottom: 10px; }
+.login-card { position: relative; z-index: 2; padding: 32px; border: 2px solid white; border-radius: 38px; background: linear-gradient(120deg, #fffffffa, #ffffffed 70%, #faf7fffa); box-shadow: 0 20px 48px #5d3ca62b; }
+.login-card-header { text-align: center; }
+.login-card .login-brand { justify-content: center; text-align: left; }
+.login-card .login-brand p { font-size: 28px; }
+.login-card .login-brand span { font-size: 11px; }
+.login-portal { display: inline-block; margin: 16px 0; padding: 6px 20px; border-radius: 30px; background: #eee4fc; color: #741bbb; text-transform: uppercase; letter-spacing: .7px; font-weight: 600; font-size: 12px; }
+.login-portal-mobile { display: none; }
+.login-card h1 { font-size: 28px; font-weight: 600; letter-spacing: -1.2px; margin: 0 0 8px; line-height: 1.2; }
+.login-description { margin: 0; font-size: 14px; line-height: 1.5; color: #676b80; }
+.login-form-content { margin-top: 28px; }
+.login-label-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.login-label-row label { color: #141527; font-size: 12px; font-weight: 500; letter-spacing: 0; }
+.login-recovery { position: relative; font-size: 13px; color: #7821bd; }
+.login-recovery summary { cursor: pointer; list-style: none; font-weight: 600; }
+.login-recovery summary::-webkit-details-marker { display: none; }
+.login-recovery p { position: absolute; right: 0; top: 24px; z-index: 5; width: 220px; padding: 12px; background: white; border: 1px solid #e3d5f5; border-radius: 10px; box-shadow: 0 6px 20px #24133720; }
+.operio-login .login-input { height: 50px; padding: 0 48px 0 56px; border: 2px solid #dfdfe9; border-radius: 15px; background: #ffffff80; color: #15172b; font-size: 16px; box-shadow: none; }
+.operio-login .login-input::placeholder { color: #70758a; }
+.operio-login .login-input:focus-visible { border-color: #8a42c4; outline: 3px solid #8a42c422; }
+.operio-login .login-input[aria-invalid=true] { border-color: #cc4117; }
+.operio-login .login-submit { margin-top: 16px; width: 100%; height: 52px; border-radius: 15px; background: radial-gradient(ellipse at bottom left,#b59ac7,transparent 30%),linear-gradient(160deg,#8728cd,#3b165e); color: white; font-size: 16px; font-weight: 500; box-shadow: 0 8px 18px #5a1b8c17; }
+.operio-login .login-submit:hover { filter: brightness(1.08); }
+.operio-login .login-submit svg { width: 22px; height: 22px; margin-left: 6px; }
+.login-divider { display: flex; gap: 20px; align-items: center; color: #808497; font-size: 13px; margin: 18px 0 14px; }
+.login-divider span { flex: 1; height: 1px; background: #e0dfe8; }
+.login-security { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 7px; color: #656b80; font-size: 11px; margin: 0; }
+.login-security svg { width: 19px; height: 19px; margin-right: 6px; }
+.login-floaters { position: absolute; left: 37%; top: 22%; width: 22%; height: 65%; pointer-events: none; }
+.login-float { display: flex; align-items: center; gap: 12px; position: absolute; padding: 18px; border: 1px solid #ffffffa0; border-radius: 14px; background: #ffffffb8; box-shadow: 0 16px 28px #7060ae20; transform: rotate(-8deg); font-size: 12px; color: #30354e; }
+.login-float > svg { width: 32px; height: 32px; color: #8b36db; }
+.login-float strong { display: block; margin-top: 5px; font-size: 19px; }
+.login-float.clients { top: 0; left: 0; }
+.login-float.clients > svg:last-child { color: #2db888; }
+.login-float.renewals { top: 24%; left: 23%; }
+.login-float.renewals > svg { color: #f5a125; }
+.login-float.renewals strong { font-size: 12px; color: #16a575; }
+.login-float.compliance { top: 53%; left: 8%; }
+.login-float.compliance > svg { color: #246df1; }
+.login-float.compliance span { display: block; width: 84px; height: 8px; background: #1ac18b; border-radius: 8px; margin-top: 7px; }
+.login-float.growth { top: 87%; left: 0; }
+.login-float.growth > svg { width: 64px; height: 52px; }
+@media (max-width: 1250px) and (min-width: 1024px) {
+  .operio-login { padding: 20px 4%; }
+  .login-layout { grid-template-columns: 1fr 46%; gap: 24px; }
+  .login-floaters { display: none; }
+  .login-card { padding: 28px; }
+  .login-feature { gap: 12px; }
+  .login-feature-icon { width: 48px; height: 48px; }
+  .login-intro { max-width: 410px; }
+}
+@media (max-width: 1023px) {
+  .operio-login { padding: 24px; background-position: 63% center; }
+  .login-layout { display: block; max-width: 480px; }
+  .login-intro, .login-floaters { display: none; }
+  .login-card { padding: 32px; border-radius: 28px; }
+  .login-card .login-brand img { width: 76px; height: 76px; }
+  .login-card .login-brand > div { display: none; }
+  .login-portal-desktop { display: none; }
+  .login-portal-mobile { display: inline; }
+  .login-portal { font-size: 10px; padding: 8px 12px; border-radius: 18px; margin: 14px 0 20px; }
+  .login-card h1 { font-size: 28px; }
+  .login-description { font-size: 15px; }
+  .login-form-content { margin-top: 28px; }
+}
+@media (max-width: 480px) {
+  .operio-login { padding: 16px; }
+  .login-card { padding: 24px 22px; border-radius: 28px; }
+  .login-card .login-brand img { width: 64px; height: 64px; }
+  .login-portal { font-size: 10px; padding: 8px 10px; letter-spacing: .5px; margin: 12px 0 18px; }
+  .login-card h1 { font-size: 26px; letter-spacing: -.7px; }
+  .login-description { font-size: 14px; }
+  .login-form-content { margin-top: 24px; }
+  .login-label-row label { font-size: 12px; }
+  .login-recovery { font-size: 12px; }
+  .operio-login .login-input { height: 48px; padding-left: 44px; }
+  .operio-login .login-submit { height: 48px; font-size: 15px; border-radius: 15px; margin-top: 16px; }
+  .login-security { font-size: 10px; gap: 4px; }
+  .login-security svg { width: 15px; margin-right: 2px; }
+}
+/* Keep foreground copy readable where the generated ribbons cross the page. */
+.operio-login { background-image: linear-gradient(90deg, #f8f7ffed 0%, #f8f7ffd9 30%, #f8f7ff00 58%), url('/login-background.png'); }
+.login-card { background: linear-gradient(120deg, #fff, #fdfbff); }
+@media (max-width: 1023px) { .operio-login { background-image: url('/login-background.png'); } }
+
+/* Compress vertical spacing on short screens without clipping form errors. */
+@media (max-height: 700px) {
+  .operio-login { padding-top: 12px; padding-bottom: 12px; }
+  .login-intro h2 { margin-top: 16px; font-size: 40px; }
+  .login-features { margin-top: 18px; gap: 12px 24px; }
+  .login-tagline { margin-top: 16px; }
+  .login-card { padding-top: 22px; padding-bottom: 22px; }
+  .login-form-content { margin-top: 20px; }
+}
+@media (max-height: 540px) {
+  .login-intro, .login-floaters { display: none; }
+  .login-layout { display: block; max-width: 480px; }
+  .login-card { padding: 16px 24px; }
+  .login-card .login-brand img { width: 40px; height: 40px; }
+  .login-portal { margin: 8px 0; padding-top: 4px; padding-bottom: 4px; }
+  .login-card h1 { font-size: 24px; }
+  .login-form-content { margin-top: 14px; }
+  .login-divider { margin: 10px 0; }
+}
