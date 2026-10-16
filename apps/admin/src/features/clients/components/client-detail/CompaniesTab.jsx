@@ -244,6 +244,14 @@ function CompanyOverviewCard({ company, clientSince, canEdit, onEdit }) {
             <CompanyOverviewField label="Establishment card expiry date" value={formatOverviewDate(company.establishment?.establishmentCardExpiry)} date />
           </dl>
           <dl className="grid min-w-0 gap-4 rounded-lg bg-surface-secondary/60 p-4">
+            <CompanyOverviewField label="Civil defence certificate no." value={company.civilDefenceCertificate?.certificationNo} />
+            <CompanyOverviewField label="Civil defence certificate expiry" value={formatOverviewDate(company.civilDefenceCertificate?.expiryDate)} date />
+          </dl>
+          <dl className="grid min-w-0 gap-4 rounded-lg bg-surface-secondary/60 p-4">
+            <CompanyOverviewField label="Commercial trade licence no." value={company.commercialTradeLicence?.licenceNo} />
+            <CompanyOverviewField label="Commercial trade licence expiry" value={formatOverviewDate(company.commercialTradeLicence?.expiryDate)} date />
+          </dl>
+          <dl className="grid min-w-0 gap-4 rounded-lg bg-surface-secondary/60 p-4">
             <CompanyOverviewField label="VAT TRN" value={company.vatTaxRegistrationNumber} />
             <CompanyOverviewField label="Corporate no." value={company.corporateTaxNumber} />
           </dl>

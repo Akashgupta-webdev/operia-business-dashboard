@@ -34,6 +34,14 @@ export function createClientCompanyUpdateDefaultValues(company) {
       establishmentCard: company?.establishment?.establishmentCard ?? "",
       establishmentCardExpiry: toDateInputValue(company?.establishment?.establishmentCardExpiry),
     },
+    civilDefenceCertificate: {
+      certificationNo: company?.civilDefenceCertificate?.certificationNo ?? "",
+      expiryDate: toDateInputValue(company?.civilDefenceCertificate?.expiryDate),
+    },
+    commercialTradeLicence: {
+      licenceNo: company?.commercialTradeLicence?.licenceNo ?? "",
+      expiryDate: toDateInputValue(company?.commercialTradeLicence?.expiryDate),
+    },
     vatTaxRegistrationNumber: company?.vatTaxRegistrationNumber ?? "",
     corporateTaxNumber: company?.corporateTaxNumber ?? "",
   };
@@ -49,6 +57,14 @@ export function buildClientCompanyUpdatePayload(values, dirtyFields) {
     establishment: {
       establishmentCard: optionalValue(values.establishment?.establishmentCard),
       establishmentCardExpiry: toApiDate(values.establishment?.establishmentCardExpiry),
+    },
+    civilDefenceCertificate: {
+      certificationNo: optionalValue(values.civilDefenceCertificate?.certificationNo),
+      expiryDate: toApiDate(values.civilDefenceCertificate?.expiryDate),
+    },
+    commercialTradeLicence: {
+      licenceNo: optionalValue(values.commercialTradeLicence?.licenceNo),
+      expiryDate: toApiDate(values.commercialTradeLicence?.expiryDate),
     },
     vatTaxRegistrationNumber: optionalValue(values.vatTaxRegistrationNumber),
     corporateTaxNumber: optionalValue(values.corporateTaxNumber),

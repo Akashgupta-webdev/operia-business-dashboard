@@ -110,6 +110,10 @@ export default function EditCompanyDialog({ clientId, company, open, onOpenChang
                 <CompanyField name="tradeLicence.tradeLicenceExpiry" label="Trade Licence Expiry" date />
                 <CompanyField name="establishment.establishmentCard" label="Establishment Card Number" />
                 <CompanyField name="establishment.establishmentCardExpiry" label="Establishment Card Expiry" date />
+                <CompanyField name="civilDefenceCertificate.certificationNo" label="Civil Defence Certificate Number" />
+                <CompanyField name="civilDefenceCertificate.expiryDate" label="Civil Defence Certificate Expiry" date />
+                <CompanyField name="commercialTradeLicence.licenceNo" label="Commercial Trade Licence Number" />
+                <CompanyField name="commercialTradeLicence.expiryDate" label="Commercial Trade Licence Expiry" date />
               </div>
               <CompanyField name="vatTaxRegistrationNumber" label="VAT Registration Number" />
               <CompanyField name="corporateTaxNumber" label="Corporate Tax Registration Number" />

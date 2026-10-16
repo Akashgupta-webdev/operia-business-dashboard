@@ -1,6 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
-import { getClientCompliance, getClientFilings } from "../api/clientCompliance.api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getClientCompliance, getClientFilings, updateComplianceDueDate } from "../api/clientCompliance.api";
+import { clientKeys } from "@/features/clients/constants/queryKeys";
 import { complianceKeys } from "../constants/queryKeys";
+
+export function useUpdateComplianceDueDate() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: updateComplianceDueDate,
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: complianceKeys.all }),
+        queryClient.invalidateQueries({ queryKey: clientKeys.all }),
+        queryClient.invalidateQueries({ queryKey: clientKeys.detailRoot }),
+      ]);
+    },
+  });
+}
 
 export function useClientCompliance(clientId) {
   return useQuery({ queryKey: complianceKeys.detail(clientId), queryFn: ({ signal }) => getClientCompliance(clientId, signal), enabled: Boolean(clientId) });

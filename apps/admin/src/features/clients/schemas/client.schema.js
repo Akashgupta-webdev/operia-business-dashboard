@@ -206,6 +206,20 @@ export const clientUpdateSchema = Joi.object({
   healthInsurance: healthInsuranceSchema.required(),
 }).unknown(false);
 
+const companyCertificateNumber = optionalText(100)
+  .pattern(/^(?=.*\d)[A-Za-z0-9]+(?:[ ./-][A-Za-z0-9]+)*$/)
+  .allow(null).default(null)
+  .messages({ "string.pattern.base": "Use letters and digits with single spaces, dots, slashes or hyphens, including at least one digit." });
+
+const companyCertificateExpiry = optionalDate.allow(null).default(null).custom((value, helpers) => {
+  if (value == null) return value;
+  const date = new Date(`${value}T00:00:00.000Z`);
+  if (Number(value.slice(0, 4)) < 1900 || Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== value) {
+    return helpers.error("any.invalid");
+  }
+  return value;
+}).messages({ "any.invalid": "Enter a real expiry date in 1900 or later." });
+
 export const clientCompanyUpdateSchema = Joi.object({
   companyName: Joi.string().trim().min(2).max(200).messages({
     "any.required": "Company name is required.",
@@ -219,6 +233,14 @@ export const clientCompanyUpdateSchema = Joi.object({
   establishment: Joi.object({
     establishmentCard: optionalText(100).allow(null).default(null),
     establishmentCardExpiry: optionalDate.allow(null).default(null),
+  }).min(1).allow(null).unknown(false),
+  civilDefenceCertificate: Joi.object({
+    certificationNo: companyCertificateNumber,
+    expiryDate: companyCertificateExpiry,
+  }).min(1).allow(null).unknown(false),
+  commercialTradeLicence: Joi.object({
+    licenceNo: companyCertificateNumber,
+    expiryDate: companyCertificateExpiry,
   }).min(1).allow(null).unknown(false),
   vatTaxRegistrationNumber: optionalText(100).allow(null),
   corporateTaxNumber: optionalText(100).allow(null),
