@@ -18,7 +18,7 @@ export default function RenewalPagination({ page, totalPages, disabled, onPageCh
   if (totalPages <= 1 && page <= 1) return null;
   return (
     <Pagination aria-label="Renewals pagination" className="mx-0 w-auto">
-      <PaginationContent>
+      <PaginationContent className="flex-wrap justify-center">
         <PaginationItem><PaginationPrevious {...propsFor(Math.min(page - 1, Math.max(1, totalPages)), page <= 1)} /></PaginationItem>
         {pages.map((number, index) => <Fragment key={number}>
           {index > 0 && number - pages[index - 1] > 1 && <PaginationItem><PaginationEllipsis /></PaginationItem>}

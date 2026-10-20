@@ -1,4 +1,5 @@
 import {
+  X,
   Building2,
   ChartCandlestick,
   ChartNoAxesColumnIncreasing,
@@ -12,8 +13,10 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { Button } from "@operio/ui/components/button";
 import { NavMain } from "@/components/nav-main";
 import {
+  useSidebar,
   Sidebar,
   SidebarContent,
   SidebarHeader,
@@ -70,6 +73,7 @@ const navigationSections: SidebarNavSection[] = [
 ];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { isMobile, setOpenMobile } = useSidebar();
   return (
     <Sidebar
       collapsible="icon"
@@ -91,10 +95,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               CRM &amp; Compliance Suite
             </p>
           </div>
+          {isMobile && <Button variant="ghost" size="icon" onClick={() => setOpenMobile(false)} aria-label="Close navigation" className="ml-auto size-11 shrink-0"><X aria-hidden="true" className="size-5" /></Button>}
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="px-3 py-3 group-data-[collapsible=icon]:px-1.5">
+      <SidebarContent className="gap-0 px-3 py-2 group-data-[collapsible=icon]:px-1.5">
         <NavMain sections={navigationSections} />
       </SidebarContent>
 

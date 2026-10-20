@@ -48,13 +48,13 @@ function CountItem({ icon: Icon, iconClassName, label, value }) {
 }
 
 function ClientActions({ client, onView, onDelete, centered = false }) {
-  const actionClass = "size-7 text-text-muted hover:bg-surface-secondary hover:text-primary";
+  const actionClass = "size-10 sm:size-7 text-text-muted hover:bg-surface-secondary hover:text-primary";
   return (
     <div className={cn("flex items-center gap-1", centered && "justify-center")}>
       <a href={client.mobileNumber ? `tel:${client.mobileNumber}` : undefined} aria-disabled={!client.mobileNumber} aria-label={`Call ${client.name}`} className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), actionClass, !client.mobileNumber && "pointer-events-none opacity-40")}><Phone aria-hidden="true" className="size-3.5" /></a>
       <a href={client.emailAddress ? `mailto:${client.emailAddress}` : undefined} aria-disabled={!client.emailAddress} aria-label={`Email ${client.name}`} className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }), actionClass, !client.emailAddress && "pointer-events-none opacity-40")}><Mail aria-hidden="true" className="size-3.5" /></a>
       <Button type="button" variant="ghost" size="icon-sm" onClick={onView} className={cn(actionClass, !centered && "ml-auto")} aria-label={`View ${client.name}`}><Eye aria-hidden="true" className="size-3.5" /></Button>
-      <Button type="button" variant="ghost" size="icon-sm" onClick={() => onDelete(client)} className="size-7 text-danger-600 hover:bg-danger-50 hover:text-danger-700" aria-label={`Delete ${client.name}`}><Trash2 aria-hidden="true" className="size-3.5" /></Button>
+      <Button type="button" variant="ghost" size="icon-sm" onClick={() => onDelete(client)} className="size-10 sm:size-7 text-danger-600 hover:bg-danger-50 hover:text-danger-700" aria-label={`Delete ${client.name}`}><Trash2 aria-hidden="true" className="size-3.5" /></Button>
     </div>
   );
 }

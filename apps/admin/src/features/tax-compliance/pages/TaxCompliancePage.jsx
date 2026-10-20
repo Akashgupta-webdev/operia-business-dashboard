@@ -36,7 +36,7 @@ export default function TaxCompliancePage() {
   }
 
   return (
-    <div className="min-h-[calc(100svh-var(--header-height))] space-y-3 bg-primary-50/30 p-3 sm:p-4">
+    <div className="min-w-0 w-full [overflow-wrap:anywhere] min-h-[calc(100svh-var(--header-height))] space-y-3 bg-primary-50/30 p-3 sm:p-4">
       <header className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2">
@@ -45,7 +45,7 @@ export default function TaxCompliancePage() {
           </div>
           <p className="mt-1 text-xs leading-5 text-text-secondary">Monitor UAE VAT quarterly returns, Federal Tax Authority (FTA) deadlines, and AML filings.</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
         <Button variant="outline" render={<Link to="/renewals" />} className="h-9 self-start rounded-full border-border-default bg-surface-primary px-4 text-xs font-semibold sm:self-auto">
           <Clock3 aria-hidden="true" className="size-3.5 text-text-muted" />Renewals Radar
         </Button>
@@ -66,7 +66,7 @@ export default function TaxCompliancePage() {
         ))}
       </section>
 
-      <Card className="flex-col gap-2 rounded-lg border border-primary-100/60 bg-surface-primary p-2 shadow-card ring-0 sm:flex-row sm:items-center sm:justify-between">
+      <Card className="flex-col gap-2 rounded-lg border border-primary-100/60 bg-surface-primary p-2 shadow-card ring-0 lg:flex-row lg:items-center lg:justify-between">
         <div role="group" aria-label="Filter by filing status" className="flex flex-wrap gap-2">
           {statuses.map((option) => (
             <Button key={option} type="button" aria-pressed={status === option} onClick={() => setStatus(option)} className={cn("h-8 rounded-full px-4 text-xs font-semibold", status === option ? "bg-primary text-primary-foreground shadow-sm" : "border-primary-100 bg-primary-50 text-primary hover:bg-primary-100")}>
@@ -80,7 +80,7 @@ export default function TaxCompliancePage() {
         </div>
       </Card>
 
-      <Card className="gap-3 rounded-lg border border-primary-100/60 bg-surface-primary p-3 shadow-card ring-0">
+      <Card className="min-w-0 gap-3 rounded-lg border border-primary-100/60 bg-surface-primary p-3 shadow-card ring-0">
         <>
           <ComplianceClientTable status={status} query={clientsQuery} onRemove={removeClient} disabled={removeMutation.isPending} />
           <p className="text-xs text-text-muted">{clientsQuery.data?.pages.reduce((count, page) => count + page.data.length, 0) ?? 0} of {clientsQuery.data?.pages[0]?.page.total ?? 0} clients loaded</p>

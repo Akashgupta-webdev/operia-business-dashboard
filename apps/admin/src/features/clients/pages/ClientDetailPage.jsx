@@ -56,12 +56,12 @@ export default function ClientDetailPage() {
   const initialTab = tabs.some(([value]) => value === requestedTab) ? requestedTab : "overview";
 
   return (
-    <div className="min-h-[calc(100svh-var(--header-height))] bg-app-background px-3 py-5 sm:px-4">
+    <div className="min-w-0 w-full [overflow-wrap:anywhere] min-h-[calc(100svh-var(--header-height))] bg-app-background px-3 py-5 sm:px-4">
       <Breadcrumb className="mb-5">
         <BreadcrumbList className="text-caption">
           <BreadcrumbItem><BreadcrumbLink render={<Link to="/clients" />}>Clients</BreadcrumbLink></BreadcrumbItem>
           <BreadcrumbSeparator />
-          <BreadcrumbItem><BreadcrumbPage className="max-w-72 truncate font-semibold">{data?.client?.name || "Client details"}</BreadcrumbPage></BreadcrumbItem>
+          <BreadcrumbItem><BreadcrumbPage className="max-w-[60vw] truncate sm:max-w-72 font-semibold">{data?.client?.name || "Client details"}</BreadcrumbPage></BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
 
@@ -76,15 +76,15 @@ export default function ClientDetailPage() {
       )}
 
       {data?.client && (
-        <div className="grid items-start gap-4 lg:grid-cols-[16rem_minmax(0,1fr)]">
+        <div className="grid min-w-0 grid-cols-1 items-start gap-4 lg:grid-cols-[16rem_minmax(0,1fr)]">
           <ClientProfileCard client={data.client} onEditClient={() => setIsEditDialogOpen(true)} />
-          <Tabs defaultValue={initialTab} className="min-w-0 gap-4">
-            <div className="overflow-x-auto rounded-xl border border-border-default bg-surface-primary p-1 shadow-card scrollbar-none [&::-webkit-scrollbar]:hidden">
+          <Tabs defaultValue={initialTab} className="min-w-0 gap-4 [&_[data-slot=card]]:min-w-0 [&_[data-slot=tabs-content]]:min-w-0">
+            <div className="overflow-x-auto rounded-xl border border-border-default bg-surface-primary p-1 shadow-card ">
               <TabsList className="w-max min-w-full border-b-0">
                 {tabs.map(([value, label, countKey]) => {
                   const count = countKey === "renewals" ? getClientRenewalItems(data).length : countKey ? (data[countKey]?.length ?? 0) : 0;
                   return (
-                    <TabsTrigger key={value} value={value} className="group h-8 gap-1.5 px-3 text-[11px] font-semibold text-text-primary transition-colors hover:text-primary data-active:rounded-lg data-active:bg-primary-700 data-active:text-neutral-0 data-active:hover:text-neutral-0 data-active:after:hidden">
+                    <TabsTrigger key={value} value={value} className="group h-11 gap-1.5 sm:h-8 px-3 text-[11px] font-semibold text-text-primary transition-colors hover:text-primary data-active:rounded-lg data-active:bg-primary-700 data-active:text-neutral-0 data-active:hover:text-neutral-0 data-active:after:hidden">
                       {label}
                       {countKey && <span className="rounded-md bg-primary-50 px-1.5 py-0.5 text-[9px] font-semibold text-primary-700 group-data-active:bg-neutral-0/20 group-data-active:text-neutral-0">{count}</span>}
                     </TabsTrigger>

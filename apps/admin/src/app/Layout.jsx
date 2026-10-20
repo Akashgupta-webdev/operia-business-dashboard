@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   Bell,
+  CalendarDays,
   LoaderCircle,
   LogOut,
   Menu,
@@ -32,7 +33,6 @@ import {
   useSidebar,
 } from "@operio/ui/components/sidebar";
 import useCurrentClient from "@/features/auth/hooks/useCurrentClient";
-import { cn } from "@operio/ui/lib/utils";
 import { logout } from "@/features/auth/api/auth.api";
 import { setDarkTheme, setLightTheme } from "@/store/slice/themeSlice";
 
@@ -61,6 +61,23 @@ const getInitials = (name = "") => {
     .toUpperCase();
 };
 
+function UaeClock() {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+  const parts = Object.fromEntries(new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Dubai", hour: "2-digit", minute: "2-digit",
+    hourCycle: "h23", weekday: "short", day: "2-digit", month: "2-digit", year: "numeric",
+  }).formatToParts(now).map(({ type, value }) => [type, value]));
+  const label = `${parts.hour}:${parts.minute}, ${parts.weekday} ${parts.day}-${parts.month}-${parts.year}`;
+  return <div className="flex shrink-0 items-center gap-1.5 text-text-secondary" title="UAE time (UTC+4)">
+    <CalendarDays aria-hidden="true" className="size-4 text-primary-600" />
+    <time dateTime={now.toISOString()} aria-label={`UAE time: ${label}`} className="whitespace-nowrap text-[10px] font-medium tabular-nums sm:text-xs">{label}</time>
+  </div>;
+}
+
 function CustomSidebarTrigger() {
   const { isMobile, openMobile, state, toggleSidebar } = useSidebar();
   const isExpanded = isMobile ? openMobile : state === "expanded";
@@ -68,13 +85,13 @@ function CustomSidebarTrigger() {
   return (
     <Button
       type="button"
-      variant="normal"
+      variant="ghost"
       size="icon"
       onClick={toggleSidebar}
       aria-label={isExpanded ? "Collapse sidebar" : "Expand sidebar"}
       aria-expanded={isExpanded}
       title="Toggle sidebar"
-      className="size-8 shrink-0 text-primary-400 hover:bg-accent hover:text-primary focus-visible:ring-primary/30"
+      className="size-11 shrink-0 text-primary-600 hover:bg-accent hover:text-primary focus-visible:ring-primary/30"
     >
       <Menu aria-hidden="true" className="size-5" strokeWidth={2} />
     </Button>
@@ -87,7 +104,6 @@ export default function Layout() {
   const queryClient = useQueryClient();
   const theme = useSelector((state) => state.theme);
   const { data: client } = useCurrentClient();
-  const [isOnline, setIsOnline] = useState(() => navigator.onLine);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
@@ -100,18 +116,6 @@ export default function Layout() {
     dispatch(savedTheme === "dark" ? setDarkTheme() : setLightTheme());
   }, [dispatch]);
 
-  useEffect(() => {
-    const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
-
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
-
-    return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
-    };
-  }, []);
 
   const handleToggleTheme = () => {
     dispatch(theme === "dark" ? setLightTheme() : setDarkTheme());
@@ -163,18 +167,19 @@ export default function Layout() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
-        <header className="sticky top-0 z-10 flex h-(--header-height) items-center justify-between border-b border-border-default bg-surface-primary px-3 text-text-primary md:px-5">
+      <SidebarInset className="min-w-0">
+        <header className="sticky top-0 z-10 flex min-h-(--header-height) flex-wrap gap-y-2 py-2 items-center justify-between border-b border-border-default bg-surface-primary px-3 text-text-primary md:px-5">
           <div className="flex min-w-0 items-center gap-3">
             <CustomSidebarTrigger />
 
-            <div className="hidden h-7 items-center gap-2 rounded-lg border border-primary-100 bg-accent px-3 text-body-sm font-semibold text-accent-foreground sm:flex dark:border-primary-800">
+            <div className="hidden h-7 items-center gap-2 rounded-lg border border-primary-100 bg-accent px-3 text-body-sm font-semibold text-accent-foreground xl:flex dark:border-primary-800">
               <UserRound aria-hidden="true" className="size-3.5 text-primary" />
               <span className="max-w-44 truncate">{clientRole} (Management)</span>
             </div>
           </div>
 
-          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+          <div className="flex min-w-0 items-center gap-1 sm:gap-3">
+            <UaeClock />
             <DropdownMenu>
               <DropdownMenuTrigger
                 aria-label="Open notifications"
@@ -193,26 +198,11 @@ export default function Layout() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* <div
-              className={cn(
-                "hidden h-7 items-center gap-2 rounded-lg border px-3 text-[10px] font-medium md:flex",
-                isOnline
-                  ? "border-success-100 bg-success-container text-success-container-foreground dark:border-success-700"
-                  : "border-border-default bg-surface-secondary text-text-secondary",
-              )}
-              role="status"
-            >
-              <span
-                aria-hidden="true"
-                className={isOnline ? "size-2 rounded-full bg-success-500" : "size-2 rounded-full bg-neutral-400"}
-              />
-              {isOnline ? "Online" : "Offline"}
-            </div> */}
 
             <form
               role="search"
               onSubmit={handlePortalSearch}
-              className="relative hidden lg:block"
+              className="relative hidden 2xl:block"
             >
               <label htmlFor="portal-search" className="sr-only">
                 Search portals
@@ -296,8 +286,8 @@ export default function Layout() {
           </div>
         </header>
 
-        <main className="flex-1 bg-background text-foreground">
-          <div className="mx-auto w-full max-w-(--container-max-width)">
+        <main className="min-w-0 flex-1 bg-background text-foreground">
+          <div className="mx-auto min-w-0 w-full max-w-(--container-max-width)">
             <Outlet />
           </div>
         </main>

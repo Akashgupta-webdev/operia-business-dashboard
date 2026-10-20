@@ -16,11 +16,11 @@ export default function RenewalFilters({ filters, onChange }) {
           <Input id="renewal-search" type="search" value={filters.search} onChange={(event) => choose("search", event.target.value)} placeholder="Search item, entity, or client on this page..." className="h-8 border-border-default bg-surface-primary pl-9 text-caption" />
         </div>
         <div role="group" aria-label="Filter this page by status" className="flex flex-wrap gap-1.5">
-          {RENEWAL_STATUSES.map(({ value, label }) => <Button key={value} type="button" size="sm" variant={filters.status === value ? "default" : "outline"} aria-pressed={filters.status === value} onClick={() => choose("status", value)} className="text-[11px] leading-4 aria-pressed:bg-primary-700 aria-pressed:text-neutral-0 aria-pressed:hover:bg-primary-800">{label}</Button>)}
+          {RENEWAL_STATUSES.map(({ value, label }) => <Button key={value} type="button" size="sm" variant={filters.status === value ? "default" : "outline"} aria-pressed={filters.status === value} onClick={() => choose("status", value)} className="min-h-9 text-xs leading-4 aria-pressed:bg-primary-700 aria-pressed:text-neutral-0 aria-pressed:hover:bg-primary-800">{label}</Button>)}
         </div>
       </div>
-      <div className="flex flex-wrap items-center gap-1.5 border-t border-border-default pt-2" role="group" aria-label="Filter this page by category">
-        {RENEWAL_CATEGORIES.map(({ value, label }) => <Button key={value} type="button" size="sm" variant={filters.category === value ? "default" : "secondary"} aria-pressed={filters.category === value} onClick={() => choose("category", value)} className="text-[11px] leading-4 aria-pressed:bg-primary-700 aria-pressed:text-neutral-0 aria-pressed:hover:bg-primary-800">{label}</Button>)}
+      <div className="flex max-w-full items-center gap-1.5 overflow-x-auto border-t pb-1 sm:flex-wrap border-border-default pt-2" role="group" aria-label="Filter this page by category">
+        {RENEWAL_CATEGORIES.map(({ value, label }) => <Button key={value} type="button" size="sm" variant={filters.category === value ? "default" : "secondary"} aria-pressed={filters.category === value} onClick={() => choose("category", value)} className="min-h-9 text-xs leading-4 aria-pressed:bg-primary-700 aria-pressed:text-neutral-0 aria-pressed:hover:bg-primary-800">{label}</Button>)}
       </div>
     </Card>
   );

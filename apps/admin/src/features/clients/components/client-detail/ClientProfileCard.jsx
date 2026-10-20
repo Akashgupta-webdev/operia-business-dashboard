@@ -35,7 +35,7 @@ function ProfileField({ icon: Icon, label, value, copyable = false }) {
       <Icon aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-info-600" />
       <div className="min-w-0 flex-1">
         <p className="text-[10px] font-semibold uppercase tracking-wide text-text-muted">{label}</p>
-        <p className="mt-0.5 overflow-x-auto whitespace-nowrap text-xs font-semibold text-text-primary">{value || "Not registered"}</p>
+        <p className="mt-0.5 break-all text-xs font-semibold text-text-primary">{value || "Not registered"}</p>
       </div>
       {copyable && value && (
         <Button type="button" variant="ghost" size="icon-xs" onClick={() => copyValue(value, label)} aria-label={`Copy ${label}`} className="shrink-0 text-text-muted hover:text-primary">
@@ -48,12 +48,12 @@ function ProfileField({ icon: Icon, label, value, copyable = false }) {
 
 export default function ClientProfileCard({ client, onEditClient }) {
   return (
-    <Card className="min-w-0 gap-0 border border-border-default bg-surface-primary py-0 shadow-card ring-0 lg:sticky lg:top-5">
+    <Card className="min-w-0 gap-0 border border-border-default bg-surface-primary py-0 shadow-card ring-0 lg:sticky lg:top-[calc(var(--header-height)+1rem)]">
       <CardContent className="p-4 px-2">
         <div>
           <div className="flex items-center gap-3">
             <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary-700 text-body-md font-bold text-neutral-0 shadow-sm">{getInitials(client.name)}</div>
-            <h1 className="min-w-0 [overflow-wrap:normal] break-normal text-body-md font-bold leading-5 text-text-primary">{client.name}</h1>
+            <h1 className="min-w-0 break-words text-body-md font-bold leading-5 text-text-primary">{client.name}</h1>
           </div>
           <div className="mt-3 flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-md bg-success-50 px-2 py-1 text-[10px] font-semibold text-success-700"><span className="size-1.5 rounded-full bg-current" />{client.status}</span>
@@ -64,7 +64,7 @@ export default function ClientProfileCard({ client, onEditClient }) {
         <Separator className="my-5" />
         <div className="space-y-4">
           <ProfileField icon={Phone} label="Mobile phone" value={client.mobileNumber} copyable />
-          <ProfileField icon={Mail} label="Email" value={`${client.emailAddress.slice(0,25)}${client.emailAddress.length > 25 ? "...": ""}`} copyable />
+          <ProfileField icon={Mail} label="Email" value={client.emailAddress} copyable />
           <ProfileField icon={Flag} label="Nationality" value={client.nationality} />
           <ProfileField icon={CreditCard} label="Emirates ID" value={client.emirates?.emiratesId} copyable />
           <ProfileField icon={FileText} label="Passport" value={client.passport?.passportNumber} copyable />

@@ -25,7 +25,7 @@ export default function RenewalsPage() {
       : "The renewal list could not be loaded. Please try again.";
 
   return (
-    <div className="min-h-[calc(100svh-var(--header-height))] space-y-5 bg-app-background px-4 py-5 sm:px-6 lg:px-8">
+    <div className="min-w-0 w-full [overflow-wrap:anywhere] min-h-[calc(100svh-var(--header-height))] space-y-4 bg-app-background px-3 py-4 sm:px-6 lg:px-8">
       <header>
         <div className="flex items-center gap-3"><RefreshCw aria-hidden="true" className="size-6 shrink-0 text-primary-600" /><h1 className="text-section-heading font-bold text-text-primary">Renewals &amp; Expirations Hub</h1></div>
         <p className="mt-1 text-body-md text-text-secondary">Monitor trade licences, establishment cards, identity documents, and vehicle expirations.</p>
@@ -37,7 +37,7 @@ export default function RenewalsPage() {
         <SummaryCard icon={CheckCircle2} label="Valid & Active" value={0} description="More than 30 days remaining" tone="success" />
       </section>
       <RenewalFilters filters={filters} onChange={setFilters} />
-      <Card id="renewals-list" className="gap-0 overflow-hidden border border-border-default bg-surface-primary py-0 shadow-card ring-0" aria-busy={query.isFetching}>
+      <Card id="renewals-list" className="min-w-0 gap-0 overflow-hidden border border-border-default bg-surface-primary py-0 shadow-card ring-0" aria-busy={query.isFetching}>
         {query.isError ? <div role="alert" className="flex flex-col items-center gap-3 px-6 py-12 text-center"><AlertCircle aria-hidden="true" className="size-8 text-danger-600" /><h2 className="text-body-lg font-semibold text-text-primary">Unable to load renewals</h2><p className="text-body-sm text-text-secondary">{errorMessage}</p><Button type="button" variant="outline" onClick={() => query.refetch()}>Try again</Button></div> : <>
           <RenewalTable items={visibleItems} loading={query.isPending} hasFilters={hasFilters} />
           <footer className="flex flex-col gap-3 border-t border-border-default px-4 py-4 lg:flex-row lg:items-center lg:justify-between">

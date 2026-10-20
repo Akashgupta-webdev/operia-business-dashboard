@@ -16,19 +16,19 @@ export function DashboardMetricCard({ icon: Icon, label, value, helper, href, to
 
 
   const backgrounds = {
-    primary: "from-primary-50/70 border-primary-100/60",
-    danger: "from-danger-50/70 border-danger-100/60",
-    warning: "from-warning-50/80 border-warning-100/60",
-    info: "from-info-50/80 border-info-100/60",
-    success: "from-success-50/80 border-success-100/60",
+    primary: "bg-[#eae7f2] border-[#e2ddef] dark:bg-primary-900/40 dark:border-primary-800",
+    danger: "bg-[#f2e6eb] border-[#efdce3] dark:bg-danger-700/20 dark:border-danger-700/30",
+    warning: "bg-[#f2ece3] border-[#eee4d6] dark:bg-warning-700/20 dark:border-warning-700/30",
+    info: "bg-[#e5edf2] border-info-100 dark:bg-info-700/20 dark:border-info-700/30",
+    success: "bg-[#e3f0ec] border-[#d8ebe4] dark:bg-success-700/20 dark:border-success-700/30",
   };
   const card = (
-    <Card size="sm" className={cn("h-full min-h-28 flex-row items-start gap-4 border bg-gradient-to-br to-surface-primary p-4 shadow-none ring-0 transition-shadow hover:shadow-md", backgrounds[tone])}>
-      <span className={cn("flex size-12 shrink-0 items-center justify-center rounded-2xl", tones[tone])}><Icon aria-hidden="true" className="size-6" /></span>
+    <Card size="sm" className={cn("h-full min-w-0 flex-row items-start gap-2 border p-3 shadow-sm ring-0 transition-shadow hover:shadow-md sm:gap-3", backgrounds[tone])}>
+      <span className={cn("flex size-8 shrink-0 items-center justify-center rounded-lg sm:size-10", tones[tone])}><Icon aria-hidden="true" className="size-4 sm:size-5" /></span>
       <div className="min-w-0 flex-1">
-        <p className="text-2xl leading-7 font-bold tracking-tight text-text-primary" data-numeric>{value ?? 0}</p>
-        <p className="mt-1 text-[11px] leading-4 font-semibold text-text-primary">{label}</p>
-        <p className={cn("mt-0.5 text-[10px] leading-4", tone === "danger" ? "text-danger-600" : tone === "warning" ? "text-warning-700" : "text-text-muted")}>{helper}</p>
+        <p className="text-xs leading-4 font-semibold text-text-primary">{label}</p>
+        <p className="mt-1 text-2xl leading-7 font-bold tracking-tight text-text-primary" data-numeric>{value ?? 0}</p>
+        <p className={cn("mt-0.5 text-xs leading-4", tone === "danger" ? "text-danger-600" : tone === "warning" ? "text-warning-700" : "text-text-muted")}>{helper}</p>
       </div>
     </Card>
   );
