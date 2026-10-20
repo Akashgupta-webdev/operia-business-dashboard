@@ -8,7 +8,7 @@ Connect the sending mailbox in EmailJS and create an email template:
 
 - To Email: {{to_email}}
 - To Name (if available): {{to_name}}
-- Subject: {{subject}}
+- Subject: Welcome to Operio, {{name}}! (or {{subject}}; the application sends the same personalized subject)
 - From Name: Operio Business
 - From Email: your connected/verified sender
 - Content: switch to HTML/source editing and enter {{{message_html}}} only.
@@ -23,22 +23,18 @@ Fill these existing entries in apps/admin/.env.local:
     VITE_PORTAL_SUPPORT_EMAIL=
     VITE_PORTAL_SUPPORT_PHONE=
 
-The first three are required. Support details are optional. The preview uses the local logo; delivery uses cid:operia-logo.jpeg. VITE_PORTAL_EMAIL_LOGO_URL is no longer used.
+The first three are required. Support details are optional. Preview and delivery use the same public logo URL. VITE_PORTAL_EMAIL_LOGO_URL is no longer used.
 
-### Required static attachments
+### Public logo and company profile
 
-In the EmailJS template's Attachments tab:
+- Logo: https://operio-admin.vercel.app/operia-logo.jpeg
+- PDF download: https://operio-admin.vercel.app/OPERIO_Company_Profile.pdf
 
-1. Remove the old Variable Attachment entries named operio_logo and company_profile.
-2. Add a Static Attachment: upload apps/admin/public/operia-logo.jpeg. Keep the exact filename operia-logo.jpeg (case sensitive).
-3. Add a Static Attachment: upload apps/admin/public/OPERIO_Company_Profile.pdf.
-4. Save the template. Keep Content set to {{{message_html}}} and To Email set to {{to_email}}.
+The email displays the hosted logo and includes a View / Download Company Profile link. The PDF is linked, not attached. No paid attachment feature, CID, or Base64 file payload is used.
 
-EmailJS automatically includes these files with every email using this template. The request sends only recipient, subject and HTML variables, avoiding the 50 KB limit caused by Base64 file data. The PDF is a downloadable attachment; the logo is embedded using cid:operia-logo.jpeg.
+Remove any previously configured static or variable attachments from the EmailJS template. Keep Content set to {{{message_html}}} and To Email set to {{to_email}}.
 
-Your plan must support static attachments and their combined file size. Re-upload the hosted copies when changing either public asset. The frontend cannot verify the hosted attachment configuration.
-
-References: https://www.emailjs.com/docs/user-guide/file-attachments/ and https://www.emailjs.com/docs/user-guide/embedded-images/
+Both URLs must remain publicly accessible. Some email clients block remote images until the recipient allows them. The PDF link opens the hosted document for viewing or saving.
 
 Restart Vite after editing .env.local. Configure the same public variables in the Admin deployment and rebuild. Restrict allowed origins in the EmailJS dashboard to your Admin domains. Never put SMTP credentials or private provider keys in VITE_ variables.
 

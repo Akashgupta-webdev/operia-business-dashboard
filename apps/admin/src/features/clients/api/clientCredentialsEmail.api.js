@@ -26,13 +26,13 @@ export async function sendClientCredentialsEmail({ name, emailAddress, html }) {
       service_id: credentialsEmailSettings.serviceId,
       template_id: credentialsEmailSettings.templateId,
       user_id: credentialsEmailSettings.publicKey,
-      template_params: { to_name: name, to_email: recipient.value, subject: "Welcome to your Operio Client Portal", message_html: html },
+      template_params: { name, to_name: name, to_email: recipient.value, subject: `Welcome to Operio, ${name}!`, message_html: html },
     }),
   });
   if (!response.ok) {
     const reason = await response.text();
     if (/variables size|maximum allowed variables/i.test(reason)) {
-      throw new Error("EmailJS rejected oversized template variables. Configure the logo and PDF as static attachments in the EmailJS template, not as Base64 variables.");
+      throw new Error("EmailJS rejected oversized template variables. Keep the logo and PDF as public links and remove any Base64 file content from the template variables.");
     }
     if (/recipients?['’]? address is empty/i.test(reason)) {
       throw new Error('EmailJS could not resolve the recipient. In the configured EmailJS template, set "To Email" to {{to_email}} and save the template.');

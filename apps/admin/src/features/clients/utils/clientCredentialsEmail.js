@@ -1,14 +1,17 @@
+const PORTAL_EMAIL_LOGO_URL = "https://operio-admin.vercel.app/operia-logo.jpeg";
+const COMPANY_PROFILE_URL = "https://operio-admin.vercel.app/OPERIO_Company_Profile.pdf";
+
 export const CLIENT_PORTAL_URL = "https://operio-client.vercel.app";
 
 const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (character) => ({
   "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
 })[character]);
 
-export function buildClientCredentialsEmail({ name, emailAddress, password, logoUrl, supportEmail = "", supportPhone = "" }) {
+export function buildClientCredentialsEmail({ name, emailAddress, password, logoUrl = PORTAL_EMAIL_LOGO_URL, supportEmail = "", supportPhone = "" }) {
   const row = (label, value) => `<tr><td style="padding:14px 10px;border-bottom:1px solid #e4ebef;font-weight:bold;width:45%">${label}</td><td style="padding:14px 10px;border-bottom:1px solid #e4ebef;overflow-wrap:anywhere"><span style="display:block;background:#eaf0f5;padding:12px;border-radius:6px">${escapeHtml(value)}</span></td></tr>`;
   const support = supportEmail || supportPhone;
   const supportLink = supportEmail ? `mailto:${encodeURIComponent(supportEmail)}` : `tel:${supportPhone.replace(/[^+\d]/g, "")}`;
-  const safeLogo = logoUrl === "cid:operia-logo.jpeg" || /^https?:\/\//.test(logoUrl || "") ? logoUrl : "";
+  const safeLogo = /^https?:\/\//.test(logoUrl || "") ? logoUrl : "";
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Your Operio client portal</title></head>
 <body style="margin:0;background:#f4f6f8;font-family:Arial,Helvetica,sans-serif;color:#092347">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0"><tr><td align="center" style="padding:20px 10px">
@@ -22,7 +25,8 @@ export function buildClientCredentialsEmail({ name, emailAddress, password, logo
 <p style="background:#fff7e5;border:1px solid #faeccb;border-radius:8px;padding:18px;font-size:14px;line-height:1.6"><strong>For your security, change your password after your first login.<br>Never share your credentials.</strong></p>
 <p style="text-align:center;margin:26px 0 12px"><a href="${CLIENT_PORTAL_URL}" target="_blank" style="display:inline-block;background:#092347;color:#fff;text-decoration:none;padding:18px 28px;border-radius:10px;font-size:18px;font-weight:bold">ACCESS YOUR PORTAL &rarr;</a></p>
 <p style="text-align:center;font-size:14px"><a href="${CLIENT_PORTAL_URL}" target="_blank" style="color:#00734d">operio-client.vercel.app</a></p>
-<p style="font-size:14px;line-height:1.6;color:#344054">Please find our company profile attached: <strong>OPERIO_Company_Profile.pdf</strong>, with more information about Operio and our services.</p>
+<p style="font-size:14px;line-height:1.6;color:#344054">Learn more about Operio and our services in our company profile.</p>
+<p style="text-align:center;margin:18px 0"><a href="${COMPANY_PROFILE_URL}" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:#00734d;color:#fff;text-decoration:none;padding:14px 22px;border-radius:8px;font-size:15px;font-weight:bold">VIEW / DOWNLOAD COMPANY PROFILE (PDF)</a></p>
 <div style="background:#f3f6f9;border-radius:10px;padding:20px;margin-top:24px"><h2 style="margin:0 0 18px;font-size:25px">How to get started</h2>
 ${["Open the portal link above.", "Sign in using your registered email and temporary password.", "Follow the on-screen instructions and update your password."].map((step, index) => `<p style="font-size:15px;line-height:1.7"><strong style="color:#00734d;margin-right:15px">${index + 1}</strong> ${step}</p>`).join("")}</div>
 <div style="background:#f0f9f5;border-radius:10px;padding:22px;margin-top:16px;text-align:center"><h2 style="font-size:25px;margin:0 0 8px">Need assistance?</h2><p style="color:#344054;line-height:1.6">Our support team is here to help you get started.</p>${support ? `<a href="${escapeHtml(supportLink)}" style="display:inline-block;background:#00734d;color:#fff;padding:14px 22px;border-radius:8px;text-decoration:none;font-weight:bold">CONTACT CUSTOMER SUPPORT &rarr;</a><p style="font-size:14px;color:#00734d">${escapeHtml([supportEmail, supportPhone].filter(Boolean).join(" / "))}</p>` : '<p style="font-size:14px;color:#00734d">Please contact your Operio account manager.</p>'}</div>
