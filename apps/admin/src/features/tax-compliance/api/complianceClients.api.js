@@ -1,9 +1,9 @@
 import clientRequest from "@/app/apiClient";
 
-export async function getComplianceClients({ added, page, search, signal }) {
+export async function getComplianceClients({ added, page, search, signal, limit = 20 }) {
   const route = added ? "compliance/clients" : "compliance/eligible-clients";
   const response = await clientRequest.get(`/api/v1/client/${route}`, {
-    params: { page, limit: 20, search: search || undefined }, signal,
+    params: { page, limit, search: search || undefined }, signal,
   });
   return response.data;
 }

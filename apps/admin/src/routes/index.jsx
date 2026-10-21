@@ -2,6 +2,7 @@ import { lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import Layout from "../app/Layout";
+import InvoicePage from "../features/invoices/pages/InvoicePage";
 
 const VatListPage = lazy(() => import("@/features/vat/pages/VatListPage"));
 const VatCreatePage = lazy(() => import("@/features/vat/pages/VatCreatePage"));
@@ -56,6 +57,7 @@ export default function AppRoutes() {
                     <Route path="/tax-and-compliance/:id" element={<ClientTaxCompliancePage />} />
                     <Route path="/tax-and-compliance" element={<TaxCompliancePage />} />
                     <Route path="/visa-and-employees" element={<VisaEmployeesPage />} />
+                    <Route path="/invoices" element={<InvoicePage />} />
                 </Route>
 
                 <Route path="*" element={<NotFoundPage />} />

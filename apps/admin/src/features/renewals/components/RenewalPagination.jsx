@@ -3,10 +3,10 @@ import { Fragment } from "react";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@operio/ui/components/pagination";
 import { getRenewalPageNumbers } from "@/features/renewals/utils/renewals";
 
-export default function RenewalPagination({ page, totalPages, disabled, onPageChange }) {
+export default function RenewalPagination({ page, totalPages, disabled, onPageChange, ariaLabel = "Renewals pagination", href = "#renewals-list" }) {
   const pages = getRenewalPageNumbers(page, totalPages);
   const propsFor = (nextPage, unavailable = false) => ({
-    href: "#renewals-list",
+    href,
     "aria-disabled": disabled || unavailable,
     tabIndex: disabled || unavailable ? -1 : 0,
     className: disabled || unavailable ? "pointer-events-none opacity-50" : "text-caption",
@@ -17,7 +17,7 @@ export default function RenewalPagination({ page, totalPages, disabled, onPageCh
   });
   if (totalPages <= 1 && page <= 1) return null;
   return (
-    <Pagination aria-label="Renewals pagination" className="mx-0 w-auto">
+    <Pagination aria-label={ariaLabel} className="mx-0 w-auto">
       <PaginationContent className="flex-wrap justify-center">
         <PaginationItem><PaginationPrevious {...propsFor(Math.min(page - 1, Math.max(1, totalPages)), page <= 1)} /></PaginationItem>
         {pages.map((number, index) => <Fragment key={number}>

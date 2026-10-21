@@ -52,6 +52,7 @@ const navigationSections: SidebarNavSection[] = [
     label: "Operations",
     items: [
       { title: "Finance - P&L", url: "/finance", icon: ChartCandlestick },
+      { title: "Invoices", url: "/invoices", icon: ChartCandlestick },
       { title: "Support & Tasks", url: "/support-&-tasks", icon: MessageSquare },
       { title: "Documents", url: "/documents", icon: FileText },
     ],
