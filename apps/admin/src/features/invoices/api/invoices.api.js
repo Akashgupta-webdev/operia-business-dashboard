@@ -8,7 +8,8 @@ export async function getInvoices(params, signal) {
   return { ...response, data: response.data.map(normalizeInvoiceListItem) };
 }
 export async function getInvoice(id, signal) {
-  return normalizeInvoice((await clientRequest.get(`${route}/${encodeURIComponent(id)}`, { signal })).data.data);
+  const response = await clientRequest.get(`${route}/${encodeURIComponent(id)}`, { signal });
+  return { ...normalizeInvoice(response.data.data, { numeric: true }), etag: response.headers?.etag };
 }
 export async function saveInvoice({ id, payload }) {
   const response = id

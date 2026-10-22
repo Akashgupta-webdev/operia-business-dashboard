@@ -21,6 +21,34 @@ export function createInvoicePayload(form) {
   payload.service = form.service.map(calculateService).map((line) => ({ itemDescription: line.itemDescription.trim(), qty: Number(line.qty), govtRate: line.govtRate || "0.00", servicePrice: line.servicePrice, taxCode: Number(line.taxCode), taxAmount: line.taxAmount, grandTotal: line.grandTotal }));
   return payload;
 }
+// Detail amounts are numbers; inputs and the existing write payload use decimal strings.
+export function initialEditInvoice(invoice) {
+  return {
+    ...Object.fromEntries(["invoiceType", "customerName", "emirate", "fullAddress", "trnNo", "emailAddress", "accountNo", "switftBIC", "iban"].map((key) => [key, invoice[key] ?? ""])),
+    clientId: referenceId(invoice.clientId), companyId: referenceId(invoice.companyId),
+    contactNo: nationalContactNumber(invoice.contactNo),
+    issueDate: invoice.issueDate?.slice(0, 10) || "", dueDate: invoice.dueDate?.slice(0, 10) || "",
+    service: (invoice.service || []).map((line) => ({ itemDescription: line.itemDescription || "", ...Object.fromEntries(["qty", "govtRate", "servicePrice", "taxCode", "taxAmount", "grandTotal"].map((key) => [key, String(line[key] ?? "")])) })),
+  };
+}
+export function updateInvoicePayload(form, invoice) {
+  const before = createInvoicePayload(initialEditInvoice(invoice));
+  const after = createInvoicePayload(form);
+  const comparable = (key, value) => key === "service"
+    ? value.map((line) => ({ ...line, ...Object.fromEntries(["govtRate", "servicePrice", "taxAmount", "grandTotal"].map((field) => {
+      const [whole, fraction = ""] = String(line[field]).split(".");
+      return [field, `${whole.replace(/^0+(?=\d)/, "")}.${fraction.replace(/0+$/, "")}`];
+    })) }))
+    : value;
+  const changes = {};
+  for (const key of new Set([...Object.keys(before), ...Object.keys(after)])) {
+    if (JSON.stringify(comparable(key, before[key])) !== JSON.stringify(comparable(key, after[key]))) {
+      // Empty optional fields must be explicit in PATCH to clear their old values.
+      changes[key] = after[key] ?? "";
+    }
+  }
+  return { ...changes, expectedVersion: invoice.version };
+}
 export function sumServiceMoney(service, key) {
   let total = 0n;
   for (const line of service) {

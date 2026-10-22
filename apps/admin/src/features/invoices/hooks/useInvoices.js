@@ -10,5 +10,17 @@ export function useInvoice(id) {
 }
 export function useInvoiceMutation(remove = false) {
   const cache = useQueryClient();
-  return useMutation({ mutationFn: remove ? deleteInvoice : saveInvoice, retry: false, onSuccess: () => cache.invalidateQueries({ queryKey: invoiceKeys.all }) });
+  return useMutation({
+    mutationFn: remove ? deleteInvoice : saveInvoice,
+    retry: false,
+    onSuccess: (_, variables) => {
+      if (remove) {
+        // Never refetch a deleted detail, or wait for list refresh before closing.
+        cache.removeQueries({ queryKey: invoiceKeys.detail(variables.id), exact: true });
+        void cache.invalidateQueries({ queryKey: invoiceKeys.lists() });
+        return;
+      }
+      return cache.invalidateQueries({ queryKey: invoiceKeys.all });
+    },
+  });
 }

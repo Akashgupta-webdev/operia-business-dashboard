@@ -8,16 +8,18 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import useClient from "@/features/clients/hooks/useClient";
 import { useInvoiceMutation } from "../hooks/useInvoices";
 import { decimalPattern, errorMessage, invoiceTypes, money, referenceId } from "../utils/invoice";
-import { blankService, calculateService, contactNumberError, createInvoicePayload, emirates, initialCreateInvoice, nationalContactNumber, sumServiceMoney } from "../utils/createInvoice";
+import { blankService, calculateService, contactNumberError, createInvoicePayload, emirates, initialCreateInvoice, initialEditInvoice, nationalContactNumber, sumServiceMoney, updateInvoicePayload } from "../utils/createInvoice";
 
-export default function CreateInvoiceForm({ client, type = invoiceTypes[0], onClose, onBusy }) {
-  const [form, setForm] = useState(() => initialCreateInvoice(client, type));
+export default function CreateInvoiceForm({ client, invoice: sourceInvoice, type = invoiceTypes[0], onClose, onBusy, onReload }) {
+  const [invoice] = useState(sourceInvoice);
+  const [form, setForm] = useState(() => invoice ? initialEditInvoice(invoice) : initialCreateInvoice(client, type));
   const [errors, setErrors] = useState({});
   const [uncertain, setUncertain] = useState(false);
   const pending = useRef(false);
   const mutation = useInvoiceMutation();
   const details = useClient(form.clientId);
-  const companyName = details.data?.companies?.find((company) => referenceId(company) === form.companyId)?.companyName || client.companyName || client.companyId?.companyName || "Company unavailable";
+  const conflict = [409, 412].includes(mutation.error?.response?.status);
+  const companyName = details.data?.companies?.find((company) => referenceId(company) === form.companyId)?.companyName || invoice?.companyId?.companyName || client?.companyName || client?.companyId?.companyName || "Company unavailable";
   const taxTotal = sumServiceMoney(form.service, "taxAmount");
   const grandTotal = sumServiceMoney(form.service, "grandTotal");
   const update = (key, value) => { setForm((current) => ({ ...current, [key]: value })); setErrors((current) => ({ ...current, [key]: undefined })); };
@@ -29,7 +31,7 @@ export default function CreateInvoiceForm({ client, type = invoiceTypes[0], onCl
   const error = (name) => errors[name] && <p id={`invoice-error-${name}`} className="mt-1 text-xs text-destructive">{errors[name]}</p>;
   async function submit(event) {
     event.preventDefault();
-    if (pending.current || uncertain) return;
+    if (pending.current || uncertain || conflict || (invoice && !Number.isInteger(invoice.version))) return;
     const nextErrors = {};
     const contactError = contactNumberError(form.contactNo);
     if (contactError) nextErrors.contactNo = contactError;
@@ -44,10 +46,12 @@ export default function CreateInvoiceForm({ client, type = invoiceTypes[0], onCl
     });
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) return;
+    const payload = invoice ? updateInvoicePayload(form, invoice) : createInvoicePayload(form);
+    if (invoice && Object.keys(payload).length === 1) { toast.info("No changes to save"); return; }
     pending.current = true; onBusy(true);
     try {
-      const result = await mutation.mutateAsync({ payload: createInvoicePayload(form) });
-      toast.success(`Invoice ${result.invoiceNo || result.invoiceNumber || ""} created`);
+      const result = await mutation.mutateAsync({ id: invoice ? referenceId(invoice) : undefined, payload });
+      toast.success(`Invoice ${result?.invoiceNo || result?.invoiceNumber || ""} ${invoice ? "updated" : "created"}`);
       onClose(true);
     } catch (failure) {
       setErrors(Object.fromEntries((failure?.response?.data?.error?.details || []).filter((entry) => entry.field).map((entry) => [entry.field, entry.issue])));
@@ -58,10 +62,10 @@ export default function CreateInvoiceForm({ client, type = invoiceTypes[0], onCl
   const labelClass = "mb-1 block text-xs";
   return <form onSubmit={submit} className="space-y-5">
     <div className="grid gap-3 sm:grid-cols-2">
-      <div className="rounded-lg bg-primary-50 p-3"><p className="text-xs text-text-secondary">Selected client</p><p className="mt-1 text-sm font-semibold">{client.name}</p>{error("clientId")}</div>
+      <div className="rounded-lg bg-primary-50 p-3"><p className="text-xs text-text-secondary">Selected client</p><p className="mt-1 text-sm font-semibold">{client?.name || "Deleted client"}</p>{error("clientId")}</div>
       <div className="rounded-lg border border-border-default bg-surface-secondary p-3"><p className="text-xs text-text-secondary">Company</p><p className="mt-1 text-sm font-semibold">{companyName}</p>{error("companyId")}{!form.companyId && <p className="mt-1 text-xs text-destructive">This client needs a company before an invoice can be created.</p>}</div>
     </div>
-    <fieldset disabled={mutation.isPending || uncertain} className="space-y-5">
+    <fieldset disabled={mutation.isPending || uncertain || conflict} className="space-y-5">
       <section className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-4" aria-label="Client and invoice details">
         <div><label htmlFor="invoice-create-invoiceType" className={labelClass}>Invoice type *</label><Input {...fieldProps("invoiceType")} readOnly value={form.invoiceType} className={controlClass + " disabled:opacity-100"} />{error("invoiceType")}</div>
         {[["customerName", "Customer name"], ["emailAddress", "Email address"]].map(([name, label]) => <div key={name}><label htmlFor={`invoice-create-${name}`} className={labelClass}>{label} *</label><Input {...fieldProps(name)} type={name === "emailAddress" ? "email" : "text"} required value={form[name]} onChange={(event) => update(name, event.target.value)} className={controlClass} />{error(name)}</div>)}
@@ -94,7 +98,8 @@ export default function CreateInvoiceForm({ client, type = invoiceTypes[0], onCl
       </section>
 
     </fieldset>
-    {mutation.isError && <p role="alert" className="text-sm text-destructive">{uncertain ? "The result is uncertain. Close this form and check the invoice list before creating another invoice." : errorMessage(mutation.error)}</p>}
-    <div className="flex justify-end gap-3"><Button type="button" variant="outline" disabled={mutation.isPending} onClick={() => onClose()}>Cancel</Button><Button type="submit" disabled={mutation.isPending || uncertain || !form.companyId}>{mutation.isPending ? "Creating..." : "Create invoice"}</Button></div>
+    {mutation.isError && <p role="alert" className="text-sm text-destructive">{uncertain ? "The result is uncertain. Close this form and check the invoice list before trying again." : errorMessage(mutation.error)}</p>}
+    {conflict && <Button type="button" variant="outline" onClick={onReload}>Reload latest invoice to review</Button>}
+    <div className="flex justify-end gap-3"><Button type="button" variant="outline" disabled={mutation.isPending} onClick={() => onClose()}>Cancel</Button><Button type="submit" disabled={mutation.isPending || uncertain || conflict || !form.companyId || (invoice && !Number.isInteger(invoice.version))}>{mutation.isPending ? "Saving..." : invoice ? "Save changes" : "Create invoice"}</Button></div>
   </form>;
 }
