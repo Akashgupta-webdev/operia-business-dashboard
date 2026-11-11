@@ -32,4 +32,26 @@
 .invoice-signature img { width: 100px; height: 100px; object-fit: contain; margin-bottom: 5px; }
 .invoice-note { text-align: center; padding: 0 18px 10px; font-size: 8px; font-weight: bold; }
 @page { size: A4; margin: 0; }
-@media print { html, body { margin: 0; padding: 0; background: white; } .invoice-paper { width: 210mm; margin: 0; } .invoice-lines tr { break-inside: avoid; } .invoice-lines thead { display: table-header-group; } .invoice-lines tfoot { display: table-row-group; } }
+@media print {
+  html, body { margin: 0; padding: 0; background: white; }
+  .invoice-paper {
+    width: 210mm;
+    min-height: 296mm;
+    margin: 0;
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  .invoice-letterhead { flex-shrink: 0; }
+  .invoice-border { flex: 1; min-height: 0; }
+  .invoice-tax { margin-top: 20px; }
+  .invoice-signature {
+    margin: auto 65px 24px auto;
+    padding-top: 32px;
+    break-after: avoid;
+  }
+  .invoice-note { flex-shrink: 0; break-inside: avoid; }
+  .invoice-lines tr { break-inside: avoid; }
+  .invoice-lines thead { display: table-header-group; }
+  .invoice-lines tfoot { display: table-row-group; }
+}

@@ -10,10 +10,12 @@ export function initialCreateInvoice(client, invoiceType) {
   return { clientId: referenceId(client.clientId) || referenceId(client), companyId: referenceId(client.companyId), invoiceType,
     customerName: client.name || "", emirate: "", contactNo: nationalContactNumber(client.mobileNumber),
     fullAddress: "", trnNo: client.vatTaxRegistrationNumber || "", emailAddress: client.emailAddress || "",
-    issueDate: new Date().toISOString().slice(0, 10), dueDate: "", service: [blankService()], accountNo: "", switftBIC: "", iban: "" };
+    issueDate: new Date().toISOString().slice(0, 10), dueDate: "", service: [blankService()], accountNo: "", switftBIC: "", iban: "", discount: "0", remark: "" };
 }
 export function createInvoicePayload(form) {
   const payload = Object.fromEntries(["clientId", "companyId", "invoiceType", "customerName", "fullAddress", "trnNo", "emailAddress"].map((key) => [key, form[key].trim()]));
+  payload.discount = Number(form.discount || 0);
+  if (form.remark?.trim()) payload.remark = form.remark.trim();
   for (const key of ["emirate", "accountNo", "switftBIC", "iban"]) if (form[key].trim()) payload[key] = form[key].trim();
   const nationalNumber = nationalContactNumber(form.contactNo);
   if (nationalNumber) payload.contactNo = `+971${nationalNumber}`;
@@ -24,6 +26,7 @@ export function createInvoicePayload(form) {
 // Detail amounts are numbers; inputs and the existing write payload use decimal strings.
 export function initialEditInvoice(invoice) {
   return {
+    discount: String(invoice.discount ?? 0), remark: invoice.remark ?? "",
     ...Object.fromEntries(["invoiceType", "customerName", "emirate", "fullAddress", "trnNo", "emailAddress", "accountNo", "switftBIC", "iban"].map((key) => [key, invoice[key] ?? ""])),
     clientId: referenceId(invoice.clientId), companyId: referenceId(invoice.companyId),
     contactNo: nationalContactNumber(invoice.contactNo),

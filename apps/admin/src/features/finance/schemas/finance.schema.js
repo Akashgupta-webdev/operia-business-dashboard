@@ -32,7 +32,13 @@ export const expenseCreateSchema = Joi.object({
     "string.pattern.base": "Enter a non-negative amount with up to two decimal places.",
     "any.required": "Enter the expense amount.",
   }),
-  expenseDate: Joi.string().pattern(/^\d{4}-\d{2}-\d{2}$/).isoDate().allow("").messages({
+  expenseDate: Joi.string().pattern(/^\d{4}-\d{2}-\d{2}$/).custom((value, helpers) => {
+    const date = new Date(`${value}T00:00:00.000Z`);
+    if (Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== value || value.startsWith("0000")) {
+      return helpers.error("string.isoDate");
+    }
+    return value;
+  }).allow("").messages({
     "string.pattern.base": "Use the YYYY-MM-DD date format.",
     "string.isoDate": "Enter a valid expense date in YYYY-MM-DD format.",
   }),

@@ -1,35 +1,23 @@
-import { LoaderCircle } from "lucide-react";
 import { motion } from "framer-motion";
 
 const SuspenseLoader = () => {
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white" role="status" aria-live="polite" aria-label="Loading dashboard">
             <div className="w-full max-w-xs px-6">
-                <div className="flex items-center justify-center gap-4">
-                    <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{
-                            duration: 1,
-                            repeat: Infinity,
-                            ease: "linear",
-                        }}
-                    >
-                        <LoaderCircle className="h-10 w-10 text-orange-500" />
-                    </motion.div>
+                <div className="flex flex-col items-center justify-center gap-4 text-center">
+                    <img
+                        src="/operia-logo.jpeg"
+                        alt="Operio Business logo"
+                        width={160}
+                        height={160}
+                        className="h-40 w-40 object-contain"
+                    />
 
-                    <div>
-                        <h1 className="text-3xl font-bold text-white">
-                            Operio
-                        </h1>
-                        <p className="text-sm text-slate-400">
-                            Loading dashboard...
-                        </p>
-                    </div>
                 </div>
 
-                <div className="mt-6 h-1 overflow-hidden rounded-full bg-slate-800">
+                <div className="mt-6 h-1 overflow-hidden rounded-full bg-[#e6e6e6]" aria-hidden="true">
                     <motion.div
-                        className="h-full rounded-full bg-orange-500"
+                        className="h-full rounded-full bg-[#4a154b]"
                         animate={{
                             x: ["-100%", "300%"],
                         }}

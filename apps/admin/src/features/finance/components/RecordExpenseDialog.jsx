@@ -160,9 +160,8 @@ export default function RecordExpenseDialog({ open, onOpenChange }) {
               <div>
                 <FieldLabel htmlFor="expense-date">Expense Date</FieldLabel>
                 <InputShell icon={CalendarDays}>
-                  <Input id="expense-date" type="text" inputMode="numeric" placeholder="YYYY-MM-DD" maxLength={10} aria-describedby="expense-date-format" aria-invalid={Boolean(errors.expenseDate)} className="h-9 min-h-9! pl-8 text-[13px] placeholder:text-[13px] md:text-[13px] tabular-nums" {...register("expenseDate")} />
+                  <Input id="expense-date" type="date" min="0001-01-01" max="9999-12-31" aria-invalid={Boolean(errors.expenseDate)} className="h-9 min-h-9! pl-8 text-[13px] md:text-[13px] tabular-nums" {...register("expenseDate")} />
                 </InputShell>
-                <p id="expense-date-format" className="mt-1 text-[10px] leading-4 text-text-muted">Format: YYYY-MM-DD</p>
                 <FieldError error={errors.expenseDate} />
               </div>
               <div>

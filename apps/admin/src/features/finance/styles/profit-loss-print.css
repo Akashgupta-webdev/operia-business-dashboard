@@ -1,0 +1,162 @@
+@page operio-profit-loss {
+  size: A4 portrait;
+  margin: 10mm;
+}
+
+@media print {
+  body:has([data-finance-print="profit-loss"]) {
+    page: operio-profit-loss;
+    margin: 0;
+    background: white !important;
+    color: #1d1d1d;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  body:has([data-finance-print="profit-loss"]) [data-slot="sidebar"],
+  body:has([data-finance-print="profit-loss"]) [data-slot="sidebar-inset"] > header,
+  body:has([data-finance-print="profit-loss"]) [data-sonner-toaster] {
+    display: none !important;
+  }
+
+  body:has([data-finance-print="profit-loss"]) [data-slot="sidebar-wrapper"],
+  body:has([data-finance-print="profit-loss"]) [data-slot="sidebar-inset"],
+  body:has([data-finance-print="profit-loss"]) [data-slot="sidebar-inset"] > main {
+    display: block !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    box-shadow: none !important;
+  }
+
+  [data-finance-print="profit-loss"] {
+    min-height: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    font-size: 8pt;
+    --color-surface-primary: #fff;
+    --color-text-primary: #1d1d1d;
+    --color-text-secondary: #454545;
+    --color-text-muted: #696969;
+  }
+
+  [data-finance-print="profit-loss"] > header > div > p,
+  [data-finance-print="profit-loss"] > header > div + div,
+  [data-finance-print="profit-loss"] > [data-slot="card"] {
+    display: none !important;
+  }
+
+  [data-finance-print="profit-loss"] h1 {
+    font-size: 13pt !important;
+    line-height: 1.3 !important;
+  }
+
+  [data-finance-print="profit-loss"] > header {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  [data-finance-print="profit-loss"] .finance-print-period {
+    display: block !important;
+    white-space: nowrap;
+    font-size: 10pt;
+    font-weight: 600;
+  }
+
+  [data-finance-print="profit-loss"] > section,
+  [data-finance-print="profit-loss"] > main {
+    margin-top: 3mm !important;
+  }
+
+  [data-finance-print="profit-loss"] [data-slot="card"] {
+    box-shadow: none !important;
+    background: white !important;
+    padding: 3mm !important;
+    gap: 2mm !important;
+    break-inside: avoid;
+  }
+
+  [data-finance-print="profit-loss"] section[aria-label="Finance summary"],
+  [data-finance-print="profit-loss"] [data-slot="card"] > .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 2mm !important;
+  }
+
+  [data-finance-print="profit-loss"] [data-slot="card"][data-size="sm"] {
+    display: grid !important;
+    grid-template-columns: 4mm minmax(0, 1fr) auto;
+    padding: 2mm !important;
+    gap: 1mm !important;
+  }
+
+  [data-finance-print="profit-loss"] [data-slot="card"][data-size="sm"] > span {
+    width: 4mm;
+    height: 4mm;
+  }
+
+  [data-finance-print="profit-loss"] [data-slot="card"][data-size="sm"] > p {
+    margin-left: 0;
+    font-size: 7pt !important;
+  }
+
+  [data-finance-print="profit-loss"] [data-slot="card"][data-size="sm"] > div > p + p {
+    display: none !important;
+  }
+
+  [data-finance-print="profit-loss"] [data-slot="card"][data-size="sm"] > div > p {
+    font-size: 7pt !important;
+    line-height: 1.2;
+  }
+
+  [data-finance-print="profit-loss"] .truncate {
+    overflow: visible;
+    white-space: normal;
+  }
+
+  [data-finance-print="profit-loss"] [data-slot="collapsible-content"] {
+    display: none !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    content-visibility: visible !important;
+    visibility: visible !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Static print rows remain visible regardless of the accordion's hidden state. */
+  [data-finance-print="profit-loss"] .finance-print-categories {
+    display: block !important;
+  }
+
+  [data-finance-print="profit-loss"] [data-slot="collapsible-trigger"] {
+    padding: 2mm 3mm !important;
+  }
+
+  [data-finance-print="profit-loss"] [data-slot="collapsible-trigger"] > svg {
+    display: none;
+  }
+
+  [data-finance-print="profit-loss"] .finance-print-categories > div > div {
+    padding-block: 1.5mm !important;
+    break-inside: avoid;
+  }
+
+  [data-finance-print="profit-loss"] [data-slot="card"] > section,
+  [data-finance-print="profit-loss"] [data-slot="card"] > div:last-child {
+    padding: 2mm !important;
+  }
+
+  [data-finance-print="profit-loss"] [data-slot="card"] > section > .grid {
+    grid-template-columns: minmax(0, 1fr) 32mm 32mm !important;
+    gap: 2mm !important;
+    margin-top: 2mm !important;
+  }
+
+  [data-finance-print="profit-loss"] .transition-opacity {
+    opacity: 1 !important;
+  }
+}

@@ -24,6 +24,14 @@ const inflowIcons = [Building2, ShieldCheck, Landmark, FileCheck2, Scale];
 const outflowIcons = [Landmark, ReceiptText, WalletCards, Building2, CircleDollarSign, Scale, FileCheck2];
 
 function StatementGroup({ title, categories, total, inflow }) {
+  const rows = (
+    <div className="divide-y divide-border-default px-4">
+        {categories.map((category, index) => {
+          const Icon = (inflow ? inflowIcons : outflowIcons)[index % (inflow ? inflowIcons.length : outflowIcons.length)];
+          return <div key={category.category} className="flex items-center gap-3 py-3"><Icon aria-hidden="true" className={cn("size-4 shrink-0", inflow ? "text-success-600" : "text-danger-600")} /><span className="min-w-0 flex-1 truncate text-caption font-medium text-text-secondary">{category.category}</span><span className="whitespace-nowrap text-caption font-semibold text-text-primary" data-numeric>{money(category.amount)}</span></div>;
+        })}
+      </div>
+  );
   return (
     <Collapsible className={cn("overflow-hidden rounded-xl border", inflow ? "border-success-200 dark:border-success-700" : "border-danger-200 dark:border-danger-700")}>
       <h3>
@@ -34,13 +42,9 @@ function StatementGroup({ title, categories, total, inflow }) {
         </CollapsibleTrigger>
       </h3>
       <CollapsibleContent keepMounted className="h-[var(--collapsible-panel-height)] overflow-hidden transition-[height] data-ending-style:h-0 data-starting-style:h-0 print:h-auto! print:overflow-visible! print:[content-visibility:visible]!">
-      <div className="divide-y divide-border-default px-4">
-        {categories.map((category, index) => {
-          const Icon = (inflow ? inflowIcons : outflowIcons)[index % (inflow ? inflowIcons.length : outflowIcons.length)];
-          return <div key={category.category} className="flex items-center gap-3 py-3"><Icon aria-hidden="true" className={cn("size-4 shrink-0", inflow ? "text-success-600" : "text-danger-600")} /><span className="min-w-0 flex-1 truncate text-caption font-medium text-text-secondary">{category.category}</span><span className="whitespace-nowrap text-caption font-semibold text-text-primary" data-numeric>{money(category.amount)}</span></div>;
-        })}
-      </div>
+        {rows}
       </CollapsibleContent>
+      <div className="finance-print-categories hidden">{rows}</div>
     </Collapsible>
   );
 }
@@ -51,7 +55,7 @@ export function ProfitLossStatement({ report }) {
   const isProfit = netProfit >= 0;
   return (
     <Card className="gap-4 border border-border-default bg-surface-primary p-4 py-4 shadow-card ring-0 sm:p-5 sm:py-5">
-      <div><h2 className="text-body-sm font-semibold text-text-primary">Profit &amp; Loss Financial Statement (AED)</h2><p className="mt-1 text-[10px] text-text-muted">Comprehensive audit of operating revenues and cost disbursements.</p></div>
+      <div><h2 className="text-body-sm font-semibold text-text-primary">Profit &amp; Loss Financial Statement (AED)</h2></div>
       <StatementGroup title="1. Operating Revenue & Package Inflows" categories={report.inflows?.categories ?? []} total={report.inflows?.totalGrossRevenue} inflow />
       <StatementGroup title="2. Cost of Operations & Direct Disbursements" categories={report.outflows?.categories ?? []} total={report.outflows?.totalOperatingExpense} />
 

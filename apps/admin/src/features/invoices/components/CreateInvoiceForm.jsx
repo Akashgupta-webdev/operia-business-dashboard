@@ -1,4 +1,6 @@
-﻿import { useRef, useState } from "react";
+import { discountError, discountedTotal } from "../utils/invoiceDiscount";
+import { Textarea } from "@operio/ui/components/textarea";
+import { useRef, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@operio/ui/components/button";
@@ -22,6 +24,7 @@ export default function CreateInvoiceForm({ client, invoice: sourceInvoice, type
   const companyName = details.data?.companies?.find((company) => referenceId(company) === form.companyId)?.companyName || invoice?.companyId?.companyName || client?.companyName || client?.companyId?.companyName || "Company unavailable";
   const taxTotal = sumServiceMoney(form.service, "taxAmount");
   const grandTotal = sumServiceMoney(form.service, "grandTotal");
+  const payableTotal = discountedTotal(grandTotal, form.discount);
   const update = (key, value) => { setForm((current) => ({ ...current, [key]: value })); setErrors((current) => ({ ...current, [key]: undefined })); };
   function updateLine(index, key, value) {
     setForm((current) => ({ ...current, service: current.service.map((line, i) => i === index ? calculateService({ ...line, [key]: value }) : line) }));
@@ -33,6 +36,8 @@ export default function CreateInvoiceForm({ client, invoice: sourceInvoice, type
     event.preventDefault();
     if (pending.current || uncertain || conflict || (invoice && !Number.isInteger(invoice.version))) return;
     const nextErrors = {};
+    if (discountError(form.discount)) nextErrors.discount = discountError(form.discount);
+    if (form.remark.trim().length > 2000) nextErrors.remark = "Remark must be 2,000 characters or fewer.";
     const contactError = contactNumberError(form.contactNo);
     if (contactError) nextErrors.contactNo = contactError;
     if (!/^[a-f0-9]{24}$/i.test(form.clientId)) nextErrors.clientId = "Select a valid client.";
@@ -90,13 +95,15 @@ export default function CreateInvoiceForm({ client, invoice: sourceInvoice, type
             </tr>)}</tbody>
             <tfoot className="[&>tr>td]:border-r [&>tr>td]:border-border-default [&>tr>td]:px-2 [&>tr>td]:py-2 [&>tr>td:last-child]:border-r-0">
               <tr className="border-b border-border-default"><th scope="row" colSpan={6} className="border-r border-border-default px-3 py-2 text-right font-semibold">Sub Total (AED)</th><td className="text-right tabular-nums">{taxTotal === null ? "—" : money(taxTotal)}</td><td className="text-right tabular-nums">{grandTotal === null ? "—" : money(grandTotal)}</td><td /></tr>
-              <tr className="bg-primary-50/40"><th scope="row" colSpan={7} className="border-r border-border-default px-3 py-2 text-right font-semibold">Total (AED)</th><td className="text-right font-bold tabular-nums">{grandTotal === null ? "—" : money(grandTotal)}</td><td /></tr>
+              <tr><th scope="row" colSpan={7} className="px-3 py-2 text-right font-semibold">Discount (%)</th><td><Input {...fieldProps("discount")} aria-label="Discount percentage" type="number" min="0" max="100" step="0.01" value={form.discount} onChange={(event) => update("discount", event.target.value)} className={controlClass + " text-right"} />{error("discount")}</td><td /></tr>
+              <tr className="bg-primary-50/40"><th scope="row" colSpan={7} className="border-r border-border-default px-3 py-2 text-right font-semibold">Total (AED)</th><td className="text-right font-bold tabular-nums">{payableTotal === null ? "—" : money(payableTotal)}</td><td /></tr>
             </tfoot>
           </table>
         </div>
         <p className="text-xs text-text-muted">Tax is calculated on service price × quantity. Grand total includes government charges and tax.</p>
       </section>
 
+      <div><label htmlFor="invoice-create-remark" className={labelClass}>Remark (optional)</label><Textarea {...fieldProps("remark")} maxLength={2000} rows={3} value={form.remark} onChange={(event) => update("remark", event.target.value)} className="min-h-20 rounded-none text-xs md:text-xs" />{error("remark")}</div>
     </fieldset>
     {mutation.isError && <p role="alert" className="text-sm text-destructive">{uncertain ? "The result is uncertain. Close this form and check the invoice list before trying again." : errorMessage(mutation.error)}</p>}
     {conflict && <Button type="button" variant="outline" onClick={onReload}>Reload latest invoice to review</Button>}

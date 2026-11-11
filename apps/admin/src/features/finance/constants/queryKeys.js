@@ -4,4 +4,5 @@ export const financeKeys = {
   revenueRoot: ["profit-loss","revenue-inflow"],
   profitLoss: (filters) => [...financeKeys.all, filters],
   revenueInflows: (filters) => [...financeKeys.revenueRoot, filters],
+  expenses: (filters) => [...financeKeys.all, "expenses", filters],
 };

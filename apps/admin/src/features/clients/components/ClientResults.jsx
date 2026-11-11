@@ -19,12 +19,26 @@ const avatarClasses = [
 ];
 
 function getInitials(name = "Client") {
-  return name.trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase();
+  const parts = (name || "Client").trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "CL";
+  return (parts.length > 1 ? parts[0][0] + parts[1][0] : parts[0].slice(0, 2)).toUpperCase();
 }
 
 function getAvatarClass(name = "Client") {
-  const code = name.trim().charAt(0).toUpperCase().charCodeAt(0);
+  const code = getInitials(name).charCodeAt(0);
   return avatarClasses[Math.max(0, code - 65) % avatarClasses.length];
+}
+
+function onboardingDate(value) {
+  if (!value) return "\u2014";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "\u2014" : new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit", month: "short", year: "numeric", timeZone: "Asia/Dubai",
+  }).format(date);
+}
+
+function ClientAvatar({ name }) {
+  return <div aria-hidden="true" className={cn("flex size-10 shrink-0 items-center justify-center rounded-lg text-caption font-bold text-neutral-0", getAvatarClass(name))}>{getInitials(name)}</div>;
 }
 
 function StatusBadge({ status }) {
@@ -59,11 +73,6 @@ function ClientActions({ client, onView, onDelete, centered = false }) {
   );
 }
 
-function authorName(author) {
-  if (typeof author === "string") return author;
-  return author?.name || author?.fullName || author?.email || "?";
-}
-
 function ClientCard({ client, onDelete }) {
   const navigate = useNavigate();
   const viewClient = () => navigate(`/clients/${client._id}`);
@@ -71,7 +80,7 @@ function ClientCard({ client, onDelete }) {
   return (
     <Card size="sm" className="h-full min-w-0 w-full max-w-none gap-0 border border-border-default bg-surface-primary p-4 py-4 shadow-card ring-0 transition-colors hover:border-primary/40">
       <div className="flex items-start justify-between gap-3">
-        <div className={cn("flex size-10 shrink-0 items-center justify-center rounded-lg text-caption font-bold text-neutral-0", getAvatarClass(client.name))}>{getInitials(client.name)}</div>
+        <ClientAvatar name={client.name} />
         <StatusBadge status={client.status} />
       </div>
       <button type="button" onClick={viewClient} className="mt-3 text-left focus-visible:rounded-sm"><h2 className="line-clamp-2 text-[12px] leading-4 font-semibold text-text-primary uppercase hover:text-primary">{client.name}</h2></button>
@@ -97,11 +106,12 @@ function ClientList({ clients, onDelete }) {
   return (
     <div className="overflow-x-auto rounded-xl border border-border-default bg-surface-primary shadow-card">
       <table className="w-full min-w-200 text-left text-xs">
-        <thead className="border-b border-border-default bg-surface-secondary text-[13px] font-medium text-text-primary"><tr><th className="px-3 py-2">Client</th><th className="px-3 py-2">Contact</th><th className="px-3 py-2">Added By</th><th className="px-3 py-2">Created By</th><th className="px-3 py-2">Status</th><th className="px-3 py-2 text-center">Actions</th></tr></thead>
+        <thead className="border-b border-border-default bg-surface-secondary text-[13px] font-medium text-text-primary"><tr><th className="px-3 py-2">Client</th><th className="px-3 py-2">Contact</th><th className="px-3 py-2">Created By</th><th className="px-3 py-2">Onboarding Date</th><th className="px-3 py-2">Status</th><th className="px-3 py-2 text-center">Actions</th></tr></thead>
         <tbody className="divide-y divide-border-default">{clients.map((client) => <tr key={client._id} className="hover:bg-surface-secondary/60">
-          <td className="px-3 py-[10.5px]"><button type="button" onClick={() => navigate(`/clients/${client._id}`)} className="font-semibold text-text-primary hover:text-primary">{client.name}</button><p className="mt-0.5 text-[11px] text-text-muted">{client.companyName || client.nationality || "—"}</p></td>
+          <td className="px-3 py-[10.5px]"><div className="flex items-center gap-3"><ClientAvatar name={client.name} /><div><button type="button" onClick={() => navigate(`/clients/${client._id}`)} className="font-semibold text-text-primary hover:text-primary">{client.name}</button><p className="mt-0.5 text-[11px] text-text-muted">{client.companyName || client.nationality || "—"}</p></div></div></td>
           <td className="px-3 py-[10.5px] text-text-secondary"><p>{client.mobileNumber || "—"}</p><p className="text-[11px]">{client.emailAddress || "—"}</p></td>
-          <td className="px-3 py-[10.5px] text-text-secondary"><span className="inline-flex items-center rounded-md bg-primary-50 px-2 py-0.5 text-[10px] leading-4 font-semibold text-primary-700 dark:bg-accent dark:text-accent-foreground">Admin</span></td><td className="px-3 py-[10.5px] text-text-secondary">{authorName(client.createdBy)}</td>
+          <td className="px-3 py-[10.5px] text-text-secondary">Admin</td>
+          <td className="whitespace-nowrap px-3 py-[10.5px] text-text-secondary">{onboardingDate(client.createdAt)}</td>
           <td className="px-3 py-[10.5px]"><StatusBadge status={client.status} /></td>
           <td className="px-3 py-[10.5px]"><ClientActions centered onDelete={onDelete} client={client} onView={() => navigate(`/clients/${client._id}`)} /></td>
         </tr>)}</tbody>

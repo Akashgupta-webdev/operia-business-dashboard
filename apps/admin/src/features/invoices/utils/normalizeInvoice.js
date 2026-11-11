@@ -1,4 +1,5 @@
 import { decimalString } from "./invoice.js";
+import { sumServiceMoney } from "./createInvoice.js";
 
 // Keep the server DTO and provide the existing table/detail presentation fields.
 export function normalizeInvoice(invoice, { numeric = false } = {}) {
@@ -7,7 +8,8 @@ export function normalizeInvoice(invoice, { numeric = false } = {}) {
   const total = monetaryValue(invoice.grandTotalAmount);
   return { ...invoice, invoiceNumber: invoice.invoiceNo, client: invoice.clientId, company: invoice.companyId, invoiceDate: invoice.issueDate, currency: "AED",
     items: invoice.service.map((line) => ({ item: { name: line.itemDescription }, quantity: line.qty, governmentRate: line.govtRate, servicePrice: line.servicePrice, taxCode: line.taxCode, taxRate: String(line.taxCode), taxAmount: line.taxAmount })),
-    totals: { total, subtotal: total, taxAmount: monetaryValue(invoice.grandTotalTaxAmount), lineTotals: invoice.service.map((line) => monetaryValue(line.grandTotal)) },
+    discount: invoice.discount ?? null, remark: invoice.remark ?? null,
+    totals: { total, subtotal: sumServiceMoney(invoice.service.map((line) => ({ grandTotal: decimalString(line.grandTotal) })), "grandTotal"), taxAmount: monetaryValue(invoice.grandTotalTaxAmount), lineTotals: invoice.service.map((line) => monetaryValue(line.grandTotal)) },
     issuer: { accountNumber: invoice.accountNo, swiftBic: invoice.switftBIC, iban: invoice.iban },
   };
 }
